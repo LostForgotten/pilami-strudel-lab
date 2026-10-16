@@ -1,0 +1,8 @@
+.pilami-detach-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;color:inherit}
+.pilami-detach-bar>span{font-size:13px;opacity:.8}
+.pilami-detach-bar button{font-size:13px;padding:7px 10px}
+.pilami-detach-bar button[aria-expanded="true"]{border-color:var(--pilami-accent,#4676ad)}
+.pilami-detach-placeholder{flex-basis:100%;font-size:13px;margin:0;opacity:.8}
+.pilami-detach-notice{font-size:13px;margin:0 0 8px}
+.pilami-detach-notice:empty{display:none}
+.pilami-strudel-lab .pilami-is-detached,.pilami-detach-placeholder[hidden]{display:none!important}

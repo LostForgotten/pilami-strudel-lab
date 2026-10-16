@@ -1,0 +1,122 @@
+// Julia pour https://pilami.fr/strudel/
+// Importe ce fichier, puis clique sur Lecture / Update.
+// Les curseurs apparaissent dans « Curseurs du morceau ».
+// Ils agissent en direct. Relancer le script remet le zoom au départ.
+
+await initHydra({ detectAudio: true, precision: 'highp' })
+a.setBins(4)
+a.setSmooth(0.85)
+
+// ---- Curseurs en direct ----
+// H transforme chaque curseur Strudel en fonction lisible par Hydra.
+// slider(valeur initiale, minimum, maximum, pas)
+
+// 0 = pause du zoom, y compris de son accélération audio.
+var Vitesse_Zoom = H(slider(0.015, 0, 0.12, 0.001))
+var Audio_Zoom = H(slider(12, 0, 30, 0.1))
+var Zoom_Manuel = H(slider(1, 0.25, 4, 0.01))
+
+// Décalage dans l'image : X positif vers la droite, Y positif vers le haut.
+// Une unité représente une largeur ou une hauteur d'image.
+var Centre_X = H(slider(0, -1, 1, 0.001))
+var Centre_Y = H(slider(0, -1, 1, 0.001))
+
+// 0 arrête l'évolution automatique ; l'audio peut encore modifier la forme.
+var Vitesse_Forme = H(slider(1, 0, 4, 0.01))
+var Amplitude_Forme = H(slider(1, 0, 4, 0.01))
+var Audio_Forme = H(slider(0.02, 0, 0.08, 0.001))
+
+// Saturation : 0 = gris, 1 = palette originale.
+var Saturation = H(slider(1, 0, 3, 0.01))
+var Teinte = H(slider(0, -6.28, 6.28, 0.01))
+var Vitesse_Couleurs = H(slider(0.08, 0, 1, 0.01))
+
+// ---- Réglages audio et état de l'animation ----
+var bandeZoom = 0
+var zoomDepart = 0.8
+var zoomActuel = zoomDepart
+var tempsForme = 0
+var tempsCouleurs = 0
+var dernierInstant = performance.now()
+
+var niveauAudio = function (bande) {
+  return Math.max(0, Math.min(1, a.fft[bande] || 0))
+}
+
+// Cette fonction est relue par Hydra à chaque image.
+// Le zoom et les phases s'accumulent : changer la vitesse ne les réinitialise pas.
+var avancerZoom = function () {
+  var maintenant = performance.now()
+  var dt = Math.max(0, Math.min((maintenant - dernierInstant) / 1000, 0.1))
+  dernierInstant = maintenant
+
+  var vitesse = Vitesse_Zoom() * (1 + niveauAudio(bandeZoom) * Audio_Zoom())
+  zoomActuel *= Math.exp(vitesse * dt)
+  tempsForme += dt * Vitesse_Forme()
+  tempsCouleurs += dt * Vitesse_Couleurs()
+
+  return zoomActuel * Zoom_Manuel()
+}
+
+// ---- Générateur de fractale ----
+// Chaînes entre apostrophes pour éviter la mini-notation de Strudel.
+setFunction({
+  name: 'pilamiJuliaCurseurs',
+  type: 'src',
+  inputs: [
+    { name: 'zoom', type: 'float', default: 0.8 },
+    { name: 'cx', type: 'float', default: -0.745 },
+    { name: 'cy', type: 'float', default: 0.186 },
+    { name: 'teinte', type: 'float', default: 0 },
+    { name: 'depart', type: 'float', default: 0.8 },
+    { name: 'decalageX', type: 'float', default: 0 },
+    { name: 'decalageY', type: 'float', default: 0 }
+  ],
+  glsl: [
+    'highp vec2 c = vec2(cx, cy);',
+    'highp vec2 d = vec2(1.0 - 4.0 * c.x, -4.0 * c.y);',
+    'highp float longueur = length(d);',
+    'highp vec2 racine = vec2(',
+    '  sqrt(max(0.0, (longueur + d.x) * 0.5)),',
+    '  sign(d.y) * sqrt(max(0.0, (longueur - d.x) * 0.5))',
+    ');',
+    'highp vec2 centre = (vec2(1.0, 0.0) + racine) * 0.5;',
+    'highp float progression = 1.0 - pow(min(1.0, depart / zoom), 2.0);',
+    'highp vec2 z = (_st - 0.5 - vec2(decalageX, decalageY)) * 3.0 / zoom;',
+    'z.x *= resolution.x / resolution.y;',
+    'z += centre * progression;',
+    'float n = 0.0;',
+    'bool echappe = false;',
+    'for (int i = 0; i < 64; i++) {',
+    '  z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;',
+    '  n = float(i);',
+    '  if (dot(z, z) > 4.0) {',
+    '    echappe = true;',
+    '    break;',
+    '  }',
+    '}',
+    'if (!echappe) return vec4(0.0, 0.0, 0.0, 1.0);',
+    'vec3 couleur = 0.5 + 0.5 * cos(vec3(0.0, 2.0, 4.0) + n * 0.23 + teinte);',
+    'couleur *= min(1.0, 0.25 + n * 0.05);',
+    'return vec4(couleur, 1.0);'
+  ].join('\n')
+})
+
+// ---- Affichage ----
+pilamiJuliaCurseurs(
+  avancerZoom,
+  () => -0.745
+    + Math.sin(tempsForme * 0.06) * 0.015 * Amplitude_Forme()
+    + niveauAudio(1) * Audio_Forme(),
+  () => 0.186
+    + Math.sin(tempsForme * 0.045) * 0.01 * Amplitude_Forme()
+    + niveauAudio(2) * Audio_Forme(),
+  () => tempsCouleurs + Teinte() + niveauAudio(3) * 4,
+  zoomDepart,
+  Centre_X,
+  Centre_Y
+)
+.saturate(Saturation)
+.out(o0)
+
+// À très grand zoom, la précision du calcul graphique finit par limiter les détails.

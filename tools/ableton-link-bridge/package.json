@@ -1,0 +1,1 @@
+{"name":"pilami-link-bridge","version":"0.1.0","private":true,"description":"Local read-only Ableton Link bridge for Pilami Strudel Lab","scripts":{"start":"node server.cjs"},"dependencies":{"@ktamas77/abletonlink":"1.2.3","ws":"^8.18.0"}}

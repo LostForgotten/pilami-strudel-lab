@@ -1,0 +1,171 @@
+.pilami-controller-surface{--pc-bg:var(--pilami-editor-bg,var(--editor-bg,#fff));--pc-text:var(--pilami-editor-text,var(--editor-text,#172b42));--pc-accent:var(--pilami-accent,var(--accent,#4676ad));color:var(--pc-text);font:14px/1.5 system-ui,sans-serif;min-width:0;width:100%}
+.pilami-controller-surface *{box-sizing:border-box}
+.pilami-controller-surface h4{font:600 15px/1.4 system-ui,sans-serif;color:inherit;margin:0}
+.pilami-controller-surface button,.pilami-controller-surface select,.pilami-controller-surface input[type=number]{background:var(--pc-bg)!important;color:var(--pc-text)!important;font:inherit;border:1px solid #8997a777;border-radius:7px;padding:6px 8px;max-width:100%;min-width:0}
+.pilami-controller-surface button{cursor:pointer}
+.pilami-controller-surface button:focus-visible,.pilami-controller-surface input:focus-visible,.pilami-controller-surface select:focus-visible,.pilami-xy-pad:focus-visible{outline:3px solid var(--pc-accent);outline-offset:2px}
+.pilami-controller-surface [hidden]{display:none!important}
+.pilami-audio-bank{position:sticky;top:0;z-index:3;border:1px solid #8997a766;border-radius:10px;padding:14px;margin-bottom:16px;background:var(--pc-bg)}
+.pilami-audio-heading,.pilami-control-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pilami-audio-heading button{font-size:12px}.pilami-control-help{font-size:12px;opacity:.8;line-height:1.5;margin:8px 0 0}
+.pilami-audio-sources{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.pilami-controller-surface button.pilami-audio-source{display:flex;flex:1;min-width:80px;flex-direction:column;gap:6px;padding:9px;cursor:grab}
+.pilami-audio-source span{font:12px ui-monospace,Consolas,monospace}.pilami-audio-source meter{width:100%;height:12px;accent-color:var(--pc-accent)}
+.pilami-controller-surface button.pilami-audio-source.is-selected{border-color:var(--pc-accent);box-shadow:0 0 0 2px var(--pc-accent)}
+.pilami-control-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;align-items:start}
+.pilami-control-card,.pilami-xy-card{min-width:0;padding:14px;border:1px solid #8997a766;border-radius:10px;background:var(--pc-bg);scroll-margin-top:220px}
+/* Reserve two lines: live audio digits never change the card height. */
+.pilami-control-card [data-control-effective]{height:3em;min-height:3em;overflow:hidden;font-variant-numeric:tabular-nums}
+.pilami-control-card [data-control-effective]>span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pilami-audio-selection{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid var(--pc-accent);border-radius:8px;padding:8px 10px;margin-bottom:12px;background:var(--pc-bg)}
+.pilami-audio-selection .pilami-control-help{margin:0;flex:1 1 220px;overflow-wrap:anywhere}
+.pilami-audio-selection button{font-size:12px;flex:none}
+.pilami-audio-bank [data-control-audio-status].is-error{color:#d16b73;opacity:1}
+.pilami-control-destination{font-weight:600!important;text-align:left;overflow-wrap:anywhere;border-color:transparent!important;padding-left:0!important}
+.pilami-control-heading select{font-size:11px;max-width:150px}.pilami-control-value{display:flex;align-items:center;gap:12px;min-height:48px;margin-top:10px}
+.pilami-control-value input[type=range]{flex:1;min-width:0;width:100%;accent-color:var(--pc-accent);padding:0;background:transparent;cursor:pointer}
+.pilami-control-value output{font-variant-numeric:tabular-nums;font:13px ui-monospace,Consolas,monospace;min-width:55px;text-align:right;margin-left:auto}
+.pilami-control-value input.pilami-control-number{flex:0 1 100px;width:100px;min-width:64px;margin-left:auto;text-align:right;font:13px ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;background:var(--pc-bg)!important;color:var(--pc-text)!important;border:1px solid #8997a777;border-radius:7px;padding:6px 8px}
+.pilami-control-value input.pilami-control-number[aria-invalid=true]{border-color:#d16b73}
+.pilami-controller-surface button.pilami-knob{position:relative;width:72px;height:72px;border-radius:50%;padding:0;background:radial-gradient(circle at 35% 25%,#91a7be,#203348)!important;border:3px solid #8997a7;touch-action:none;flex:none;cursor:ns-resize}
+.pilami-knob-needle{position:absolute;inset:5px;transform-origin:center}
+.pilami-knob-needle:after{content:'';position:absolute;left:calc(50% - 2px);top:0;width:4px;height:17px;border-radius:2px;background:#f7fbff}
+.pilami-controller-surface button.pilami-toggle[aria-checked=true]{border-color:var(--pc-accent);box-shadow:inset 0 0 0 2px var(--pc-accent)}
+.pilami-control-value input.pilami-fader{writing-mode:vertical-lr;direction:rtl;width:32px;height:130px;flex:0 0 32px;margin:4px auto}
+.pilami-audio-routing{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid #8997a744;margin-top:10px;padding-top:10px}
+.pilami-audio-routing label{display:flex;align-items:center;gap:6px;font-size:12px}.pilami-audio-routing input[type=number]{width:90px;font-size:12px}.pilami-audio-routing button,.pilami-audio-routing select{font-size:12px}
+.pilami-xy-card{grid-column:1/-1}.pilami-xy-zones{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pilami-controller-surface .pilami-xy-zones button.has-audio{border-color:var(--pc-accent)}
+.pilami-xy-pad{position:relative;width:100%;height:230px;overflow:hidden;touch-action:none;cursor:crosshair;border:1px solid #8997a788;border-radius:8px;background:linear-gradient(#8997a71a 1px,transparent 1px),linear-gradient(90deg,#8997a71a 1px,transparent 1px);background-size:10% 10%}
+.pilami-xy-pad:before,.pilami-xy-pad:after{content:'';position:absolute;background:#8997a766;pointer-events:none}.pilami-xy-pad:before{width:1px;height:100%;left:50%}.pilami-xy-pad:after{height:1px;width:100%;top:50%}
+.pilami-xy-dot,.pilami-xy-base{position:absolute;width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}.pilami-xy-dot{background:var(--pc-accent);box-shadow:0 0 0 4px #8997a733}.pilami-xy-base{width:22px;height:22px;border:1px dashed var(--pc-text)}
+.pilami-xy-card output{display:block;margin-top:8px;font-variant-numeric:tabular-nums;font-size:13px}
+.pilami-controller-surface .is-drop-target{border-color:var(--pc-accent)!important;outline:3px solid var(--pc-accent);outline-offset:2px}
+@media(max-width:600px){.pilami-audio-bank,.pilami-control-card,.pilami-xy-card{padding:10px}.pilami-xy-pad{height:200px}.pilami-audio-sources{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.pilami-controller-surface button.pilami-audio-source{min-width:0!important;padding:7px 3px}.pilami-audio-source span{font-size:10px}}
+
+/* Native select menus must use the controller palette, including detached windows. */
+.pilami-controller-surface select{color-scheme:inherit}
+html[data-pilami-theme="dark"] .pilami-controller-surface select{color-scheme:dark}
+html[data-pilami-theme="light"] .pilami-controller-surface select{color-scheme:light}
+.pilami-controller-surface select option,.pilami-controller-surface select optgroup{background:var(--pc-bg)!important;color:var(--pc-text)!important}
+
+.pilami-control-bounds{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #8997a744}
+.pilami-control-bounds label{display:flex;flex:1 1 80px;align-items:center;gap:5px;font-size:12px;min-width:0}
+.pilami-control-bounds input[type=number]{width:100%;min-width:0;font-size:12px;font-variant-numeric:tabular-nums}
+.pilami-control-bounds button{font-size:12px}
+.pilami-control-bounds .pilami-range-status{flex-basis:100%;margin:0;color:var(--pc-text);opacity:1}
+.pilami-control-bounds input[aria-invalid=true]{border-color:#d16b73}
+
+.pilami-snapshot-panel{position:sticky;top:0;z-index:4;background:var(--pc-bg);border:1px solid #8997a766;border-radius:10px;padding:12px;margin-bottom:14px}
+.pilami-snapshot-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.pilami-snapshot-heading .pilami-control-help{margin:0}
+.pilami-snapshot-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0}
+.pilami-snapshot-slot{display:flex;flex-direction:column;gap:4px;min-width:0}.pilami-snapshot-slot button{font-size:12px}
+.pilami-snapshot-actions{display:flex;align-items:stretch;min-width:0}
+.pilami-controller-surface .pilami-snapshot-actions [data-snapshot-slot]{flex:1;min-width:0;border-radius:7px 0 0 7px;overflow-wrap:anywhere}
+.pilami-controller-surface .pilami-snapshot-actions [data-snapshot-morph-to]{flex:0 0 32px;min-width:32px;max-width:32px;border-radius:0 7px 7px 0;margin-left:-1px;padding:6px 4px;font-size:18px;line-height:1}
+.pilami-snapshot-actions button:focus-visible{position:relative;z-index:1}
+.pilami-snapshot-slot [data-snapshot-morph-to].is-saved{border-color:var(--pc-accent)}
+.pilami-snapshot-slot [data-snapshot-capture]{font-size:11px;padding:3px 6px}
+.pilami-snapshot-slot [data-snapshot-slot]{flex:1}
+.pilami-snapshot-slot [data-snapshot-slot].is-saved{border-color:var(--pc-accent)}
+.pilami-snapshot-slot [aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--pc-accent)}
+.pilami-controller-surface.has-snapshots .pilami-audio-bank{position:static}
+.pilami-morph-settings{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pilami-morph-settings label{display:flex;align-items:center;gap:5px;font-size:12px;min-width:0}
+.pilami-morph-settings select,.pilami-morph-settings button{font-size:12px}
+.pilami-morph-settings .pilami-morph-duration{width:65px;background:var(--pc-bg);color:var(--pc-text);font:inherit;border:1px solid #8997a777;border-radius:7px;padding:6px}
+.pilami-morph-duration[aria-invalid=true]{border-color:#d16b73!important}
+.pilami-morph-position{display:flex;align-items:center;gap:12px;margin-top:10px}
+.pilami-morph-position input{flex:1;min-width:0;width:100%;accent-color:var(--pc-accent)}
+.pilami-morph-position output{font:12px ui-monospace,Consolas,monospace;text-align:right;min-width:90px}
+.pilami-snapshot-panel button:disabled,.pilami-snapshot-panel input:disabled{opacity:.5;cursor:default}
+.pilami-snapshot-panel .is-error{color:#d16b73}
+@media(max-width:600px){.pilami-snapshot-panel{padding:10px}.pilami-snapshot-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.pilami-snapshot-heading .pilami-control-help{font-size:11px}}
+
+/* Optional automatic morph easing. */
+.pilami-morph-easing{margin-top:8px}
+.pilami-morph-easing input[type=checkbox]{width:auto;min-width:0;margin:0 5px 0 0;accent-color:var(--pilami-accent,#8dbce8)}
+.pilami-morph-easing label{display:inline-flex;align-items:center;gap:4px}
+.pilami-easing-preview{width:96px;height:40px;flex:0 0 96px;border:1px solid currentColor;border-radius:5px;opacity:.85}
+.pilami-easing-help{margin:5px 0 0}
+
+/* MIDI Learn: compact, shared between main and detached controls. */
+.pilami-midi-panel{background:var(--pc-bg);border:1px solid #8997a766;border-radius:10px;padding:12px;margin-bottom:14px}
+.pilami-midi-settings{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px}
+.pilami-midi-settings label{display:flex;gap:5px;align-items:center;min-width:0;flex:1 1 180px;font-size:12px}
+.pilami-midi-settings select{min-width:0;max-width:100%;flex:1;font-size:12px}
+.pilami-midi-settings button,.pilami-midi-binding button{font-size:12px}
+.pilami-midi-smoothing input[type=range]{flex:1;min-width:60px;width:100%;accent-color:var(--pc-accent)}
+.pilami-midi-smoothing input[type=number]{flex:0 0 68px;width:68px;font-variant-numeric:tabular-nums}
+.pilami-midi-monitor{overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace}
+.pilami-midi-panel details{margin-top:9px}.pilami-midi-panel summary{font-size:12px;cursor:pointer}
+.pilami-midi-bindings{display:grid;gap:6px;margin-top:8px}
+.pilami-midi-binding{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid #8997a744;padding-top:6px;font-size:12px;overflow-wrap:anywhere}
+.pilami-midi-binding>span:first-child{font-weight:600}.pilami-midi-binding .pilami-control-help{margin:0;flex:1 1 180px}
+.pilami-controller-surface .pilami-midi-control-learn{margin-top:10px;font-size:11px;padding:4px 7px}
+.pilami-control-midi-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.pilami-controller-surface .pilami-control-midi-actions button{margin-top:0;font-size:11px;padding:4px 7px}
+.pilami-controller-surface .pilami-control-midi-actions .pilami-midi-control-invert{margin-left:auto;min-width:28px;font-weight:700;font-size:15px;line-height:1}
+.pilami-midi-control-invert[aria-pressed=true]{border-color:var(--pc-accent)!important;box-shadow:inset 0 0 0 1px var(--pc-accent)}
+.pilami-midi-panel .is-error{color:#d16b73;opacity:1}.pilami-midi-panel button:disabled{opacity:.5;cursor:default}
+@media(max-width:600px){.pilami-midi-panel{padding:10px}.pilami-midi-settings label{flex-basis:100%}}
+/* On a narrow or short screen, leave room to scroll to MIDI and parameters. */
+@media(max-width:600px),(max-height:850px){.pilami-snapshot-panel{position:static}}
+
+/* Random variations share the live model in the page and detached windows. */
+.pilami-random-panel{background:var(--pc-bg);border:1px solid #8997a766;border-radius:10px;padding:12px;margin-bottom:14px}
+.pilami-random-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.pilami-random-actions [data-control-random]{font-weight:600;border-color:var(--pc-accent)}
+.pilami-random-power{display:flex;align-items:center;gap:7px;flex:1 1 230px;min-width:0;font-size:12px}
+.pilami-random-power input[type=range]{flex:1;width:100%;min-width:45px;accent-color:var(--pc-accent)}
+.pilami-random-power input[type=number]{flex:0 0 62px;width:62px;font-variant-numeric:tabular-nums}
+.pilami-random-panel [data-control-random-undo]{font-size:12px}
+.pilami-random-panel button:disabled,.pilami-random-panel input:disabled{opacity:.5;cursor:default}
+.pilami-random-power input[aria-invalid=true]{border-color:#d16b73}
+@media(max-width:600px){.pilami-random-panel{padding:10px}.pilami-random-power{flex-basis:100%;order:3}}
+
+/* Note sources share the controller model in detached windows. */
+.pilami-audio-bank{position:static}
+.pilami-note-settings{margin-top:10px;border-top:1px solid #8997a744;padding-top:10px}
+.pilami-note-settings summary{cursor:pointer;font-size:13px;font-weight:600}
+.pilami-note-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pilami-note-actions label{display:flex;align-items:center;gap:6px;font-size:12px}
+.pilami-note-actions input{width:80px}
+.pilami-note-list{display:grid;gap:6px;margin-top:12px}
+.pilami-note-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px}
+.pilami-note-row>span{flex:1 1 200px}.pilami-note-row button{font-size:12px}
+.pilami-note-dialog{background:var(--pc-bg);color:var(--pc-text);border:1px solid #8997a777;border-radius:12px;padding:20px;width:min(540px,94vw);max-height:88vh;overflow:auto;box-shadow:0 14px 70px #0006}
+.pilami-note-dialog::backdrop{background:#0008}
+.pilami-note-dialog>label{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.pilami-note-form{display:grid;gap:10px;margin-top:16px}
+.pilami-note-form label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}
+.pilami-note-form input:not([type=checkbox]){width:140px;background:var(--pc-bg);color:var(--pc-text);padding:6px;border:1px solid #8997a777;border-radius:7px;min-width:0}
+.pilami-note-form input[type=checkbox]{width:auto}
+/* Color conveys routing, independently of microphone or FFT availability. */
+.pilami-controller-surface button.pilami-audio-source.is-unlinked{opacity:.55;filter:grayscale(1);background:var(--pc-bg)!important;border-color:#8997a766;box-shadow:none}
+.pilami-controller-surface button.pilami-audio-source.is-unlinked.is-selected{border-style:dashed;border-color:#8997a7;box-shadow:0 0 0 1px #8997a744}
+.pilami-controller-surface button.pilami-audio-source.is-unlinked meter{filter:grayscale(1)}
+.pilami-controller-surface button.pilami-audio-source.is-linked{opacity:1;filter:none;background:linear-gradient(#9d86bd24,#9d86bd24),var(--pc-bg)!important;border-color:#9d86bd}
+.pilami-controller-surface button.pilami-audio-source.is-linked.is-selected{border-color:var(--pc-accent)}
+.pilami-controller-surface button.pilami-audio-source.is-linked.is-note-hit{border-color:#50af98;box-shadow:0 0 0 2px #50af9866}
+@media(max-width:420px){.pilami-note-form label{align-items:flex-start;flex-direction:column}.pilami-note-form input:not([type=checkbox]){width:100%}}
+
+/* Amber identifies a direct FFT read in the script; interface links keep mauve. */
+.pilami-controller-surface button.pilami-audio-source.is-linked.is-script-linked:not(.has-control-link){background:linear-gradient(#c9a46526,#c9a46526),var(--pc-bg)!important;border-color:#c9a465}
+.pilami-controller-surface button.pilami-audio-source.is-linked.is-script-linked:not(.has-control-link).is-selected{border-color:var(--pc-accent)}
+
+/* Parameters come first. Technical tools remain available in native disclosures. */
+.pilami-controller-parameters>.pilami-control-help{margin:0 0 12px}
+.pilami-controller-section{border:1px solid #8997a766;border-radius:10px;background:var(--pc-bg);margin:14px 0;color:var(--pc-text)}
+.pilami-controller-section>summary{font-weight:600;font-size:14px;padding:12px;cursor:pointer;overflow-wrap:anywhere}
+.pilami-controller-section[open]>summary{border-bottom:1px solid #8997a733}
+.pilami-controller-section>.pilami-control-help{margin:10px 12px}
+.pilami-controller-section>div,.pilami-controller-section>.pilami-audio-bank{margin:12px}
+.pilami-controller-section .pilami-audio-bank,.pilami-controller-section .pilami-snapshot-panel,.pilami-controller-section .pilami-midi-panel{border:0;padding:0;position:static;margin-bottom:0}
+.pilami-controller-surface summary:focus-visible{outline:3px solid var(--pc-accent);outline-offset:2px;border-radius:7px}
+.pilami-control-advanced{border-top:1px solid #8997a733;margin-top:12px;padding-top:8px;font-size:12px}
+.pilami-control-advanced summary{cursor:pointer;font-weight:500;padding:3px 0}
+.pilami-control-advanced>label{display:flex;align-items:center;gap:8px;margin-top:10px}
+.pilami-control-advanced select{flex:1;font-size:12px}
+.pilami-control-advanced .pilami-control-bounds{border-top:0;padding-top:0}
+.pilami-random-panel{margin-top:14px}

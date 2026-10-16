@@ -1,0 +1,5 @@
+hydra-midi 0.4.6 (MIT), Arno Schlipf
+Source : https://github.com/arnoson/hydra-midi
+NPM integrity : sha512-Cokl0TuEGt+nR69Dx9pp8DqM9WbyKHkmNp0AeZWRwSS3AnDFJgev1DlQH5ju/sxia8EgiA4LQJcH6ArePwoTmg==
+Modifications : namespace privé pour préserver note() de Strudel ; accès MIDI partagé ; cache mémoire ; écoute des ports déjà ouverts ; Note On vélocité 0 traité comme Note Off ; noms du moniteur échappés.
+Le MIDI Learn Pilami utilise son propre routage, indépendant des callbacks des presets.

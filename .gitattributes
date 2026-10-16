@@ -1,0 +1,8 @@
+* -text
+*.php diff
+*.js diff
+*.css diff
+*.md diff
+*.txt diff
+*.py diff
+*.yml diff

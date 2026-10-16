@@ -1,0 +1,15 @@
+/* Category editing in the main editor and its detached windows. */
+.pilami-preset-categories[hidden]{display:none!important}
+.pilami-preset-categories{border:1px solid #8997a766;border-radius:8px;padding:10px 12px;margin:10px 0;color:inherit;background:transparent;flex-shrink:0}
+.pilami-preset-categories summary{cursor:pointer;font-weight:600;line-height:1.5}
+.pilami-preset-categories p{font-size:13px;line-height:1.5;margin:10px 0}
+.pilami-preset-categories fieldset{border:0;padding:0;margin:0 0 12px;min-width:0}
+.pilami-preset-categories legend{font-size:13px;margin-bottom:8px;padding:0}
+.pilami-category-choices{display:flex;flex-wrap:wrap;gap:8px;max-height:190px;overflow:auto;padding:3px}
+.pilami-preset-categories .pilami-category-choices label{display:flex;align-items:center;gap:8px;max-width:100%;padding:7px 10px;border:1px solid #8997a766;border-radius:6px;font-size:14px;cursor:pointer;color:inherit;background:transparent;text-align:left}
+.pilami-preset-categories .pilami-category-choices input{width:18px;height:18px;min-width:18px;margin:0;accent-color:var(--pilami-accent,var(--accent,#4676ad))}
+.pilami-category-choices span{overflow-wrap:anywhere}
+.pilami-category-choices label:has(input:checked){border-color:var(--pilami-accent,var(--accent,#4676ad))}
+.pilami-preset-categories fieldset:disabled{opacity:.6}
+.pilami-category-choices input:focus-visible{outline:3px solid var(--pilami-accent,var(--accent,#4676ad));outline-offset:2px}
+[data-role-colors="1"] [data-hydra-action="save-categories"]{--button-color:var(--pilami-color-save,#6fa3a5);background:color-mix(in srgb,var(--button-color) 20%,var(--pilami-panel-bg,var(--bg,#f7f9fc)));color:inherit;border-color:var(--button-color)}

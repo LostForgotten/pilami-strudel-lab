@@ -1,0 +1,43 @@
+body > .pilami-visual-canvas.is-background { position:fixed !important; inset:0 !important; width:100vw !important; height:100vh !important; z-index:0; pointer-events:none; }
+.pilami-strudel-lab { position:relative; z-index:1; }
+.pilami-visual-panel { margin-top:var(--pilami-spacing,18px); border:1px solid #99a8b8; border-radius:var(--pilami-radius,12px); overflow:hidden; }
+.pilami-visual-panel h3 { margin:0; padding:14px 18px 0; font-size:18px; }
+.pilami-visual-panel p { margin:8px 18px 14px; font-size:14px; opacity:.7; }
+.pilami-visual-stage { position:relative; width:100%; height:300px; overflow:hidden; background:#15191f; }
+.pilami-visual-stage > .pilami-visual-canvas.is-panel { display:block; position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; pointer-events:none; }
+.pilami-visual-dock { position:fixed; right:20px; bottom:76px; z-index:10000; color:#243244; font:500 14px/1.3 system-ui,sans-serif; }
+.pilami-visual-buttons { display:flex; flex-wrap:wrap; max-width:calc(100vw - 24px); gap:8px; justify-content:flex-end; }
+.pilami-visual-dock button { min-height:44px; padding:10px 15px; border:1px solid #cbd5e1; border-radius:24px; background:#fff; color:#243244; font:inherit; cursor:pointer; box-shadow:0 3px 16px #0002; }
+.pilami-visual-dock button:hover { background:#eef4fc; }
+.pilami-visual-dock [data-visual-pin][aria-pressed="true"] { background:#d9e9ff; color:#163e74; border-color:#4676ad; }
+.pilami-visual-dock button:disabled { opacity:.6; cursor:wait; }
+.pilami-visual-dock button:focus-visible, .pilami-visual-dock input:focus-visible { outline:3px solid #2872fa; outline-offset:3px; }
+.pilami-visual-dock [hidden] { display:none !important; }
+.pilami-visual-options { position:absolute; right:0; bottom:calc(100% + 10px); box-sizing:border-box; width:min(310px,calc(100vw - 24px)); max-height:calc(100dvh - 170px); overflow:auto; padding:18px; background:#fff; color:#243244; border:1px solid #cbd5e1; border-radius:14px; box-shadow:0 5px 24px #0003; }
+.pilami-visual-options h3 { font:600 17px/1.3 system-ui,sans-serif; margin:0 0 8px; color:inherit; }
+.pilami-visual-options p { margin:0 0 14px; font-size:13px; color:inherit; }
+.pilami-visual-options label { display:grid; grid-template-columns:minmax(0,1fr) 65px; align-items:center; gap:8px; margin:14px 0; }
+.pilami-visual-options label span { grid-column:1/-1; }
+.pilami-visual-options input { width:100%; margin:0; accent-color:#4676ad; }
+.pilami-visual-options input:disabled { opacity:.4; }
+.pilami-visual-options output { text-align:right; font:inherit; }
+html[data-pilami-theme="dark"] .pilami-visual-dock button,
+html[data-pilami-theme="dark"] .pilami-visual-options { background:#253143; color:#e2e8f0; border-color:#48586c; }
+html[data-pilami-theme="dark"] .pilami-visual-dock button:hover { background:#33445b; }
+html[data-pilami-theme="dark"] .pilami-visual-dock [data-visual-pin][aria-pressed="true"] { background:#284b70; color:#edf6ff; border-color:#86baff; }
+@media(max-width:480px) { .pilami-visual-dock { right:12px; bottom:calc(66px + env(safe-area-inset-bottom,0px)); } .pilami-visual-dock button { padding:10px 12px; } }
+
+.pilami-visual-canvas[hidden] { display:none !important; }
+
+body > .pilami-visual-canvas.is-output-source { position:fixed !important; left:-20000px !important; top:0 !important; pointer-events:none; }
+.pilami-visual-message { max-width:min(330px,calc(100vw - 24px)); box-sizing:border-box; padding:10px 14px; margin:10px 0 0; border:1px solid #cbd5e1; border-radius:12px; background:#fff; color:#243244; font:13px/1.4 system-ui,sans-serif; box-shadow:0 3px 16px #0002; }
+html[data-pilami-theme="dark"] .pilami-visual-message { background:#253143; color:#e2e8f0; border-color:#48586c; }
+
+/* Keep only a compact launcher visible until the user expands the dock. */
+.pilami-visual-dock{display:flex;align-items:flex-start;gap:8px;max-width:calc(100vw - 24px)}
+#pilami-visual-dock-content{min-width:0}
+.pilami-visual-dock [data-visual-dock-toggle]{display:flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;min-width:44px;padding:0;font-size:22px;line-height:1}
+
+/* v0.39.25 — keyboard launcher in the collapsible visual dock */
+.pilami-visual-dock [data-visual-shortcuts]{display:inline-flex;align-items:center;justify-content:center;
+  width:44px;min-width:44px;padding:0;font-size:21px;line-height:1;}

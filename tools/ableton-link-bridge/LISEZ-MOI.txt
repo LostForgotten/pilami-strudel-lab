@@ -1,0 +1,25 @@
+Pilami Strudel Lab — Ableton Link (test V1)
+
+Prerequis : Node.js 22+ et Ableton Live (Link active).
+
+1. Lancer 01-installer-windows.cmd (une seule fois).
+   Le module natif @ktamas77/abletonlink peut demander des outils de compilation C++ Windows.
+2. Dans Ableton Live, activer LINK dans la barre de transport.
+3. Lancer 02-demarrer-windows.cmd et laisser la fenetre ouverte.
+4. Ouvrir https://pilami.fr/strudel/ dans Firefox puis cliquer Connecter Link.
+5. Le BPM et les participants s'affichent. Rien n'est envoye a Live.
+
+Note : la page publique fonctionne normalement sans ce programme.
+Si Firefox refuse le WebSocket localhost depuis HTTPS, ouvrir la console F12 et relever l'erreur.
+Le bridge ecoute UNIQUEMENT 127.0.0.1:8765 et limite les origines.
+La precision du timing/phase dans l'interface n'est PAS garantie pour déclencher des transitions à l'échantillon près.
+
+V0.39.16 : Bridge deja installe avec V4 ? Remplacer seulement server.cjs,
+puis redemarrer 02-demarrer-windows.cmd (PAS de npm install).
+Les nouveaux champs phase16 et phase32 servent a caler les cycles 4/8 mesures.
+
+V0.39.22 : Le bridge envoie toujours BPM/beat meme si la lecture du transport
+renvoie une erreur ; la console locale affiche maintenant BPM, pairs, PLAY/STOP
+lors des changements. Pour utiliser Play/Stop, activer Link + Start/Stop Sync
+dans Ableton Live, remplacer uniquement server.cjs et relancer 02-demarrer-windows.cmd.
+Pas de nouvelle compilation npm necessaire.

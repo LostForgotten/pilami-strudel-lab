@@ -1,0 +1,19 @@
+/* Hierarchy uses the configured light/dark palette and existing role colors. */
+.pilami-strudel-lab .pilami-interface-section{border:1px solid #8997a755;border-radius:10px;margin:14px 0 0;padding:0;background:var(--pilami-panel-bg,#f7f9fc);color:var(--pilami-panel-text,#172b42);min-width:0}
+.pilami-strudel-lab .pilami-interface-section>summary{cursor:pointer;font:600 14px/1.5 system-ui,sans-serif;padding:12px 14px;overflow-wrap:anywhere}
+.pilami-strudel-lab .pilami-interface-section[open]>summary{border-bottom:1px solid #8997a733;margin-bottom:12px}
+.pilami-strudel-lab .pilami-interface-section[open]{padding-bottom:14px}
+.pilami-strudel-lab .pilami-interface-section>*:not(summary){margin-left:14px;margin-right:14px}
+.pilami-strudel-lab .pilami-interface-section>.pilami-strudel-editor-wrap{margin-top:12px}
+.pilami-strudel-lab .pilami-interface-section>button{margin-top:10px}
+.pilami-strudel-lab .pilami-interface-help{font-size:13px;line-height:1.6;margin:0 0 14px;color:inherit}
+.pilami-strudel-lab .pilami-interface-start{opacity:.85}
+.pilami-strudel-lab .pilami-interface-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.pilami-strudel-lab .pilami-interface-section summary:focus-visible{outline:3px solid var(--pilami-accent,#4676ad);outline-offset:2px;border-radius:8px}
+.pilami-strudel-lab .pilami-strudel-transport{padding:12px 0;align-items:center}
+.pilami-strudel-lab .pilami-strudel-transport .pilami-play{font-size:14px;font-weight:650;padding:10px 14px;min-height:42px}
+.pilami-strudel-lab .pilami-interface-section .pilami-strudel-tools{border:0;padding:0;background:transparent}
+.pilami-strudel-lab .pilami-interface-section .pilami-recording h3{display:none}
+.pilami-strudel-lab .pilami-strudel-panels:empty{display:none}
+.pilami-strudel-lab [data-hydra-sliders]>h3,.pilami-strudel-lab [data-sliders]>h3{font-size:17px;margin:0 0 10px;color:inherit}
+@media(max-width:600px){.pilami-strudel-lab .pilami-interface-section>summary{padding:11px}.pilami-strudel-lab .pilami-interface-section>*:not(summary){margin-left:11px;margin-right:11px}}

@@ -1,0 +1,153 @@
+(function(){
+  'use strict';
+  const cssURL=new URL('pilami-controllers-0.16.1.css',document.currentScript.src).href;
+  const MIME='application/x-pilami-audio-band';
+  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+  const number=value=>String(Math.round(value*1e6)/1e6);
+  function audioLevel(band){const level=Number(window.PilamiStrudelHydra.audio()?.fft[band]);return Number.isFinite(level)?clamp(level,0,1):0;}
+  function validateAudio(options){
+    if(!options||!Number.isInteger(options.band)||options.band<0||options.band>15||!Number.isFinite(options.depth))throw new Error('audioMod : band de 0 à 15 et depth numérique requis.');
+    return {band:options.band,depth:options.depth};
+  }
+  function value(entry){const result=clamp(entry.value+(entry.audio?audioLevel(entry.audio.band)*entry.audio.depth:0),entry.min,entry.max);return entry.kind==='toggle'?(result>=(entry.min+entry.max)/2?entry.max:entry.min):result;}
+  function create({source,parsed,entries,pairs,active,write,say}){
+    let alive=true;const listeners=new Set();
+    const available=()=>alive&&active();
+    const notify=()=>listeners.forEach(listener=>listener());
+    function code(){
+      const edits=entries.map(entry=>{
+        let call=source.slice(entry.callFrom,entry.callTo);
+        if(Number.isInteger(entry.from))call=call.slice(0,entry.from-entry.callFrom)+String(entry.value)+call.slice(entry.to-entry.callFrom);
+        else call=call.slice(0,-1)+String(entry.value)+')';
+        call=entry.kind+call.slice(entry.calleeTo-entry.callFrom);
+        if(entry.kind!==entry.declaredKind&&(entry.kind==='toggle'||entry.declaredKind==='toggle'))call=entry.kind+'('+entry.value+', '+entry.min+', '+entry.max+', '+(entry.step==='any'?'undefined':entry.step)+')';
+        const body=source.slice(entry.bodyFrom,entry.callFrom)+call+source.slice(entry.callTo,entry.bodyTo);
+        return {from:entry.replaceFrom,to:entry.replaceTo,text:entry.audio?'audioMod('+body+', {band: '+entry.audio.band+', depth: '+String(entry.audio.depth)+'})':body};
+      });
+      const required=Math.max(0,...entries.filter(e=>e.audio).map(e=>e.audio.band+1));
+      parsed.bins.forEach(bin=>{if(bin.value<required)edits.push({...bin,text:String(required)});});
+      let output=source,previous=Infinity;
+      for(const edit of edits.sort((a,b)=>b.from-a.from)){
+        if(edit.to>previous)throw new Error('Ces contrôleurs imbriqués ne peuvent pas être édités automatiquement.');
+        output=output.slice(0,edit.from)+edit.text+output.slice(edit.to);previous=edit.from;
+      }
+      if(new TextEncoder().encode(output).length>65536)throw new Error('Le code dépasserait 64 Ko.');
+      return output;
+    }
+    function change(action){
+      if(!available())return false;
+      const before=entries.map(entry=>({entry,value:entry.value,kind:entry.kind,step:entry.step,audio:entry.audio?{...entry.audio}:null}));
+      try{action();write(code());notify();return true;}
+      catch(error){before.forEach(({entry,...saved})=>Object.assign(entry,saved));say(error.message,true);notify();return false;}
+    }
+    function quantize(entry,next){const step=Number(entry.step);return clamp(step>0?Number((entry.min+Math.round((next-entry.min)/step)*step).toPrecision(14)):next,entry.min,entry.max);}
+    const pads=pairs.slice(),used=new Set(pairs.flatMap(pair=>[pair.x,pair.y]));
+    entries.forEach(x=>{
+      const match=x.label.match(/^(.*?)[_]?[Xx]$/);if(!match||!match[1]||used.has(x))return;
+      const prefix=match[1].replace(/_$/,'');const y=entries.find(e=>e!==x&&e.label.replace(/_?[Yy]$/,'')===prefix&&/[Yy]$/.test(e.label)&&!used.has(e));
+      if(y){pads.push({title:prefix.replace(/_/g,' '),x,y});used.add(x);used.add(y);}
+    });
+    return {
+      entries,pads,selectedBand:null,available,
+      subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},
+      setBase(entry,next){if(Number.isFinite(next))change(()=>{entry.value=quantize(entry,next);});},
+      setXY(pair,x,y){change(()=>{pair.x.value=quantize(pair.x,x);pair.y.value=quantize(pair.y,y);});},
+      setKind(entry,kind){if(!['slider','knob','fader','toggle'].includes(kind))return;if(kind==='toggle'&&(entry.min!==0||entry.max!==1))return;change(()=>{entry.kind=kind;entry.step=kind==='toggle'?1:entry.sliderStep;if(kind==='toggle')entry.value=entry.value>=.5?1:0;});},
+      async bind(targets,band){
+        if(!available()||!Number.isInteger(band)||band<0||band>15)return;
+        // Create the analyzer in the current renderer; the visual's phase and zoom stay intact.
+        try{await window.PilamiStrudelHydra.enableControlAudio(band);if(!available())return;
+          if(change(()=>targets.forEach(entry=>{entry.audio={band,depth:entry.audio?.depth??(entry.max-entry.min)*.15};}))){this.selectedBand=null;notify();say('a.fft['+band+'] lié à '+targets.map(e=>e.label).join(' + ')+'.');}
+        }catch(error){say(error.message,true);}
+      },
+      setDepth(entry,depth){if(Number.isFinite(depth))change(()=>{if(entry.audio)entry.audio.depth=depth;});},
+      unlink(entry){change(()=>{entry.audio=null;});},
+      selectBand(band){this.selectedBand=this.selectedBand===band?null:band;notify();},
+      dispose(){alive=false;listeners.clear();}
+    };
+  }
+  function element(doc,tag,text,attributes={}){const node=doc.createElement(tag);if(text!==null)node.textContent=text;Object.entries(attributes).forEach(([key,value])=>node.setAttribute(key,value));return node;}
+  function mount(host,root,model){
+    const doc=host.ownerDocument,win=doc.defaultView;let alive=true,frame=null,last=0,signature='',rows=[],pads=[],bankCount=0,meters=[];
+    const surface=element(doc,'div',null,{class:'pilami-controller-surface'}),bank=element(doc,'section',null,{class:'pilami-audio-bank','aria-label':'Sources audio'});
+    const heading=element(doc,'div',null,{class:'pilami-audio-heading'}),connect=element(doc,'button','Activer l’entrée audio',{type:'button','data-control-audio-connect':''});
+    heading.append(element(doc,'h4','Sources audio'),connect);
+    const hint=element(doc,'p','Glisse une bande sur un paramètre, sur X, sur Y ou sur le pad entier. Tu peux aussi cliquer la source, puis la destination.',{class:'pilami-control-help'});
+    const sources=element(doc,'div',null,{class:'pilami-audio-sources'}),audioStatus=element(doc,'p','Lance un visuel pour activer l’entrée audio.',{class:'pilami-control-help','data-control-audio-status':'',role:'status'});
+    bank.append(heading,hint,sources,audioStatus);
+    const empty=element(doc,'p','Lance un visuel avec slider() pour afficher ses paramètres.',{'data-control-empty':'',class:'pilami-control-help'}),content=element(doc,'div',null,{class:'pilami-control-grid'});
+    surface.append(bank,empty,content);host.replaceChildren(surface);
+    connect.addEventListener('click',async()=>{connect.disabled=true;try{await window.PilamiStrudelHydra.enableControlAudio(0,true);}catch(error){audioStatus.textContent=error.message;}finally{connect.disabled=false;refresh();}});
+    function dropZone(node,targets){
+      node.dataset.controlDrop=targets.map(entry=>entry.label).join('+');
+      node.addEventListener('dragover',event=>{if(Array.from(event.dataTransfer.types).includes(MIME)){event.preventDefault();event.dataTransfer.dropEffect='link';node.classList.add('is-drop-target');}});
+      node.addEventListener('dragleave',()=>node.classList.remove('is-drop-target'));
+      node.addEventListener('drop',event=>{
+        if(!Array.from(event.dataTransfer.types).includes(MIME))return;event.preventDefault();event.stopPropagation();node.classList.remove('is-drop-target');const raw=event.dataTransfer.getData(MIME);
+        if(!/^\d+$/.test(raw))return;model.bind(targets,Number(raw));
+      });
+      node.addEventListener('click',event=>{const widget=event.target.closest('input,select,button');if(widget&&widget!==node&&!widget.classList.contains('pilami-control-destination'))return;if(model.selectedBand!==null){event.preventDefault();event.stopPropagation();model.bind(targets,model.selectedBand);}});
+    }
+    function renderBank(){
+      const count=Math.min(16,Math.max(5,window.PilamiStrudelHydra.audio()?.fft.length||0));if(count===bankCount)return;bankCount=count;sources.replaceChildren();
+      meters=Array.from({length:count},(_,band)=>{
+        const button=element(doc,'button',null,{type:'button',draggable:'true',class:'pilami-audio-source','data-audio-band':String(band),'aria-label':'Source audio a.fft['+band+']','aria-pressed':'false'}),meter=element(doc,'meter',null,{min:'0',max:'1',value:'0','aria-label':'Niveau de la bande '+band});
+        button.append(element(doc,'span','a.fft['+band+']'),meter);
+        button.addEventListener('dragstart',event=>{event.dataTransfer.setData(MIME,String(band));event.dataTransfer.effectAllowed='link';});
+        button.addEventListener('click',()=>{if(model){model.selectBand(band);refresh();}else audioStatus.textContent='Lance un visuel avec des contrôleurs avant de créer une liaison.';});sources.append(button);return{band,button,meter};
+      });
+    }
+    function makeCard(entry){
+      const card=element(doc,'section',null,{class:'pilami-control-card','data-control-id':entry.id}),top=element(doc,'div',null,{class:'pilami-control-heading'});
+      const title=element(doc,'button',entry.label,{type:'button',class:'pilami-control-destination','aria-label':'Lier une source à '+entry.label}),kind=element(doc,'select',null,{'aria-label':'Présentation de '+entry.label,'data-control-kind':entry.label});
+      const kinds=[['slider','Curseur'],['knob','Potentiomètre'],['fader','Fader vertical']];if(entry.min===0&&entry.max===1)kinds.push(['toggle','Interrupteur']);
+      kinds.forEach(([value,label])=>kind.append(element(doc,'option',label,{value})));kind.value=entry.kind;kind.addEventListener('change',()=>model.setKind(entry,kind.value));top.append(title,kind);
+      const control=element(doc,'div',null,{class:'pilami-control-value'}),input=element(doc,'input',null,{type:'range',min:entry.min,max:entry.max,step:entry.step,'aria-label':entry.label,'data-control-base':entry.label}),output=element(doc,'output',number(entry.value),{'data-control-value':entry.label});input.value=entry.value;
+      input.addEventListener('input',()=>model.setBase(entry,Number(input.value)));control.append(input,output);
+      const knob=element(doc,'button',null,{type:'button',class:'pilami-knob','aria-label':entry.label,title:'Glisse verticalement. Maj : réglage fin. Les flèches fonctionnent aussi.',role:'slider',tabindex:'0','aria-valuemin':entry.min,'aria-valuemax':entry.max,'data-control-knob':entry.label}),needle=element(doc,'span',null,{class:'pilami-knob-needle'});knob.append(needle);knob.hidden=entry.kind!=='knob';
+      knob.addEventListener('pointerdown',event=>{if(event.button!==0)return;event.preventDefault();const startY=event.clientY,start=entry.value;knob.setPointerCapture(event.pointerId);const move=next=>model.setBase(entry,start+(startY-next.clientY)*(entry.max-entry.min)/180*(next.shiftKey ? 0.1 : 1));const end=()=>{knob.removeEventListener('pointermove',move);knob.removeEventListener('pointerup',end);knob.removeEventListener('pointercancel',end);};knob.addEventListener('pointermove',move);knob.addEventListener('pointerup',end);knob.addEventListener('pointercancel',end);});
+      knob.addEventListener('keydown',event=>{const step=Number(entry.step)>0?Number(entry.step):(entry.max-entry.min)/100;let next;if(['ArrowUp','ArrowRight'].includes(event.key))next=entry.value+step;if(['ArrowDown','ArrowLeft'].includes(event.key))next=entry.value-step;if(event.key==='Home')next=entry.min;if(event.key==='End')next=entry.max;if(next!==undefined){event.preventDefault();model.setBase(entry,next);}});
+      const toggle=element(doc,'button','Activer',{type:'button',class:'pilami-toggle',role:'switch','aria-label':entry.label,'aria-checked':'false','data-control-toggle':entry.label});toggle.hidden=entry.kind!=='toggle';toggle.addEventListener('click',()=>model.setBase(entry,entry.value>=.5?0:1));
+      input.hidden=['knob','toggle'].includes(entry.kind);input.classList.toggle('pilami-fader',entry.kind==='fader');control.prepend(knob,toggle);
+      const effective=element(doc,'p','',{class:'pilami-control-help','data-control-effective':entry.label});card.append(top,control,effective);
+      let depth=null;
+      if(entry.audio){
+        const routing=element(doc,'div',null,{class:'pilami-audio-routing'}),source=element(doc,'select',null,{'aria-label':'Bande audio de '+entry.label,'data-control-band':entry.label});
+        const count=Math.max(5,window.PilamiStrudelHydra.audio()?.fft.length||0,entry.audio.band+1);for(let band=0;band<Math.min(16,count);band++)source.append(element(doc,'option','a.fft['+band+']',{value:String(band)}));source.value=entry.audio.band;source.addEventListener('change',()=>model.bind([entry],Number(source.value)));
+        const label=element(doc,'label','Profondeur ');depth=element(doc,'input',null,{type:'number',step:'any','aria-label':'Profondeur audio de '+entry.label,'data-control-depth':entry.label});depth.value=number(entry.audio.depth);depth.addEventListener('change',()=>{if(depth.value.trim())model.setDepth(entry,Number(depth.value));else refresh();});label.append(depth);
+        const remove=element(doc,'button','Délier',{type:'button','data-control-unlink':entry.label});remove.addEventListener('click',()=>model.unlink(entry));routing.append(source,label,remove);card.append(routing);
+      }
+      dropZone(card,[entry]);content.append(card);return{entry,input,output,knob,needle,toggle,effective,depth};
+    }
+    function makePad(pair){
+      const card=element(doc,'section',null,{class:'pilami-xy-card','data-control-pad':pair.title}),title=element(doc,'h4',pair.title+' · Pad XY'),zones=element(doc,'div',null,{class:'pilami-xy-zones'});
+      const x=element(doc,'button','Lier X · '+pair.x.label,{type:'button','data-control-axis':'x'}),y=element(doc,'button','Lier Y · '+pair.y.label,{type:'button','data-control-axis':'y'});dropZone(x,[pair.x]);dropZone(y,[pair.y]);zones.append(x,y);
+      const pad=element(doc,'div',null,{class:'pilami-xy-pad',tabindex:'0',role:'group','aria-label':pair.title+' : flèches pour déplacer X et Y','data-xy-surface':pair.title}),dot=element(doc,'span',null,{class:'pilami-xy-dot'}),base=element(doc,'span',null,{class:'pilami-xy-base'});pad.append(base,dot);dropZone(pad,[pair.x,pair.y]);
+      pad.addEventListener('pointerdown',event=>{
+        if(event.button!==0||model.selectedBand!==null)return;event.preventDefault();pad.focus();pad.setPointerCapture(event.pointerId);
+        const move=next=>{const bounds=pad.getBoundingClientRect();model.setXY(pair,pair.x.min+clamp((next.clientX-bounds.left)/bounds.width,0,1)*(pair.x.max-pair.x.min),pair.y.max-clamp((next.clientY-bounds.top)/bounds.height,0,1)*(pair.y.max-pair.y.min));};
+        const end=()=>{pad.removeEventListener('pointermove',move);pad.removeEventListener('pointerup',end);pad.removeEventListener('pointercancel',end);};move(event);pad.addEventListener('pointermove',move);pad.addEventListener('pointerup',end);pad.addEventListener('pointercancel',end);
+      });
+      pad.addEventListener('keydown',event=>{const stepX=Number(pair.x.step)>0?Number(pair.x.step):(pair.x.max-pair.x.min)/100,stepY=Number(pair.y.step)>0?Number(pair.y.step):(pair.y.max-pair.y.min)/100;let dx=0,dy=0;if(event.key==='ArrowLeft')dx=-stepX;if(event.key==='ArrowRight')dx=stepX;if(event.key==='ArrowUp')dy=stepY;if(event.key==='ArrowDown')dy=-stepY;if(dx||dy){event.preventDefault();model.setXY(pair,pair.x.value+dx,pair.y.value+dy);}});
+      const output=element(doc,'output','');card.append(title,zones,pad,output,element(doc,'p','Glisse ici une bande pour lier X et Y ensemble. Le point plein suit le son ; le cercle indique la position manuelle.',{class:'pilami-control-help'}));content.append(card);return{pair,dot,base,output,xButton:x,yButton:y};
+    }
+    function render(){
+      if(!model)return;const next=model.entries.map(entry=>entry.id+':'+entry.kind+':'+(entry.audio?entry.audio.band:'-')).join('|');if(next===signature)return;signature=next;content.replaceChildren();pads=model.pads.map(makePad);rows=model.entries.map(makeCard);
+    }
+    function refresh(){
+      if(!alive)return;renderBank();render();empty.hidden=Boolean(model?.entries.length);
+      const audio=window.PilamiStrudelHydra.audio();connect.textContent=audio?.stream?.active?'Reconnecter l’entrée audio':'Activer l’entrée audio';
+      const mic=root.querySelector('[data-hydra-audio-status]')?.textContent;
+      if(model?.selectedBand!==null&&model?.selectedBand!==undefined)audioStatus.textContent='a.fft['+model.selectedBand+'] sélectionné : clique une destination.';
+      else if(mic)audioStatus.textContent=mic+' · '+(audio?.fft.length||0)+' bandes, des graves aux aigus.';
+      meters.forEach(({band,button,meter})=>{meter.value=audioLevel(band);button.setAttribute('aria-pressed',String(model?.selectedBand===band));button.classList.toggle('is-selected',model?.selectedBand===band);button.classList.toggle('is-unavailable',!audio||band>=audio.fft.length);});
+      rows.forEach(row=>{const e=row.entry,current=value(e);if(row.input.value!==String(e.value))row.input.value=e.value;row.output.textContent=number(e.value);row.knob.setAttribute('aria-valuenow',number(e.value));row.needle.style.transform='rotate('+(-135+(e.value-e.min)/(e.max-e.min)*270)+'deg)';row.toggle.setAttribute('aria-checked',String(e.value>=.5));row.toggle.textContent=e.value>=.5?'Activé':'Désactivé';row.effective.textContent=e.audio?'Valeur avec audio : '+number(current)+' · a.fft['+e.audio.band+'] × '+number(e.audio.depth):'Valeur manuelle';if(row.depth&&doc.activeElement!==row.depth)row.depth.value=number(e.audio.depth);});
+      pads.forEach(({pair,dot,base,output,xButton,yButton})=>{const x=value(pair.x),y=value(pair.y);dot.style.left=(x-pair.x.min)/(pair.x.max-pair.x.min)*100+'%';dot.style.top=(pair.y.max-y)/(pair.y.max-pair.y.min)*100+'%';base.style.left=(pair.x.value-pair.x.min)/(pair.x.max-pair.x.min)*100+'%';base.style.top=(pair.y.max-pair.y.value)/(pair.y.max-pair.y.min)*100+'%';output.textContent='X '+number(x)+' · Y '+number(y);[[xButton,pair.x,'X'],[yButton,pair.y,'Y']].forEach(([button,entry,axis])=>{button.textContent=entry.audio?axis+' · a.fft['+entry.audio.band+'] × '+number(entry.audio.depth):'Lier '+axis+' · '+entry.label;button.classList.toggle('has-audio',Boolean(entry.audio));});});
+    }
+    const unsubscribe=model?.subscribe(refresh);
+    function tick(now){if(!alive||win.closed||!host.isConnected)return;if(now-last>=50){last=now;refresh();}frame=win.requestAnimationFrame(tick);}
+    refresh();frame=win.requestAnimationFrame(tick);
+    return{refresh,dispose(){alive=false;unsubscribe?.();if(frame&&!win.closed)win.cancelAnimationFrame(frame);}};
+  }
+  window.PilamiHydraControls={create,mount,value,validateAudio,audioLevel,cssURL};
+})();

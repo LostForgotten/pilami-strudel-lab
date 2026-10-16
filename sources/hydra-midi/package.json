@@ -1,0 +1,35 @@
+{
+  "type": "module",
+  "name": "hydra-midi",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "version": "0.4.6",
+  "license": "MIT",
+  "author": {
+    "name": "Arno Schlipf",
+    "url": "https://a--s.info"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnoson/hydra-midi.git"
+  },
+  "bugs": "https://github.com/arnoson/hydra-midi/issues",
+  "scripts": {
+    "build": "tsup",
+    "server": "python3 -m http.server --bind 127.0.0.1 3000 --directory dist",
+    "dev": "concurrently -P \"npm:server\" \"node ./scripts/dev.js {@}\"  \"tsup --watch\" -c yellow,blue,green -n server,tunnel,tsup",
+    "release": "bumpp",
+    "test:types": "tsc --noEmit",
+    "format:fix": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "bumpp": "^11.0.0",
+    "concurrently": "^9.2.0",
+    "prettier": "^3.6.2",
+    "terser": "^5.43.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.0",
+    "untun": "^0.1.3"
+  }
+}

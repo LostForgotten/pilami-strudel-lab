@@ -1,0 +1,13 @@
+.pilami-image-source[hidden]{display:none!important}
+.pilami-image-source{margin:12px 0;padding:12px;border:1px solid #8997a766;border-radius:8px;color:inherit;background:transparent;flex-shrink:0}
+.pilami-image-source summary{font-weight:600;cursor:pointer;line-height:1.5}
+.pilami-image-preview{display:flex;align-items:center;gap:12px;margin:12px 0;min-width:0}
+.pilami-image-preview img{width:96px;max-height:96px;object-fit:contain;border-radius:5px;flex-shrink:0}
+.pilami-image-preview p{font-size:13px;line-height:1.5;margin:0;overflow-wrap:anywhere}
+.pilami-image-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pilami-image-source .pilami-image-url{display:flex;flex-direction:column;gap:5px;font-size:13px;max-width:100%;margin:10px 0;color:inherit;text-align:left}
+.pilami-image-url input{width:100%;max-width:100%;min-width:0;padding:8px 10px;border:1px solid #8997a7;border-radius:6px;background:var(--pilami-editor-bg,var(--editor-bg,#fff));color:var(--pilami-editor-text,var(--editor-text,#172b42));font:inherit}
+.pilami-image-help{font-size:12px;line-height:1.5;margin:10px 0 0;opacity:.85}
+.pilami-image-source .is-error{color:#e75d51}
+[data-role-colors="1"] [data-image-upload]{--button-color:var(--pilami-color-save,#6fa3a5);background:color-mix(in srgb,var(--button-color) 20%,var(--pilami-panel-bg,var(--bg,#f7f9fc)));color:inherit;border-color:var(--button-color)}
+@media(max-width:500px){.pilami-image-preview{align-items:flex-start}.pilami-image-actions button{max-width:100%;white-space:normal}}

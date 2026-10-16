@@ -1,0 +1,25 @@
+/* Compact visual sequencer, inherits all site color themes. */
+.pilami-strudel-lab .pilami-seq{margin:.9rem 0;padding:0;border:1px solid color-mix(in srgb,currentColor 17%,transparent);border-radius:10px;overflow:hidden;background:color-mix(in srgb,currentColor 3%,transparent)}
+.pilami-strudel-lab .pilami-seq summary{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;cursor:pointer;padding:.7rem .85rem;list-style-position:inside;user-select:none}
+.pilami-strudel-lab .pilami-seq summary strong{font-size:.94rem}
+.pilami-strudel-lab .pilami-seq-summary{font-size:.77rem;opacity:.7;margin-left:auto}
+.pilami-strudel-lab .pilami-seq-content{padding:0 .8rem .75rem}
+.pilami-strudel-lab .pilami-seq-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem .9rem;margin-bottom:.65rem}
+.pilami-strudel-lab .pilami-seq-tools label{display:inline-flex;align-items:center;gap:.35rem;font-size:.84rem}
+.pilami-strudel-lab .pilami-seq-bpm{width:4.5rem;max-width:4.5rem;padding:.24rem .3rem;text-align:center}
+.pilami-strudel-lab .pilami-seq-clock{font-size:.78rem;opacity:.72}
+.pilami-strudel-lab .pilami-seq-steps{display:flex;flex-direction:column;gap:.35rem}
+.pilami-strudel-lab .pilami-seq-step{display:grid;grid-template-columns:1.5rem minmax(5rem,1.5fr) minmax(5.1rem,1fr) minmax(6rem,1fr) 1.9rem 1.9rem 1.9rem;gap:.32rem;align-items:center;position:relative;padding:.45rem .3rem .6rem;border:1px solid color-mix(in srgb,currentColor 12%,transparent);border-radius:8px;overflow:hidden}
+.pilami-strudel-lab .pilami-seq-step.is-active{border-color:color-mix(in srgb,#64afc8 70%,currentColor);background:color-mix(in srgb,#64afc8 11%,transparent)}
+.pilami-strudel-lab .pilami-seq-step.is-armed{outline:1px dashed currentColor;outline-offset:-2px}
+.pilami-strudel-lab .pilami-seq-index{text-align:center;font-weight:650;font-variant-numeric:tabular-nums}
+.pilami-strudel-lab .pilami-seq-step select{width:100%;min-width:0;max-width:100%;padding:.3rem .2rem;font-size:.8rem}
+.pilami-strudel-lab .pilami-seq-step button{min-width:0;padding:.27rem 0;font-size:.85rem;text-align:center}
+.pilami-strudel-lab .pilami-seq-track{position:absolute;bottom:0;left:0;right:0;height:3px;pointer-events:none;background:color-mix(in srgb,currentColor 7%,transparent)}
+.pilami-strudel-lab .pilami-seq-fill{display:block;width:0;height:100%;background:#65b9d2;transition:width .08s linear}
+.pilami-strudel-lab .pilami-seq-footer{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.6rem}
+.pilami-strudel-lab .pilami-seq-footer [data-seq-status]{font-size:.81rem}
+.pilami-strudel-lab .pilami-seq-footer [data-seq-status].is-error{color:#c95656}
+.pilami-strudel-lab .pilami-seq-help{margin:.55rem 0 0;font-size:.77rem;opacity:.7}
+@media(max-width:650px){.pilami-strudel-lab .pilami-seq-step{grid-template-columns:1.3rem minmax(5rem,1fr) minmax(5rem,1fr) minmax(5rem,1fr) 1.65rem 1.65rem 1.65rem;gap:.18rem}.pilami-strudel-lab .pilami-seq-step select{font-size:.74rem;padding:.25rem 0}.pilami-strudel-lab .pilami-seq-step button{font-size:.75rem}}
+@media(max-width:420px){.pilami-strudel-lab .pilami-seq-step{grid-template-columns:1.2rem minmax(4.3rem,1fr) minmax(4.4rem,1fr) minmax(4.6rem,1fr) 1.4rem 1.4rem 1.4rem}.pilami-strudel-lab .pilami-seq-step select{font-size:.69rem}}

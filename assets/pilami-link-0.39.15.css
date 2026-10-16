@@ -1,0 +1,8 @@
+.pilami-strudel-lab .pilami-link-strip{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;padding:.55rem .85rem;margin:.45rem 0 .8rem;border:1px solid color-mix(in srgb,currentColor 17%,transparent);border-radius:10px;font-size:.88rem;background:color-mix(in srgb,currentColor 3%,transparent)}
+.pilami-link-strip .pilami-link-led{width:.6rem;height:.6rem;border-radius:50%;background:#888;flex:none}
+.pilami-link-strip[data-state="connected"] .pilami-link-led{background:#39ad6b;box-shadow:0 0 0 3px #39ad6b24}
+.pilami-link-strip[data-state="error"] .pilami-link-led{background:#e39d38}
+.pilami-link-strip .pilami-link-tempo{font-variant-numeric:tabular-nums;font-weight:650}
+.pilami-link-strip [data-link-beat],.pilami-link-strip [data-link-peers]{opacity:.7;font-variant-numeric:tabular-nums}
+.pilami-link-strip button{margin-left:auto;cursor:pointer}
+@media(max-width:580px){.pilami-link-strip{gap:.45rem}.pilami-link-strip button{margin-left:0}}

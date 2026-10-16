@@ -1,0 +1,16 @@
+.pilami-strudel-lab .pilami-link-strip{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;padding:.55rem .85rem;margin:.45rem 0 .8rem;border:1px solid color-mix(in srgb,currentColor 17%,transparent);border-radius:10px;font-size:.88rem;background:color-mix(in srgb,currentColor 3%,transparent)}
+.pilami-link-strip .pilami-link-led{width:.6rem;height:.6rem;border-radius:50%;background:#888;flex:none}
+.pilami-link-strip[data-state="connected"] .pilami-link-led{background:#39ad6b;box-shadow:0 0 0 3px #39ad6b24}
+.pilami-link-strip[data-state="error"] .pilami-link-led{background:#e39d38}
+.pilami-link-strip .pilami-link-tempo{font-variant-numeric:tabular-nums;font-weight:650}
+.pilami-link-strip [data-link-beat],.pilami-link-strip [data-link-peers]{opacity:.7;font-variant-numeric:tabular-nums}
+.pilami-link-strip button{margin-left:auto;cursor:pointer}
+@media(max-width:580px){.pilami-link-strip{gap:.45rem}.pilami-link-strip button{margin-left:0}}
+
+/* Quantized launch options (local Ableton Link). */
+.pilami-strudel-lab .pilami-link-quant-row{display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;margin:.5rem 0 .85rem;font-size:.9rem}
+.pilami-strudel-lab .pilami-link-quant-row label{display:inline-flex;align-items:center;gap:.5rem;font-weight:600}
+.pilami-strudel-lab .pilami-link-quant-row select{max-width:100%;font-size:.88rem}
+.pilami-strudel-lab .pilami-link-quant-row [data-snapshot-link-quant-status]{font-size:.82rem;opacity:.85}
+.pilami-strudel-lab .pilami-link-quant-row [data-snapshot-link-cancel]{font-size:.8rem;padding:.3rem .6rem}
+@media(max-width:520px){.pilami-strudel-lab .pilami-link-quant-row label{width:100%;justify-content:space-between}}

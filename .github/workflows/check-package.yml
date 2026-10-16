@@ -1,0 +1,42 @@
+name: Vérifier et fabriquer le ZIP WordPress
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier le paquet
+        run: python3 scripts/check_package.py
+      - name: Vérifier la syntaxe PHP
+        run: find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+      - name: Vérifier la syntaxe des scripts directement chargés
+        run: |
+          python3 - <<'PY'
+          import subprocess, sys
+          sys.path.insert(0, 'scripts')
+          from check_package import check
+          _, paths = check()
+          for path in sorted(p for p in paths if p.endswith('.js')):
+              subprocess.run(['node', '--check', path], check=True)
+          PY
+      - name: Fabriquer le ZIP WordPress
+        run: python3 scripts/build_plugin.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pilami-strudel-lab-wordpress
+          path: dist/*
+          if-no-files-found: error

@@ -1,0 +1,39 @@
+.pilami-admin-layout { display:grid; grid-template-columns:minmax(380px, 1fr) minmax(320px, 1fr); gap:24px; max-width:1500px; align-items:start; }
+.pilami-admin-card { padding:20px; margin:0 0 18px; background:white; border:1px solid #c3c4c7; border-radius:8px; }
+.pilami-admin-card h2 { margin-top:0; }
+.pilami-admin-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:16px 0; }
+.pilami-admin-card label:not(.pilami-admin-check) { display:flex; flex-direction:column; gap:7px; }
+.pilami-admin-card input.regular-text { width:100%; }
+.pilami-admin-card input[type=number] { width:100%; }
+.pilami-admin-card input[type=color] { width:70px; height:38px; padding:3px; cursor:pointer; }
+.pilami-admin-check { display:block; margin:12px 0; }
+.pilami-admin-preview { position:sticky; top:42px; background:#fff; padding:20px; border:1px solid #c3c4c7; border-radius:8px; box-sizing:border-box; }
+.pilami-admin-preview .pilami-strudel-lab { font-size:15px; }
+.pilami-admin-preview .pilami-strudel-lab[data-layout=columns] .pilami-strudel-panels { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.pilami-admin-preview .pilami-strudel-lab button { cursor:default; }
+.pilami-admin-preview > p { color:#50575e; }
+@media(max-width:1100px) { .pilami-admin-layout { grid-template-columns:1fr; } .pilami-admin-preview { position:static; } }
+@media(max-width:500px) { .pilami-admin-fields { grid-template-columns:1fr; } }
+
+@media(max-width:600px) { .pilami-admin-preview .pilami-strudel-lab[data-layout=columns] .pilami-strudel-panels { grid-template-columns:minmax(0,1fr); } }
+
+.pilami-admin-preset { border:1px solid #c3c4c7; border-radius:6px; padding:12px; margin:12px 0; }
+.pilami-admin-preset summary { cursor:pointer; font-weight:600; overflow-wrap:anywhere; }
+.pilami-admin-preset label { margin:12px 0; }
+.pilami-admin-preset input[type=text], .pilami-admin-preset select, .pilami-admin-preset textarea { width:100%; box-sizing:border-box; }
+.pilami-admin-preset textarea { font-family:monospace; resize:vertical; tab-size:2; }
+.pilami-admin-preset [hidden] { display:none !important; }
+
+.pilami-admin-section { border:1px solid #c3c4c7; border-radius:6px; padding:14px; margin:14px 0; }
+.pilami-admin-section > summary { font-weight:600; cursor:pointer; overflow-wrap:anywhere; }
+.pilami-admin-section > label { margin:14px 0; }
+.pilami-admin-section input[type=text] { width:100%; box-sizing:border-box; }
+.pilami-appearance-admin [hidden] { display:none !important; }
+.pilami-admin-preview .pilami-strudel-lab .pilami-preset-section button { cursor:pointer; }
+.pilami-version-history{max-width:1460px;margin:18px 0 24px}
+.pilami-version-badge{display:inline-block;font-size:14px;font-weight:600;padding:4px 10px;border-radius:5px;background:#eaf2ff;color:#214c83;vertical-align:middle}
+.pilami-version-history details{border-top:1px solid #dcdcde;padding:12px 0}
+.pilami-version-history summary{cursor:pointer;font-weight:600;line-height:1.5}
+.pilami-version-history summary:focus-visible{outline:2px solid #2271b1;outline-offset:3px}
+.pilami-version-history ul{list-style:disc;margin:12px 0 2px 24px;max-width:1000px}
+.pilami-version-history li{line-height:1.65;margin:6px 0}

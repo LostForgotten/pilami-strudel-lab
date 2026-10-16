@@ -1,0 +1,59 @@
+.pilami-strudel-lab .pilami-link-strip{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;padding:.55rem .85rem;margin:.45rem 0 .8rem;border:1px solid color-mix(in srgb,currentColor 17%,transparent);border-radius:10px;font-size:.88rem;background:color-mix(in srgb,currentColor 3%,transparent)}
+.pilami-link-strip .pilami-link-led{width:.6rem;height:.6rem;border-radius:50%;background:#888;flex:none}
+.pilami-link-strip[data-state="connected"] .pilami-link-led{background:#39ad6b;box-shadow:0 0 0 3px #39ad6b24}
+.pilami-link-strip[data-state="error"] .pilami-link-led{background:#e39d38}
+.pilami-link-strip .pilami-link-tempo{font-variant-numeric:tabular-nums;font-weight:650}
+.pilami-link-strip [data-link-beat],.pilami-link-strip [data-link-peers]{opacity:.7;font-variant-numeric:tabular-nums}
+.pilami-link-strip button{cursor:pointer}.pilami-link-strip [data-link-connect]{margin-left:auto}
+@media(max-width:580px){.pilami-link-strip{gap:.45rem}.pilami-link-strip [data-link-connect]{margin-left:0}}
+
+/* Quantized launch options (local Ableton Link). */
+.pilami-strudel-lab .pilami-link-quant-row{display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;margin:.5rem 0 .85rem;font-size:.9rem}
+.pilami-strudel-lab .pilami-link-quant-row label{display:inline-flex;align-items:center;gap:.5rem;font-weight:600}
+.pilami-strudel-lab .pilami-link-quant-row select{max-width:100%;font-size:.88rem}
+.pilami-strudel-lab .pilami-link-quant-row [data-snapshot-link-quant-status]{font-size:.82rem;opacity:.85}
+.pilami-strudel-lab .pilami-link-quant-row [data-snapshot-link-cancel]{font-size:.8rem;padding:.3rem .6rem}
+@media(max-width:520px){.pilami-strudel-lab .pilami-link-quant-row label{width:100%;justify-content:space-between}}
+
+/* v0.39.28 — Link help permanently available next to the connect button. */
+.pilami-strudel-lab .pilami-link-strip .pilami-link-help-trigger{
+  margin-left:0!important;white-space:nowrap;font-size:.85rem;padding:.35rem .65rem;
+  border:1px solid color-mix(in srgb,currentColor 26%,transparent);border-radius:7px;
+  background:color-mix(in srgb,currentColor 4%,transparent);color:inherit;cursor:pointer;
+}
+.pilami-strudel-lab .pilami-link-strip .pilami-link-help-trigger:hover,
+.pilami-strudel-lab .pilami-link-strip .pilami-link-help-trigger[aria-expanded="true"]{
+  border-color:#70bfd0;background:color-mix(in srgb,#70bfd0 12%,transparent);
+}
+.pilami-strudel-lab .pilami-link-help-trigger:focus-visible,
+.pilami-strudel-lab .pilami-link-help-panel a:focus-visible,
+.pilami-strudel-lab .pilami-link-help-panel button:focus-visible{outline:2px solid #6ac9da;outline-offset:2px}
+.pilami-strudel-lab .pilami-link-help-panel{
+  margin:-.4rem 0 1rem;padding:.8rem 1rem .9rem;
+  border:1px solid color-mix(in srgb,currentColor 17%,transparent);
+  border-left:3px solid #70bfd0;border-radius:8px;
+  background:color-mix(in srgb,currentColor 4%,transparent);color:inherit;
+  font-size:.84rem;line-height:1.55;
+}
+.pilami-strudel-lab .pilami-link-help-panel[hidden]{display:none!important}
+.pilami-strudel-lab .pilami-link-help-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.pilami-strudel-lab .pilami-link-help-head h3{font-size:.98rem;margin:0;font-weight:700;color:inherit}
+.pilami-strudel-lab .pilami-link-help-head button{margin:0;padding:.15rem .5rem;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:5px;background:transparent;color:inherit;cursor:pointer}
+.pilami-strudel-lab .pilami-link-beta{font-size:.75rem;opacity:.67;font-weight:500}
+.pilami-strudel-lab .pilami-link-help-panel p{margin:.5rem 0}
+.pilami-strudel-lab .pilami-link-help-panel ol{list-style:decimal outside!important;margin:.65rem 0 .6rem 1.4rem!important;padding:0!important}
+.pilami-strudel-lab .pilami-link-help-panel ol li{list-style:decimal outside!important;padding:.12rem 0}
+.pilami-strudel-lab .pilami-link-help-panel code{font-size:.86em}
+.pilami-strudel-lab .pilami-link-help-links{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;margin:.7rem 0}
+.pilami-strudel-lab .pilami-link-help-links a{color:inherit;text-underline-offset:3px}
+.pilami-strudel-lab .pilami-link-help-links .pilami-link-help-download{
+  display:inline-flex;align-items:center;padding:.48rem .75rem;border:1px solid #6db7cc;border-radius:7px;
+  background:color-mix(in srgb,#6db7cc 15%,transparent);font-weight:700;text-decoration:none
+}
+.pilami-strudel-lab .pilami-link-help-links .pilami-link-help-download:hover{background:color-mix(in srgb,#6db7cc 25%,transparent)}
+.pilami-strudel-lab .pilami-link-help-panel .pilami-link-help-note{font-size:.79rem;opacity:.8}
+@media (max-width:580px){
+  .pilami-strudel-lab .pilami-link-strip{gap:.45rem}
+  .pilami-strudel-lab .pilami-link-strip .pilami-link-help-trigger{margin-left:0!important}
+  .pilami-strudel-lab .pilami-link-help-panel{padding:.7rem}
+}

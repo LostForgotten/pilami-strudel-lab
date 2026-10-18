@@ -1,0 +1,267 @@
+// NUAGE DE PARTICULES — PixiJS / Pilami v2 · opacité animée
+// Pour Pilami Strudel Lab 0.39.34 et suivants ; compatible Pack VJ récent.
+// Importe ce fichier dans Mes essais Hydra, puis Lancer / Update.
+// Autorise l'entrée audio ; sans son le nuage reste doucement animé.
+// Graves : respiration ; médiums : turbulence ; aigus : éclat et couleur.
+// Opacité : chaque particule évolue à son rythme entre Min et Max.
+// Aléatoire = 0 : opacité constante ; Vitesse_Opacite = 0 : variations figées.
+// Réglages, MIDI, Performance et snapshots utilisent les contrôleurs habituels.
+// Si besoin, réduis Nombre_Particules à 500–700 pour alléger le rendu.
+// Bibliothèque Pixi locale de l'appli : aucune image ni dépendance distante.
+// Code original du preset : AGPL-3.0-or-later.
+
+window.__pilamiParticleCloudV1?.dispose()
+
+const nuageHydra = await initHydra({
+  detectAudio: true, precision: 'highp', pixelated: false
+})
+speed = 1
+a.setBins(6)
+a.setSmooth(0.82)
+
+const nuageRoot = nuageHydra.canvas.closest('[data-pilami-strudel]') || document.querySelector('[data-pilami-strudel]')
+const nuageEditor = nuageRoot?.querySelector('[data-hydra-code]')
+const nuageCode = nuageEditor?.value
+const nuageModeleInitial = nuageRoot?._pilamiHydraControls
+
+var Nombre_Particules = H(slider(1100, 100, 2400, 1))
+var Vitesse = H(slider(0.28, 0, 1.5, 0.001))
+var Dispersion = H(slider(1, 0.25, 2.3, 0.001))
+var Turbulence = H(slider(0.6, 0, 2.5, 0.001))
+var Taille = H(slider(1.65, 0.3, 4, 0.01))
+var Sensibilite = H(slider(1.4, 0, 6, 0.01))
+var Audio_Expansion = H(slider(0.7, 0, 2.5, 0.01))
+var Audio_Couleur = H(slider(0.4, 0, 1.5, 0.01))
+var Rotation = H(knob(0.1, -0.7, 0.7, 0.001))
+var Profondeur = H(slider(0.75, 0, 1.5, 0.001))
+var Teinte = H(knob(0.54, 0, 1, 0.001))
+var Luminosite = H(slider(0.8, 0.1, 2, 0.01))
+var Opacite = H(slider(1, 0, 1, 0.001))
+var Opacite_Min = H(slider(0.06, 0, 1, 0.001))
+var Opacite_Max = H(slider(0.95, 0, 1, 0.001))
+var Opacite_Aleatoire = H(slider(1, 0, 1, 0.001))
+var Vitesse_Opacite = H(slider(0.4, 0, 3, 0.001))
+var Centre_X = H(slider(0, -1, 1, 0.001))
+var Centre_Y = H(slider(0, -1, 1, 0.001))
+xyPad('Position du nuage', Centre_X, Centre_Y)
+
+// Charge le même moteur Pixi que le panneau Performance, sans ouvrir ce panneau.
+if (!window.PilamiPerformancePixi) {
+  if (!window.__pilamiParticlePixiLoading) {
+    window.__pilamiParticlePixiLoading = (async () => {
+      const embedded = document.querySelector('[data-performance-vendors]')
+      const file = 'pilami-pixi-ui-8.14.3-2.3.2.min.js'
+      const script = document.createElement('script')
+      if (embedded) {
+        const code = JSON.parse(embedded.textContent)[file]
+        if (!code) throw new Error('Réexporte ton Pack VJ depuis la version récente de Pilami.')
+        script.textContent = code
+        document.head.append(script)
+      } else {
+        const anchor = document.querySelector('script[src*="pilami-performance-"]')
+        if (!anchor) throw new Error('Ce preset nécessite Pilami 0.39.34 ou une version plus récente.')
+        const url = new URL('vendor/' + file, anchor.src).href
+        await new Promise((resolve, reject) => {
+          script.src = url
+          script.onload = resolve
+          script.onerror = () => { script.remove(); reject(new Error('Chargement du moteur Pixi impossible. Recharge la page puis réessaie.')) }
+          document.head.append(script)
+        })
+      }
+      if (!window.PilamiPerformancePixi) throw new Error('Le moteur Pixi est indisponible.')
+    })().catch(error => { window.__pilamiParticlePixiLoading = null; throw error })
+  }
+  await window.__pilamiParticlePixiLoading
+}
+
+const nuagePixi = window.PilamiPerformancePixi
+const nuageApp = new nuagePixi.Application()
+await nuageApp.init({
+  width: 1280, height: 720, resolution: 1,
+  backgroundColor: 0x02060f, backgroundAlpha: 1,
+  antialias: true, autoStart: false, sharedTicker: false,
+  preference: 'webgl', preserveDrawingBuffer: true
+})
+
+// Une petite géométrie lumineuse partagée par toutes les particules.
+const nuageMotif = new nuagePixi.Graphics()
+nuageMotif.circle(0, 0, 7).fill({ color: 0xffffff, alpha: 0.035 })
+nuageMotif.circle(0, 0, 3).fill({ color: 0xffffff, alpha: 0.12 })
+nuageMotif.circle(0, 0, 0.9).fill({ color: 0xffffff, alpha: 0.9 })
+nuageApp.stage.eventMode = 'none'
+nuageApp.stage.interactiveChildren = false
+const nuagePoints = []
+let nuageGraine = 739301
+function nuageAleatoire() {
+  nuageGraine = (Math.imul(nuageGraine, 1664525) + 1013904223) >>> 0
+  return nuageGraine / 4294967296
+}
+for (let i = 0; i < 2400; i++) {
+  const azimut = nuageAleatoire() * Math.PI * 2
+  const hauteur = nuageAleatoire() * 2 - 1
+  const rayon = Math.pow(nuageAleatoire(), 0.6)
+  const cercle = Math.sqrt(1 - hauteur * hauteur)
+  const point = new nuagePixi.Graphics({ context: nuageMotif.context })
+  point.blendMode = 'add'
+  point.eventMode = 'none'
+  nuageApp.stage.addChild(point)
+  nuagePoints.push({
+    point, rayon,
+    x: Math.cos(azimut) * cercle * rayon,
+    y: hauteur * rayon,
+    z: Math.sin(azimut) * cercle * rayon,
+    phase: nuageAleatoire() * Math.PI * 2,
+    frequence: 0.5 + nuageAleatoire() * 1.4,
+    taille: 0.45 + nuageAleatoire() * 1.1,
+    couleur: nuageAleatoire(),
+    opacitePhase: nuageAleatoire() * 21,
+    opaciteVitesse: 0.45 + nuageAleatoire() * 1.1
+  })
+}
+
+let nuageTempsOpacite = 0, nuageTemps = 0, nuageAngle = 0, nuageGraves = 0, nuageMediums = 0, nuageAigus = 0
+let nuageFerme = false, nuageModele = null, nuagePremierModele = true
+const nuageStatistiques = { images: 0, graves: 0, mediums: 0, aigus: 0, particules: 0 }
+function nuageCouleur(teinte, saturation, valeur) {
+  const hue = ((teinte % 1) + 1) % 1 * 6
+  const secteur = Math.floor(hue), fraction = hue - secteur
+  const bas = valeur * (1 - saturation)
+  const descendant = valeur * (1 - fraction * saturation)
+  const montant = valeur * (1 - (1 - fraction) * saturation)
+  let rouge, vert, bleu
+  switch (secteur % 6) {
+    case 0: rouge = valeur; vert = montant; bleu = bas; break
+    case 1: rouge = descendant; vert = valeur; bleu = bas; break
+    case 2: rouge = bas; vert = valeur; bleu = montant; break
+    case 3: rouge = bas; vert = descendant; bleu = valeur; break
+    case 4: rouge = montant; vert = bas; bleu = valeur; break
+    default: rouge = valeur; vert = bas; bleu = descendant
+  }
+  return (Math.round(rouge * 255) << 16) | (Math.round(vert * 255) << 8) | Math.round(bleu * 255)
+}
+// Valeurs aléatoires déterministes, reliées par une interpolation douce.
+function nuageHasardOpacite(index, etape) {
+  let nombre = Math.imul(index + 1, 374761393) ^ Math.imul(etape, 668265263)
+  nombre = Math.imul(nombre ^ (nombre >>> 13), 1274126177)
+  return ((nombre ^ (nombre >>> 16)) >>> 0) / 4294967296
+}
+function nuageLisser(actuel, cible, dt) {
+  const duree = cible > actuel ? 0.045 : 0.3
+  return actuel + (cible - actuel) * (1 - Math.exp(-dt / duree))
+}
+
+function nuageDessiner(delta) {
+  if (nuageFerme) return
+  const dt = Math.max(0, Math.min((Number(delta) || 0) / 1000, 0.05))
+  const sensibilite = Sensibilite()
+  // Indices explicites : reconnus par les sources audio de Pilami.
+  nuageGraves = nuageLisser(nuageGraves, Math.min(2, Math.max(0, Number(a.fft[0]) || 0) * sensibilite), dt)
+  nuageMediums = nuageLisser(nuageMediums, Math.min(2, Math.max(0, Number(a.fft[2]) || 0) * sensibilite), dt)
+  nuageAigus = nuageLisser(nuageAigus, Math.min(2, Math.max(0, Number(a.fft[4]) || 0) * sensibilite), dt)
+  nuageTempsOpacite += dt * Vitesse_Opacite()
+  nuageTemps += dt * Vitesse() * (1 + nuageMediums * 0.45)
+  nuageAngle += dt * Rotation() * (1 + nuageMediums * 0.5)
+
+  const sortie = nuageHydra.canvas
+  const facteur = Math.min(1, 1600 / Math.max(1, sortie.width), 1000 / Math.max(1, sortie.height))
+  const largeur = Math.max(320, Math.round(sortie.width * facteur))
+  const hauteur = Math.max(180, Math.round(sortie.height * facteur))
+  if (nuageApp.screen.width !== largeur || nuageApp.screen.height !== hauteur) nuageApp.renderer.resize(largeur, hauteur)
+  const base = Math.min(largeur, hauteur) * 0.3
+  const nombre = Math.round(Math.max(100, Math.min(2400, Nombre_Particules())))
+  const expansion = Dispersion() * (1 + nuageGraves * Audio_Expansion())
+  const agitation = Turbulence() * (0.16 + nuageMediums * 0.2)
+  const profondeur = Profondeur(), taille = Taille() * Math.min(largeur, hauteur) / 720
+  const centreX = largeur * (0.5 + Centre_X() * 0.38)
+  const centreY = hauteur * (0.5 - Centre_Y() * 0.38)
+  const cosine = Math.cos(nuageAngle), sine = Math.sin(nuageAngle)
+  const inclinaison = 0.23 + Math.sin(nuageTemps * 0.3) * 0.2
+  const cosX = Math.cos(inclinaison), sinX = Math.sin(inclinaison)
+  const teinte = Teinte(), variationCouleur = Audio_Couleur()
+  const lumiere = Luminosite()
+  const opaciteGlobale = Opacite(), opaciteHasard = Opacite_Aleatoire()
+  const opaciteMin = Math.min(Opacite_Min(), Opacite_Max())
+  const opaciteMax = Math.max(Opacite_Min(), Opacite_Max())
+
+  for (let i = 0; i < nuagePoints.length; i++) {
+    const particule = nuagePoints[i], point = particule.point
+    point.visible = i < nombre
+    if (!point.visible) continue
+    const phase = particule.phase, frequence = particule.frequence
+    const ondule = Math.sin(nuageTemps * frequence + phase)
+    const vortex = nuageTemps * 0.18 + particule.rayon * 1.6
+    const px = particule.x + Math.sin(particule.y * 3 + vortex + phase) * agitation
+    const py = particule.y + Math.cos(nuageTemps * 0.7 + phase) * agitation * 0.6
+    const pz = particule.z + ondule * agitation
+    const tourneX = px * cosine - pz * sine
+    const tourneZ = px * sine + pz * cosine
+    const y = py * cosX - tourneZ * sinX
+    const z = py * sinX + tourneZ * cosX
+    const perspective = 3.8 / (3.8 - Math.max(-2, Math.min(2.4, z * profondeur)))
+    const respiration = expansion * (1 + Math.sin(nuageTemps + particule.rayon * 4) * 0.035)
+    point.position.set(centreX + tourneX * base * 1.55 * respiration * perspective, centreY + y * base * 0.85 * respiration * perspective)
+    point.scale.set(Math.max(0.15, taille * particule.taille * perspective * (1 + nuageAigus * 0.22)))
+    const tempsOpacite = nuageTempsOpacite * particule.opaciteVitesse + particule.opacitePhase
+    const etapeOpacite = Math.floor(tempsOpacite)
+    const fractionOpacite = tempsOpacite - etapeOpacite
+    const douceurOpacite = fractionOpacite * fractionOpacite * (3 - 2 * fractionOpacite)
+    const departOpacite = nuageHasardOpacite(i, etapeOpacite)
+    const arriveeOpacite = nuageHasardOpacite(i, etapeOpacite + 1)
+    const hasardOpacite = departOpacite + (arriveeOpacite - departOpacite) * douceurOpacite
+    const opaciteAnimee = opaciteMin + (opaciteMax - opaciteMin) * hasardOpacite
+    const opaciteParticule = opaciteGlobale * (opaciteMax + (opaciteAnimee - opaciteMax) * opaciteHasard)
+    point.alpha = Math.min(1, (0.38 + perspective * 0.25 + nuageAigus * 0.18) * lumiere) * opaciteParticule
+    point.tint = nuageCouleur(teinte + z * 0.1 + particule.couleur * 0.12 + nuageMediums * variationCouleur * 0.22 + nuageAigus * variationCouleur * 0.18, 0.48 + particule.couleur * 0.35, 1)
+  }
+  nuageApp.render()
+  nuageStatistiques.images++
+  nuageStatistiques.graves = nuageGraves
+  nuageStatistiques.mediums = nuageMediums
+  nuageStatistiques.aigus = nuageAigus
+  nuageStatistiques.particules = nombre
+}
+
+function nuageNettoyer() {
+  if (nuageFerme) return
+  nuageFerme = true
+  nuageRoot?.removeEventListener('pilami-hydra-controllers-change', nuageChangement)
+  nuageEditor?.removeEventListener('input', nuageEdition)
+  window.removeEventListener('pagehide', nuageNettoyer)
+  if (nuageHydra.synth.update === nuageDessiner) {
+    nuageHydra.synth.update = () => {}
+    if (window.update === nuageDessiner) window.update = nuageHydra.synth.update
+  }
+  if (nuageHydra.synth.s0.src === nuageApp.canvas) nuageHydra.synth.s0.clear()
+  for (const point of nuageApp.stage.removeChildren()) point.destroy({ context: false })
+  nuageMotif.destroy()
+  nuageApp.destroy(true, { children: false })
+  if (window.__pilamiParticleCloudV1?.app === nuageApp) delete window.__pilamiParticleCloudV1
+}
+function nuageChangement() {
+  const modele = nuageRoot?._pilamiHydraControls
+  if (nuagePremierModele && modele?.entries.some(entry => entry.label === 'Nombre_Particules')) {
+    nuagePremierModele = false
+    nuageModele = modele
+    return
+  }
+  if (modele !== nuageModele) nuageNettoyer()
+}
+function nuageEdition(event) {
+  if (!event.pilamiHydraLive) nuageNettoyer()
+}
+
+// Une exécution annulée pendant le chargement ne doit pas laisser un rendu caché.
+if ((nuageEditor && nuageEditor.value !== nuageCode) || nuageRoot?._pilamiHydraControls !== nuageModeleInitial) {
+  nuageNettoyer()
+  throw new Error('Le code a changé pendant le chargement ; relance le preset.')
+}
+window.__pilamiParticleCloudV1 = { app: nuageApp, dispose: nuageNettoyer, stats: nuageStatistiques }
+nuageRoot?.addEventListener('pilami-hydra-controllers-change', nuageChangement)
+nuageEditor?.addEventListener('input', nuageEdition)
+window.addEventListener('pagehide', nuageNettoyer)
+
+nuageDessiner(0)
+s0.init({ src: nuageApp.canvas, dynamic: true })
+src(s0).out(o0)
+update = nuageDessiner
+render(o0)

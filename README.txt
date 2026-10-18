@@ -1,3 +1,57 @@
+Pilami Strudel Lab 0.39.37 — Connexions et import au clavier
+
+- En haut du laboratoire : Activer l’audio, Activer le MIDI et Connecter Link, avec voyants et état visible.
+- Audio = entrée microphone/interface pour les visuels réactifs. Activable avant le premier preset, sans lancer de visuel. La connexion reste active entre presets ; Désactiver l’audio libère l’entrée et remet les bandes à zéro.
+- Le MIDI utilise les mêmes associations et réglages que le panneau MIDI. Link conserve son bridge local et son aide.
+- Le haut de la page Blocksy est compacté uniquement sur les pages contenant [pilami_strudel] : titre de page masqué, marges réduites et navigation conservée en format compact.
+- Ctrl + I (Cmd + I sur Mac) ouvre l’import d’un preset Hydra ; disponible aussi dans les fenêtres Hydra, avec indication au survol. Les champs de saisie ordinaires restent protégés.
+- Pack VJ actualisé. Remplacer le plugin par ce ZIP, recharger la page et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.36 — Visuel au clavier
+
+- P : lancer / arrêter le visuel courant, hors saisie. Personnalisable dans Raccourcis et écrans.
+- Ctrl + Entrée : lancer / appliquer ; Alt + . : arrêter. Fonctionne sur la page et dans les fenêtres Hydra ; les raccourcis musicaux existants sont conservés.
+- Les commandes affichent leurs raccourcis au survol et aux technologies d’assistance ; les indications suivent les touches personnalisées.
+- Les fenêtres de code, contrôleurs, Designer et projection partagent le routage. Les réglages déjà mémorisés sont conservés.
+- Installe le ZIP, recharge la page principale et rouvre les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.35 — Habillage Studio unifié
+
+- Correction des options noires sur fond sombre dans Performance, avec protections contre les styles du thème WordPress.
+- Habillage commun inspiré de Performance sur Strudel, Hydra, les contrôleurs, snapshots, MIDI, audio, presets et outils.
+- Fenêtres de code, contrôleurs et Designer harmonisées ; palettes personnalisées et modes clair/sombre conservés.
+- Les éditeurs et champs conservent leurs commandes au clavier. Le panneau Performance continue d’utiliser Pixi pour le pad et les snapshots graphiques.
+- Pack VJ actualisé. Installe le ZIP, recharge la page principale et rouvre les fenêtres séparées.
+
+Pilami Strudel Lab 0.39.34 — Performance · essai PixiUI
+
+- Lance un visuel avec des contrôleurs, puis clique Performance ✦ dans les paramètres du visuel.
+- Choisis les paramètres X et Y ; glisse dans le pad. Quatre commandes réassignables complètent le panneau.
+- Choisis Rappeler, Morpher ou Capturer, puis un numéro de snapshot. Une capture existante demande confirmation avant remplacement.
+- Les valeurs suivent le MIDI et le morphing. Les associations MIDI restent réglables dans le panneau MIDI habituel.
+- Durée de transition en secondes et Arrêter la transition. Fermer ou Échap pour revenir aux contrôleurs.
+- Fonctionne aussi dans le Pack VJ exporté après cette mise à jour ; aucune ressource distante nécessaire pour Performance.
+- Installer le ZIP dans WordPress, remplacer la version actuelle, puis recharger la page et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.33 — Fenêtre Hydra · Contrôleurs alignée
+
+- Les contrôleurs utilisent la largeur disponible en plein écran et en fenêtre normale.
+- « Photos et réglages du preset » regroupe la photothèque, le nom et les catégories. Ce panneau est replié par défaut dans la fenêtre des contrôleurs.
+- Tous les panneaux utilisent une seule zone de défilement ; les commandes restent en haut et s’adaptent aux petites fenêtres.
+- Suppression des messages d’attente en double, sans masquer les outils Snapshots, MIDI et audio disponibles sans contrôleur.
+- Photothèque 0.39.32, modification des valeurs en direct, snapshots et fenêtre du code conservés.
+- Installer ce ZIP depuis Extensions → Ajouter une extension → Téléverser, puis remplacer la version actuelle et recharger la page principale.
+
+Pilami Strudel Lab 0.39.32 — Photos personnelles dans Hydra
+
+- Dans Hydra, ouvre « Photos · importer et choisir une image », puis « Importer des photos… ».
+- « Nouveau visuel » prépare Image vivante (9 contrôleurs, audio, feedback). Le brouillon précédent est conservé dans les essais locaux si nécessaire. Lance avec Hydra / Update.
+- « Utiliser » remplace la photo d’un preset image ; les effets et les banques de snapshots compatibles sont conservés.
+- Photos stockées dans ce navigateur ; JPG, PNG, WebP, GIF, 10 Mo maximum par fichier. Aucun téléversement automatique.
+- Le Pack VJ emporte les photos locales utilisées. Un simple export du code ne contient pas les fichiers photo.
+- Pour un preset WordPress partagé, enregistre explicitement sa photo dans WordPress depuis Photos, applique le code, puis enregistre le preset.
+- Installer ce ZIP depuis Extensions → Ajouter une extension → Téléverser, puis remplacer la version actuelle.
+
 Pilami Strudel Lab 0.39.31 — Panneaux accessibles et mode visuel au clavier
 
 - Snapshots, séquenceur et MIDI accessibles dès l’ouverture d’Hydra, sans contrôleur requis pour afficher les panneaux.

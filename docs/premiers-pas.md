@@ -2,11 +2,27 @@
 
 Choisis un preset puis clique sur **Lecture / Update** ou utilise **Ctrl + Entrée**. Le choix d’un preset ne lance pas automatiquement la lecture. Dans Strudel, **Stop** arrête le son ; dans Hydra, applique les modifications avec Update.
 
+## Connexions en haut de page
+
+- **Activer l’audio** ouvre l’entrée microphone/interface utilisée par les visuels réactifs. Tu peux le faire avant de lancer un visuel. La connexion reste active entre presets ; **Désactiver l’audio** libère l’entrée et ramène les bandes à zéro sans arrêter le visuel.
+- **Activer le MIDI** autorise les contrôleurs et partage le même état que le panneau MIDI Learn. Les associations existantes sont conservées à la désactivation.
+- **Connecter Link** rejoint le bridge local facultatif ; le bouton **Aide Link** explique son installation. Les états et le tempo restent visibles.
+
+Les autorisations audio et MIDI sont demandées lorsque tu actives la fonction, pas à l’ouverture de la page. L’audio de cette barre est une entrée pour les visuels ; le volume de Strudel reste indépendant.
+
 ## Faire évoluer un visuel
 
 Ouvre l’espace Hydra, choisis un preset puis lance-le. S’il expose des paramètres, les contrôleurs permettent de modifier le rendu en direct : sliders, potentiomètres et pads XY. Active l’entrée audio pour les presets qui utilisent le son et vérifie que la bonne source est reçue.
 
 Le Designer permet d’explorer visuellement des chaînes Hydra. **Importer le code**, puis **Update**, importe les constructions reconnues ; un script JavaScript arbitraire ou un effet personnalisé peut dépasser les possibilités de conversion. Les contrôleurs du Designer et d’Hydra utilisent les mêmes paramètres quand le script est pris en charge.
+
+## Photos et Performance
+
+Dans **Photos · importer et choisir une image**, importe tes photos et utilise-les dans un preset image, ou prépare un nouveau visuel **Image vivante**. Les photos restent dans ce navigateur ; leur publication dans la médiathèque WordPress demande une action explicite.
+
+Le bouton **Performance ✦** ouvre le pad XY Pixi, quatre commandes réassignables et les snapshots graphiques. Choisis les axes du pad et les paramètres des grandes commandes. Sélectionne **Rappeler**, **Morpher** ou **Capturer**, puis un snapshot. Régler une durée et arrêter une transition reste possible. Les valeurs sont communes aux contrôleurs habituels, au MIDI et aux morphings.
+
+Le [nuage de particules](../examples/Nuage-Particules-Pixi.hydra.txt) constitue un exemple à importer : ses contrôleurs règlent notamment l’opacité globale, la plage d’opacité aléatoire et sa vitesse d’évolution. Chaque particule évolue indépendamment.
 
 ## Snapshots et séquenceur
 
@@ -43,6 +59,17 @@ Les raccourcis ci-dessous sont les valeurs initiales ; le panneau **Raccourcis e
 | J | Afficher ou masquer le séquenceur |
 | K | Lancer ou arrêter le séquenceur |
 | V | Passer de Panneau à Fenêtre séparée puis Fond |
+| P | Lancer ou arrêter le visuel courant |
+
+Les commandes fixes sont affichées au survol et dans **Raccourcis et écrans** :
+
+| Raccourci | Action |
+|---|---|
+| Ctrl + Entrée / Cmd + Entrée | Appliquer le visuel ; dans l’éditeur Strudel, lancer la musique |
+| Alt + . | Arrêter le visuel ; dans l’éditeur Strudel, arrêter la musique |
+| Ctrl + I / Cmd + I | Importer un preset Hydra, depuis la page ou une fenêtre Hydra |
+
+Les commandes Hydra restent disponibles dans le code Hydra. Les champs de nom et autres champs de saisie ordinaires restent protégés.
 
 L’affectation automatique aux écrans dépend des capacités du navigateur et des permissions accordées. Utilise le bouton de plein écran proposé dans la fenêtre ou F11 si nécessaire. Le dock visuel démarre réduit ; déplie-le pour accéder aux commandes, au clavier et aux réglages.
 

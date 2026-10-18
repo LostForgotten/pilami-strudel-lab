@@ -6,6 +6,7 @@ Le code original de l’extension Pilami Strudel Lab annonce **AGPL-3.0-or-later
 |---|---|---|
 | Strudel / `@strudel/web` 1.3.0 | Felix Roos, Alex McLean et contributeurs | AGPL-3.0-or-later ; `assets/vendor/LICENSE-Strudel.txt`, `sources/strudel-web/`, [dépôt amont](https://codeberg.org/uzu/strudel) |
 | Hydra Synth 1.3.29 adapté | Olivia Jack et contributeurs | AGPL v3 ; `assets/vendor/LICENSE-Hydra.txt`, `sources/hydra-synth/`, [dépôt amont](https://github.com/ojack/hydra-synth) |
+| PixiJS 8.14.3 et PixiUI 2.3.2 | Contributeurs PixiJS et PixiUI | MIT ; `assets/vendor/LICENSE-Pixi-Performance.txt`, notices du bundle et `sources/pixi-performance/` |
 | Acorn 8.15.0 | Contributeurs Acorn | MIT ; `assets/vendor/LICENSE-Acorn.txt`, [dépôt amont](https://github.com/acornjs/acorn) |
 | hydra-midi 0.4.6 adapté | Arno Schlipf et contributeurs | MIT ; `sources/hydra-midi/LICENSE`, source originale et `PILAMI-ADAPTATION.txt`, [dépôt amont](https://github.com/arnoson/hydra-midi) |
 | Extensions couleur et bruit | Thomas Jourdan / Metagrowing | AGPL-3.0-or-later ; `sources/hydra-extensions/`, [projet amont](https://metagrowing.org/extra-shaders-for-hydra/) |
@@ -20,3 +21,9 @@ Le bridge est un programme distinct ; ses dépendances ne sont pas installées d
 Les exemples, presets, images, banques de sons et ressources distantes peuvent avoir leurs propres auteurs et conditions. Les notices particulières dans les fichiers sources restent applicables. La base de données de presets et la médiathèque de pilami.fr ne sont pas incluses dans ce dépôt.
 
 Les sources locales des adaptations et les versions/liens des paquets amont sont conservés dans `sources/` et le chapitre « SOURCES ET LICENCES » de `README.txt`.
+
+## Panneau Performance 0.39.34
+
+PixiJS 8.14.3, PixiUI 2.3.2, typed-signals 2.5.0 et tweedle.js 2.1.0 (MIT). Licences complètes dans `assets/vendor/LICENSE-Pixi-Performance.txt` et notices du bundle. Les licences des dépendances transitives du bundle sont également conservées dans ce fichier. Source et recette de compilation : `sources/pixi-performance/`. Bundle limité aux composants utilisés, généré avec esbuild 0.25.10.
+
+Adaptation de compatibilité : le registre des systèmes Pixi énumère uniquement ses propres entrées (`Object.values`) pour cohabiter avec les méthodes de tableaux ajoutées par Hydra. Cette adaptation est appliquée et vérifiée par `build.mjs` ; le reste des sources amont est inchangé.

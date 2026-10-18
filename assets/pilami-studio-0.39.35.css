@@ -1,0 +1,68 @@
+/* Pilami Studio — shared interface skin. AGPL-3.0-or-later. */
+.pilami-strudel-lab[data-custom-palette="0"]{--pilami-panel-bg:#f1f6fa!important;--pilami-panel-text:#192e43!important;--pilami-editor-bg:#fff!important;--pilami-editor-text:#192e43!important;--pilami-accent:#167d77!important}
+html[data-pilami-theme="dark"] .pilami-strudel-lab[data-custom-palette="0"]{--pilami-panel-bg:#0c1423!important;--pilami-panel-text:#e5edf9!important;--pilami-editor-bg:#131f32!important;--pilami-editor-text:#e5edf9!important;--pilami-accent:#68e8d4!important}
+:is(.pilami-strudel-lab,.pilami-studio-window){--studio-bg:var(--pilami-panel-bg,#f1f6fa);--studio-text:var(--pilami-panel-text,#192e43);--studio-card:var(--pilami-editor-bg,#fff);--studio-ink:var(--pilami-editor-text,#192e43);--studio-accent:var(--pilami-accent,#167d77);--studio-line:color-mix(in srgb,var(--studio-text) 20%,var(--studio-bg));--studio-muted:color-mix(in srgb,var(--studio-text) 78%,var(--studio-bg));--studio-raised:color-mix(in srgb,var(--studio-text) 4%,var(--studio-card));color:var(--studio-text);font-family:Arial,system-ui,sans-serif;line-height:1.55;accent-color:var(--studio-accent)}
+.pilami-strudel-lab{padding:clamp(12px,2vw,24px);background:var(--studio-bg);border:1px solid var(--studio-line);border-radius:22px;box-shadow:0 18px 55px #0000000d}
+.pilami-strudel-lab :is(h2,h3,h4){color:var(--studio-text);letter-spacing:.01em}
+.pilami-strudel-lab .pilami-strudel-intro{padding:4px 4px 12px;margin:0 0 16px;border-bottom:1px solid var(--studio-line)}
+.pilami-strudel-lab :is(.pilami-strudel-muted,.pilami-control-help,.pilami-interface-help){color:var(--studio-muted);opacity:1;line-height:1.6}
+.pilami-strudel-lab .pilami-dual-grid{gap:20px;margin:18px 0}
+.pilami-strudel-lab :is(.pilami-music-workspace,.pilami-hydra-workspace){background:var(--studio-bg);border:1px solid var(--studio-line);border-radius:18px;padding:clamp(14px,2vw,24px);box-shadow:0 6px 25px #00000008}
+.pilami-strudel-lab .pilami-dual-grid h2{font:650 26px/1.3 Arial,system-ui,sans-serif;margin:0 0 8px;letter-spacing:-.025em}
+.pilami-strudel-lab .pilami-space-subtitle{color:var(--studio-accent);font-size:12px;letter-spacing:.08em;opacity:1}
+:is(.pilami-strudel-lab,.pilami-studio-window) :is(button,input,select,textarea){font-family:inherit}
+:is(.pilami-strudel-lab,.pilami-studio-window) button{color:var(--studio-text);background:var(--studio-raised);border:1px solid var(--studio-line);border-radius:10px;box-shadow:none;letter-spacing:normal;text-transform:none;text-align:center;line-height:1.4;transition:background-color .15s,border-color .15s,box-shadow .15s}
+:is(.pilami-strudel-lab,.pilami-studio-window) button:hover:not(:disabled){transform:none;border-color:var(--studio-accent);box-shadow:0 0 0 1px color-mix(in srgb,var(--studio-accent) 30%,transparent)}
+:is(.pilami-strudel-lab,.pilami-studio-window) :is(button,input,select,textarea,summary):focus-visible{outline:2px solid var(--studio-accent);outline-offset:3px}
+:is(.pilami-strudel-lab,.pilami-studio-window) button:disabled{opacity:.52;cursor:default;box-shadow:none}
+:is(.pilami-strudel-lab,.pilami-studio-window) :is(select,input[type=text],input[type=search],input[type=number],input[type=url]){color:var(--studio-ink)!important;background:var(--studio-card)!important;border:1px solid var(--studio-line);border-radius:9px;min-height:38px;padding:8px 10px;max-width:100%;box-shadow:none;line-height:1.4}
+:is(.pilami-strudel-lab,.pilami-studio-window) :is(option,optgroup){color:var(--studio-ink)!important;background:var(--studio-card)!important;font-family:Arial,system-ui,sans-serif}
+:is(.pilami-strudel-lab,.pilami-studio-window) input::placeholder{color:var(--studio-muted);opacity:1}
+:is(.pilami-strudel-lab,.pilami-studio-window) input[type=range]{accent-color:var(--studio-accent);cursor:pointer;box-shadow:none;border:0}
+.pilami-strudel-lab :is(.pilami-strudel-transport,.pilami-dual-actions,.pilami-hydra-filters){gap:10px}
+.pilami-strudel-lab .pilami-strudel-transport{padding:12px;background:var(--studio-card);border:1px solid var(--studio-line);border-radius:14px;align-items:center}
+.pilami-strudel-lab .pilami-strudel-transport button{padding:10px 14px;min-height:42px;font-size:13px}
+.pilami-strudel-lab .pilami-strudel-transport .pilami-play{font-weight:650}
+.pilami-strudel-lab :is(.pilami-hydra-preset-list,.pilami-strudel-presets){gap:8px;padding:6px 3px 12px}
+.pilami-strudel-lab :is([data-hydra-preset],[data-preset],[data-section-toggle]){min-height:38px;border-radius:10px;font-size:13px;text-align:center;line-height:1.45}
+.pilami-strudel-lab .pilami-preset-list{padding:8px;border-radius:12px;box-shadow:0 12px 30px #0003}
+.pilami-strudel-lab :is(.pilami-interface-section,.pilami-controller-section,.pilami-strudel-tools,.pilami-strudel-sliders){background:var(--studio-bg);border:1px solid var(--studio-line);border-radius:14px}
+.pilami-strudel-lab :is(.pilami-interface-section,.pilami-controller-section)>summary{padding:14px 16px;font-size:14px;line-height:1.5;font-weight:600;color:var(--studio-text)}
+.pilami-strudel-lab :is(.pilami-interface-section,.pilami-controller-section)[open]>summary{border-bottom:1px solid var(--studio-line);margin-bottom:14px}
+.pilami-strudel-lab .pilami-interface-section .pilami-strudel-tools{border:0;background:transparent}
+.pilami-strudel-lab :is(.pilami-strudel-editor-wrap,textarea.pilami-strudel-code){border-color:var(--studio-line);border-radius:12px;background:var(--studio-card)!important;color:var(--studio-ink)!important}
+:is(.pilami-strudel-lab,.pilami-studio-window) textarea{font-family:ui-monospace,Consolas,monospace;line-height:1.65;tab-size:2}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-controller-surface{--pc-bg:var(--studio-card);--pc-text:var(--studio-ink);--pc-accent:var(--studio-accent)}
+:is(.pilami-strudel-lab,.pilami-studio-window) :is(.pilami-control-card,.pilami-xy-card,.pilami-snapshot-panel,.pilami-audio-bank,.pilami-midi-panel,.pilami-random-panel){border:1px solid var(--studio-line);border-radius:15px;background:var(--studio-card);padding:16px}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-control-grid{gap:14px}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-control-card{box-shadow:0 4px 16px #00000008}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-control-destination{color:var(--studio-ink)!important;font-size:14px;font-weight:600}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-xy-pad{border-color:var(--studio-line);border-radius:14px;background-color:var(--studio-raised)}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-xy-dot{background:var(--studio-accent);box-shadow:0 0 0 7px color-mix(in srgb,var(--studio-accent) 15%,transparent)}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-controller-surface button.pilami-knob{border-radius:50%;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--studio-accent) 40%,var(--studio-card)),var(--studio-bg))!important;border-color:var(--studio-line)}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-controller-surface button.pilami-toggle[aria-checked=true]{border-color:var(--studio-accent);box-shadow:inset 0 0 0 1px var(--studio-accent)}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-control-value .pilami-control-number{font-size:16px;font-variant-numeric:tabular-nums}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-snapshot-slots{gap:10px}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-snapshot-midi-menu{background:var(--studio-card);border-color:var(--studio-accent);border-radius:12px}
+:is(.pilami-strudel-lab,.pilami-studio-window) [data-performance-open]{min-height:42px;padding:10px 18px;margin-bottom:12px;border-color:var(--studio-accent)!important;color:var(--studio-text)!important;background:color-mix(in srgb,var(--studio-accent) 16%,var(--studio-card))!important;font-weight:600}
+.pilami-strudel-lab :is(.pilami-link-strip,.pilami-link-help-panel,.pilami-shortcuts,.pilami-image-source){border:1px solid var(--studio-line);border-radius:14px;background:var(--studio-card);color:var(--studio-text)}
+.pilami-strudel-lab .pilami-link-strip{padding:12px 16px;gap:12px}
+.pilami-strudel-lab .pilami-link-strip strong{color:var(--studio-accent);letter-spacing:.12em;font-size:12px}
+.pilami-strudel-lab a{color:var(--studio-accent);text-underline-offset:3px}
+.pilami-strudel-lab .pilami-strudel-volume{padding:12px 14px;background:var(--studio-card);border:1px solid var(--studio-line);border-radius:12px}
+.pilami-studio-window{background:var(--studio-bg);color:var(--studio-text);padding:18px;gap:14px}
+.pilami-studio-window>header{padding:12px 14px;background:var(--studio-card);border:1px solid var(--studio-line);border-radius:14px}
+.pilami-studio-window>header h1{font:650 22px/1.3 Arial,system-ui,sans-serif;letter-spacing:-.02em}
+.pilami-studio-window>header button{padding:9px 12px;min-height:38px}
+.pilami-studio-window .pilami-window-tools{border-color:var(--studio-line);background:var(--studio-card);border-radius:14px}
+.pilami-studio-window textarea{background:var(--studio-card);color:var(--studio-ink);border-color:var(--studio-line);border-radius:12px}
+.pilami-studio-window :is(.slider,.window-name){color:var(--studio-text)}
+.pilami-studio-window .slider{background:var(--studio-card);border-color:var(--studio-line);padding:16px;border-radius:12px;margin-bottom:10px}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-designer{--pd-bg:var(--studio-bg);--pd-text:var(--studio-text);--pd-card:var(--studio-card);--pd-code:var(--studio-ink);border-color:var(--studio-line);border-radius:16px}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-designer .pd-node{border-radius:12px;box-shadow:0 8px 24px #0002}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-designer button.pd-port{min-height:0;padding:0;border-radius:50%}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-designer .pd-library button{text-align:left}
+:is(.pilami-strudel-lab,.pilami-studio-window) .pilami-designer :is(.pd-node-remove,.pd-node-duplicate){min-height:24px;padding:2px 6px}
+.pilami-studio-window.pd-window{padding:0}
+@media(max-width:600px){.pilami-strudel-lab{padding:10px;border-radius:16px}.pilami-strudel-lab .pilami-dual-grid{gap:14px}.pilami-strudel-lab .pilami-dual-grid h2{font-size:23px}.pilami-strudel-lab .pilami-strudel-transport{padding:10px}.pilami-strudel-lab .pilami-strudel-transport button{padding:9px 10px}.pilami-strudel-lab :is(.pilami-interface-section,.pilami-controller-section)>summary{padding:12px}.pilami-studio-window{padding:12px}}
+@media(prefers-reduced-motion:reduce){:is(.pilami-strudel-lab,.pilami-studio-window) button{transition:none}}

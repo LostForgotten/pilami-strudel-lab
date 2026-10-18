@@ -1,6 +1,6 @@
 # Organisation du code
 
-Ce dépôt démarre avec les fichiers de l’extension 0.39.31. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
+Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.37. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
 
 ## Repères
 
@@ -15,6 +15,7 @@ Ce dépôt démarre avec les fichiers de l’extension 0.39.31. Le premier impor
 | `tools/ableton-link-bridge/` | Copie du bridge associée à cette version ; projet maintenu séparément |
 | `scripts/` | Vérification du paquet et fabrication du ZIP WordPress |
 | `docs/` | Documentation du dépôt |
+| `examples/` | Presets texte à importer et à expérimenter |
 
 Pour trouver le module réellement chargé, commence par `pilami_strudel_lab_enqueue_assets()` dans le fichier PHP principal. Le numéro dans le nom d’un module ne correspond pas toujours à la version globale de l’extension. Plusieurs générations de fichiers coexistent à cause des adaptations du cache, des dépendances et des exports hors ligne.
 
@@ -35,6 +36,14 @@ Le code PHP/JS/CSS Pilami est livré directement. Les sources Strudel se trouven
 Installer ou reconstruire ces projets demande leurs dépendances npm. Le dépôt ne fournit pas de verrouillage complet des dépendances ni de commande unique reconstruisant à l’identique tous les bundles et le modèle hors ligne. Le script `build_plugin.py` **empaquette les ressources présentes**, sans recompiler les moteurs.
 
 Les sources, versions et liens amont déjà livrés sont détaillés dans `README.txt` et `THIRD_PARTY_NOTICES.md`. Conserve les notices des composants que tu modifies ou redistribues.
+
+## Performance et connexions
+
+Le panneau Performance est dans `assets/pilami-performance-0.39.35.js`. Il utilise le modèle de contrôleurs existant et charge la bibliothèque locale Pixi à la demande. Les sources de compilation sont dans `sources/pixi-performance/` : `npm ci`, puis `npm run build`. Le build adapte l’énumération des systèmes Pixi aux méthodes héritées des tableaux Hydra ; conserve cette adaptation et les notices.
+
+La barre Audio / MIDI / Link est montée par `assets/pilami-connections-0.39.37.js`. Elle réutilise les API MIDI et Link. L’adaptateur `pilami-hydra-0.39.37.js` conserve une connexion audio de session, indépendante du rendu et réutilisée au changement de preset. La désactivation ferme le flux et son contexte, et remet les mesures à zéro. Le compactage du thème est limité par la classe de page ajoutée pour le shortcode.
+
+Le Pack VJ incorpore des scripts et des sources en JSON : modifier uniquement un fichier chargé par WordPress ne suffit pas à le mettre à jour. Vérifie aussi le modèle autonome après tout changement partagé.
 
 ## Vérifications
 

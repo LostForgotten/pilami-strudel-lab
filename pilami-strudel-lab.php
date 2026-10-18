@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pilami Strudel Lab
  * Description: Laboratoire Strudel intégré à WordPress avec presets et commandes de lecture.
- * Version: 0.39.31
+ * Version: 0.39.37
  * Author: pilami.fr
  * License: AGPL-3.0-or-later
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PILAMI_STRUDEL_LAB_VERSION', '0.39.31');
+define('PILAMI_STRUDEL_LAB_VERSION', '0.39.37');
 require_once __DIR__ . '/includes/version-history.php';
 require_once __DIR__ . '/includes/appearance.php';
 require_once __DIR__ . '/includes/shares.php';
@@ -43,7 +43,7 @@ function pilami_strudel_lab_enqueue_assets() {
     wp_enqueue_style('pilami-strudel-visuals', plugin_dir_url(__FILE__) . 'assets/pilami-visuals-0.39.25.css', array('pilami-strudel-lab'), '0.39.14');
     wp_enqueue_script('pilami-strudel-visuals', plugin_dir_url(__FILE__) . 'assets/pilami-visuals-0.39.31.js', array('strudel-web'), '0.39.31', true);
 
-    wp_enqueue_script('pilami-strudel-hydra', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-0.28.0.js', array('strudel-web', 'pilami-strudel-visuals'), '0.28.0', true);
+    wp_enqueue_script('pilami-strudel-hydra', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-0.39.37.js', array('strudel-web', 'pilami-strudel-visuals'), '0.39.37', true);
 
     wp_enqueue_script('pilami-strudel-inline', plugin_dir_url(__FILE__) . 'assets/pilami-inline-0.10.2.js', array('strudel-web'), '0.10.2', true);
 
@@ -65,37 +65,43 @@ function pilami_strudel_lab_enqueue_assets() {
     wp_enqueue_script('pilami-hydra-midi', plugin_dir_url(__FILE__) . 'assets/pilami-midi-0.39.16.js', array('pilami-strudel-hydra'), '0.39.16', true);
     wp_enqueue_script('pilami-hydra-midi-library', plugin_dir_url(__FILE__) . 'assets/vendor/hydra-midi-0.4.6-pilami.js', array('pilami-hydra-midi'), '0.4.6', true);
     wp_enqueue_script('pilami-hydra-sequencer', plugin_dir_url(__FILE__) . 'assets/pilami-sequencer-0.39.30.js', array('pilami-ableton-link'), '0.39.30', true);
-    wp_enqueue_script('pilami-hydra-snapshots', plugin_dir_url(__FILE__) . 'assets/pilami-snapshots-0.39.31.js', array('pilami-acorn','pilami-strudel-hydra','pilami-hydra-midi','pilami-ableton-link','pilami-hydra-sequencer'), '0.39.31', true);
-    wp_enqueue_script('pilami-controllers', plugin_dir_url(__FILE__) . 'assets/pilami-controllers-0.39.31.js', array('pilami-hydra-snapshots','pilami-strudel-hydra','pilami-hydra-midi'), '0.39.31', true);
-    wp_enqueue_script('pilami-hydra-images', plugin_dir_url(__FILE__) . 'assets/pilami-images-0.23.0.js', array(), '0.23.0', true);
+    wp_enqueue_script('pilami-hydra-snapshots', plugin_dir_url(__FILE__) . 'assets/pilami-snapshots-0.39.32.js', array('pilami-acorn','pilami-strudel-hydra','pilami-hydra-midi','pilami-ableton-link','pilami-hydra-sequencer'), '0.39.32', true);
+    wp_enqueue_style('pilami-performance', plugin_dir_url(__FILE__) . 'assets/pilami-performance-0.39.35.css', array(), '0.39.35');
+    wp_enqueue_script('pilami-performance', plugin_dir_url(__FILE__) . 'assets/pilami-performance-0.39.35.js', array(), '0.39.35', true);
+    wp_enqueue_script('pilami-controllers', plugin_dir_url(__FILE__) . 'assets/pilami-controllers-0.39.34.js', array('pilami-performance','pilami-hydra-snapshots','pilami-strudel-hydra','pilami-hydra-midi'), '0.39.34', true);
+    wp_enqueue_script('pilami-hydra-images', plugin_dir_url(__FILE__) . 'assets/pilami-images-0.39.32.js', array(), '0.39.32', true);
     wp_enqueue_script('pilami-hydra-extensions', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-extensions-0.28.0.js', array(), '0.28.0', true);
-    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.31.js', array('pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.31', true);
+    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.32.js', array('pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.32', true);
 
     wp_enqueue_script('pilami-strudel-share', plugin_dir_url(__FILE__) . 'assets/pilami-share-0.14.0.js', array(), '0.14.0', true);
 
     wp_enqueue_script('pilami-strudel-tools', plugin_dir_url(__FILE__) . 'assets/pilami-tools-0.14.0.js', array(), '0.14.0', true);
 
     wp_enqueue_style('pilami-detachable', plugin_dir_url(__FILE__) . 'assets/pilami-detachable-0.15.0.css', array('pilami-dual-spaces'), '0.15.0');
-    wp_enqueue_script('pilami-detachable', plugin_dir_url(__FILE__) . 'assets/pilami-detachable-0.39.20.js', array('pilami-controllers'), '0.39.20', true);
+    wp_enqueue_script('pilami-detachable', plugin_dir_url(__FILE__) . 'assets/pilami-detachable-0.39.35.js', array('pilami-studio','pilami-controllers'), '0.39.35', true);
 
     wp_enqueue_style('pilami-shortcuts', plugin_dir_url(__FILE__) . 'assets/pilami-shortcuts-0.38.0.css', array('pilami-detachable'), '0.38.0');
-    wp_enqueue_script('pilami-shortcuts', plugin_dir_url(__FILE__) . 'assets/pilami-shortcuts-0.39.31.js', array('pilami-detachable', 'pilami-strudel-visuals'), '0.39.31', true);
+    wp_enqueue_script('pilami-shortcuts', plugin_dir_url(__FILE__) . 'assets/pilami-shortcuts-0.39.37.js', array('pilami-detachable', 'pilami-strudel-visuals'), '0.39.37', true);
 
     wp_enqueue_style('pilami-interface-colors', plugin_dir_url(__FILE__) . 'assets/pilami-colors-0.21.0.css', array('pilami-strudel-menus','pilami-detachable','pilami-controllers','pilami-strudel-visuals'), '0.21.0');
     wp_enqueue_style('pilami-preset-categories', plugin_dir_url(__FILE__) . 'assets/pilami-categories-0.22.0.css', array('pilami-interface-colors'), '0.22.0');
-    wp_enqueue_style('pilami-hydra-images', plugin_dir_url(__FILE__) . 'assets/pilami-images-0.23.0.css', array('pilami-interface-colors'), '0.23.0');
+    wp_enqueue_style('pilami-hydra-images', plugin_dir_url(__FILE__) . 'assets/pilami-images-0.39.32.css', array('pilami-interface-colors'), '0.39.32');
     wp_enqueue_style('pilami-hydra-designer', plugin_dir_url(__FILE__) . 'assets/pilami-designer-0.25.1.css', array('pilami-interface-colors'), '0.25.1');
     wp_enqueue_script('pilami-designer-catalog', plugin_dir_url(__FILE__) . 'assets/pilami-designer-catalog-0.24.0.js', array(), '0.24.0', true);
     wp_enqueue_script('pilami-designer-core', plugin_dir_url(__FILE__) . 'assets/pilami-designer-core-0.25.0.js', array('pilami-designer-catalog','pilami-acorn'), '0.25.0', true);
     wp_enqueue_script('pilami-designer-import', plugin_dir_url(__FILE__) . 'assets/pilami-designer-import-0.25.0.js', array('pilami-designer-core','pilami-acorn'), '0.25.0', true);
-    wp_enqueue_script('pilami-hydra-designer', plugin_dir_url(__FILE__) . 'assets/pilami-designer-0.34.2.js', array('pilami-designer-import','pilami-hydra-workspace'), '0.34.2', true);
+    wp_enqueue_script('pilami-hydra-designer', plugin_dir_url(__FILE__) . 'assets/pilami-designer-0.39.36.js', array('pilami-studio','pilami-designer-import','pilami-hydra-workspace'), '0.39.36', true);
 
     wp_enqueue_style('pilami-interface', plugin_dir_url(__FILE__) . 'assets/pilami-interface-0.39.0.css', array('pilami-hydra-designer','pilami-preset-categories'), '0.39.0');
-    wp_enqueue_script('pilami-interface', plugin_dir_url(__FILE__) . 'assets/pilami-interface-0.39.0.js', array('pilami-detachable'), '0.39.0', true);
+    wp_enqueue_script('pilami-interface', plugin_dir_url(__FILE__) . 'assets/pilami-interface-0.39.32.js', array('pilami-detachable'), '0.39.32', true);
 
     wp_enqueue_style('pilami-ableton-link', plugin_dir_url(__FILE__) . 'assets/pilami-link-0.39.28.css', array('pilami-interface'), '0.39.28');
     wp_enqueue_style('pilami-hydra-sequencer', plugin_dir_url(__FILE__) . 'assets/pilami-sequencer-0.39.29.css', array('pilami-ableton-link'), '0.39.29');
+    wp_enqueue_style('pilami-studio', plugin_dir_url(__FILE__) . 'assets/pilami-studio-0.39.35.css', array('pilami-hydra-sequencer','pilami-performance'), '0.39.35');
+    wp_enqueue_script('pilami-studio', plugin_dir_url(__FILE__) . 'assets/pilami-studio-0.39.35.js', array(), '0.39.35', true);
     wp_enqueue_script('pilami-ableton-link', plugin_dir_url(__FILE__) . 'assets/pilami-link-0.39.27.js', array(), '0.39.27', true);
+    wp_enqueue_style('pilami-connections', plugin_dir_url(__FILE__) . 'assets/pilami-connections-0.39.37.css', array('pilami-studio'), '0.39.37');
+    wp_enqueue_script('pilami-connections', plugin_dir_url(__FILE__) . 'assets/pilami-connections-0.39.37.js', array('pilami-strudel-hydra','pilami-hydra-midi','pilami-ableton-link'), '0.39.37', true);
     wp_enqueue_script('pilami-ableton-link-help', plugin_dir_url(__FILE__) . 'assets/pilami-link-help-0.39.28.js', array(), '0.39.28', true);
 
     wp_enqueue_script(
@@ -108,6 +114,17 @@ function pilami_strudel_lab_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'pilami_strudel_lab_enqueue_assets');
 
+// Compact only pages hosting this shortcode; other theme pages keep their layout.
+add_filter('body_class', function ($classes) {
+    if (is_singular()) {
+        $page = get_post();
+        if ($page && has_shortcode($page->post_content, 'pilami_strudel')) {
+            $classes[] = 'pilami-studio-page';
+        }
+    }
+    return $classes;
+});
+
 function pilami_strudel_lab_shortcode() {
     $appearance = pilami_strudel_appearance();
     ob_start();
@@ -117,9 +134,17 @@ function pilami_strudel_lab_shortcode() {
             <div><?php echo wpautop(wp_kses_post($appearance['intro'])); ?></div>
             <p class="pilami-strudel-muted"><?php echo esc_html($appearance['subtitle']); ?></p>
         </div>
-        <p class="pilami-strudel-muted pilami-strudel-guide">
-            <a href="https://pilami.fr/wp-content/uploads/2026/10/Pilami-Strudel-Hydra-guide-rapide.pdf" target="_blank" rel="noopener noreferrer" aria-label="Guide rapide (PDF), s’ouvre dans un nouvel onglet">📖 Guide rapide (PDF)</a>
-        </p>
+        <div class="pilami-connections" data-pilami-connections role="group" aria-label="Connexions audio, MIDI et Link">
+            <div class="pilami-connection" data-connection="audio">
+                <span class="pilami-connection-led" aria-hidden="true"></span><strong>AUDIO</strong>
+                <span data-connection-status role="status" aria-live="polite">Désactivé</span>
+                <button type="button" data-connect-audio aria-pressed="false" title="Activer l’entrée audio pour les visuels réactifs">Activer l’audio</button>
+            </div>
+            <div class="pilami-connection" data-connection="midi">
+                <span class="pilami-connection-led" aria-hidden="true"></span><strong>MIDI</strong>
+                <span data-connection-status role="status" aria-live="polite">Désactivé</span>
+                <button type="button" data-connect-midi aria-pressed="false" title="Activer les contrôleurs MIDI et les associations apprises">Activer le MIDI</button>
+            </div>
         <div class="pilami-link-strip" data-pilami-link-bar role="group" aria-label="Synchronisation Ableton Link">
             <span class="pilami-link-led" data-link-led aria-hidden="true"></span>
             <strong>LINK</strong>
@@ -130,6 +155,10 @@ function pilami_strudel_lab_shortcode() {
             <button type="button" data-link-connect>Connecter Link</button>
             <button type="button" class="pilami-link-help-trigger" data-link-help-toggle aria-expanded="false" aria-controls="pilami-link-help-panel" title="Télécharger Pilami Link Bridge et consulter l’aide">ⓘ Aide Link</button>
         </div>
+        </div>
+        <p class="pilami-strudel-muted pilami-strudel-guide">
+            <a href="https://pilami.fr/wp-content/uploads/2026/10/Pilami-Strudel-Hydra-guide-rapide.pdf" target="_blank" rel="noopener noreferrer" aria-label="Guide rapide (PDF), s’ouvre dans un nouvel onglet">📖 Guide rapide (PDF)</a>
+        </p>
         <section id="pilami-link-help-panel" class="pilami-link-help-panel" data-link-help-panel aria-label="Aide et installation de Pilami Link" hidden>
             <div class="pilami-link-help-head">
                 <h3>Pilami Link Bridge <span class="pilami-link-beta">Windows 10/11 · bêta</span></h3>

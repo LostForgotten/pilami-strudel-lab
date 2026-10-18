@@ -4,6 +4,46 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.37' => array('Connexions en tête de page et import au clavier', array(
+            'Barre commune Audio, MIDI et Link avec activation, désactivation et état de connexion visible.',
+            'Entrée audio activable avant le premier visuel ; connexion conservée au changement de preset et arrêtée par Désactiver l’audio.',
+            'Titre et marges Blocksy supprimés au-dessus du laboratoire ; navigation du site compactée sur les pages du shortcode uniquement.',
+            'Ctrl + I importe un preset Hydra depuis la page et les fenêtres Hydra ; indication au survol et dans Raccourcis et écrans.',
+            'Pack VJ hors ligne actualisé avec la barre de connexion et le raccourci d’import.',
+        )),
+        '0.39.36' => array('Lecture du visuel au clavier et raccourcis au survol', array(
+            'P lance ou arrête le visuel courant ; touche modifiable dans Raccourcis et écrans, sans action pendant la saisie.',
+            'Ctrl + Entrée applique le visuel et Alt + . l’arrête, depuis la page ou une fenêtre Hydra ; les champs de saisie ordinaires restent protégés.',
+            'Raccourcis indiqués au survol des commandes concernées et actualisés après modification des touches.',
+            'Même routage dans les fenêtres Contrôleurs, Code, Designer et projection ; réglages existants conservés.',
+        )),
+        '0.39.35' => array('Habillage Studio unifié et lisibilité des listes Performance', array(
+            'Options des menus Performance lisibles sur fond sombre, y compris avec les styles WordPress ; curseurs harmonisés.',
+            'Habillage commun inspiré de Performance pour Strudel, Hydra, les presets, contrôleurs, snapshots, MIDI, audio et outils.',
+            'Fenêtres séparées et Designer harmonisés ; palettes personnalisées, couleurs des catégories et modes clair/sombre respectés.',
+            'Pack VJ actualisé ; commandes graphiques Pixi et champs clavier partagent le même langage visuel.',
+        )),
+        '0.39.34' => array('Panneau Performance expérimental · PixiJS et PixiUI', array(
+            'Bouton Performance dans les paramètres du visuel : pad XY avec choix des axes et traînée lumineuse.',
+            'Quatre grandes commandes réassignables, synchronisées avec les valeurs du preset, le MIDI et le morphing.',
+            'Snapshots graphiques et commandes clavier : Rappel, Morphing ou Capture ; confirmation avant remplacement.',
+            'Durée de transition et arrêt du morphing ; composants embarqués, chargés à la demande, inclus dans le Pack VJ.',
+        )),
+        '0.39.33' => array('Disposition fluide de la fenêtre Hydra · Contrôleurs', array(
+            'Contrôleurs alignés sur toute la largeur disponible, en fenêtre normale et en plein écran, sans colonne décalée limitée à 1400 pixels.',
+            'Photos, nom et catégories regroupés dans « Photos et réglages du preset », replié par défaut dans la fenêtre des contrôleurs.',
+            'Une seule zone de défilement pour les panneaux et les contrôleurs ; commandes toujours accessibles en haut et retour à la ligne sur petite fenêtre.',
+            'Messages d’attente redondants masqués quand les panneaux Snapshots et MIDI sont déjà disponibles.',
+            'Photothèque, contrôles en direct, snapshots et fenêtre de code conservés ; modèle du Pack VJ actualisé.',
+        )),
+        '0.39.32' => array('Photothèque locale et création de visuels depuis ses photos', array(
+            'Panneau Photos accessible dès l’ouverture d’Hydra, séparé de l’éditeur de code : import multiple, miniatures, choix et suppression locale.',
+            'Photos conservées dans ce navigateur ; formats JPG, PNG, WebP et GIF, 10 Mo par fichier, textures limitées à 2048 pixels.',
+            'Nouveau visuel prépare Image vivante avec neuf contrôleurs, audio et feedback ; le brouillon précédent est conservé parmi les essais locaux.',
+            'Remplacement de la photo dans un preset image sans modifier ses effets ; banques de snapshots compatibles conservées.',
+            'Les photos locales utilisées sont incluses dans le Pack VJ ; publication en médiathèque WordPress uniquement sur demande explicite.',
+            'Panneau synchronisé dans la fenêtre de code détachée ; corrections du modèle hors ligne pour charger sa photothèque et ses sources intégrées.',
+        )),
         '0.39.31' => array('Panneaux toujours accessibles et raccourci de mode visuel', array(
             'Snapshots, séquenceur et panneau MIDI visibles dès l’ouverture d’Hydra, y compris avant le lancement et avec un preset sans contrôleur.',
             'Capture de snapshot désactivée lorsqu’aucun paramètre ne peut être mémorisé, avec une explication visible.',

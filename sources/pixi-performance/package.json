@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@pixi/ui": "^2.3.2",
+    "esbuild": "^0.25.10",
+    "pixi.js": "^8.14.3"
+  },
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}

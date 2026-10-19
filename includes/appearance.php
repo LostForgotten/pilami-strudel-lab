@@ -314,7 +314,7 @@ function pilami_strudel_appearance_page() {
                     <label for="pilami-hydra-color-<?php echo (int)$term->term_id; ?>"><?php echo esc_html($term->name); ?><input type="color" id="pilami-hydra-color-<?php echo (int)$term->term_id; ?>" name="pilami_strudel_appearance[hydra_category_colors][<?php echo (int)$term->term_id; ?>]" value="<?php echo esc_attr($color); ?>" data-hydra-color-name="<?php echo esc_attr($term->name); ?>"></label>
                 <?php } } ?>
                 </div>
-                <p class="description">Chaque preset reprend la teinte de sa catégorie. Si un preset appartient à plusieurs catégories, il suit celle choisie dans le filtre ; « Toutes les catégories » utilise la première par ordre alphabétique. Les nouvelles catégories reçoivent automatiquement une couleur.</p>
+                <p class="description">Chaque preset reprend la teinte de sa catégorie. Si un preset appartient à plusieurs catégories, il suit celle choisie dans le filtre ; « Toutes les catégories » privilégie la première catégorie par ordre alphabétique hors « Imports » ; « Imports » sert de couleur par défaut. Les nouvelles catégories reçoivent automatiquement une couleur.</p>
             </section>
             <section class="pilami-admin-card"><h2>Textes</h2><label for="pilami-intro"><strong>Introduction</strong></label>
                 <?php wp_editor($o['intro'],'pilami-intro',array('textarea_name'=>'pilami_strudel_appearance[intro]','textarea_rows'=>4,'media_buttons'=>false,'teeny'=>true)); ?>

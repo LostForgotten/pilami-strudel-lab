@@ -88,7 +88,7 @@ function pilami_hydra_catalog() {
         $categories = array(); $colors = array(); $ids = array();
         if (!is_wp_error($terms)) { foreach ($terms as $term) { $categories[] = $term->name; $ids[] = (int) $term->term_id; $colors[$term->name] = pilami_strudel_hydra_category_color($term, $appearance); } }
         sort($ids, SORT_NUMERIC);
-        $items[] = array('id' => (string) $post->ID, 'name' => $post->post_title, 'code' => $code, 'revision' => pilami_hydra_preset_revision($code, $post->post_title), 'categories' => $categories ?: array('Sans catégorie'), 'category_colors' => $colors,
+        $items[] = array('id' => (string) $post->ID, 'name' => $post->post_title, 'code' => $code, 'revision' => pilami_hydra_preset_revision($code, $post->post_title), 'createdAt' => get_post_time('c', true, $post) ?: null, 'categories' => $categories ?: array('Sans catégorie'), 'category_colors' => $colors,
             'category_ids' => $ids, 'category_revision' => is_wp_error($terms) ? null : pilami_hydra_category_revision($ids));
     }
     return $items;
@@ -102,9 +102,14 @@ function pilami_hydra_render_workspace() {
         <div class="pilami-hydra-filters">
             <label>Catégorie <select data-hydra-category><option value="">Toutes les catégories</option></select></label>
             <label>Rechercher <input data-hydra-search type="search" placeholder="Julia, mandala, audio…"></label>
+            <label>Trier par <select data-hydra-sort><option value="recent">Plus récents</option><option value="oldest">Plus anciens</option><option value="name">Nom : A → Z</option></select></label>
         </div>
         <p data-hydra-count class="pilami-strudel-muted"></p>
         <div data-hydra-presets class="pilami-hydra-preset-list" role="group" aria-label="Presets Hydra"></div>
+        <div data-hydra-share-feedback>
+            <p data-hydra-share-status class="pilami-strudel-muted" role="status" aria-live="polite"></p>
+            <div data-hydra-share-result hidden><label>Lien du preset <input data-hydra-share-link type="text" readonly aria-label="Lien du preset à partager"></label></div>
+        </div>
         <label class="pilami-hydra-name-field">Nom du preset / essai<input type="text" data-hydra-name maxlength="100" placeholder="Nom du visuel…"></label>
         <div class="pilami-strudel-transport">
             <button type="button" class="pilami-play" data-hydra-action="play">▶ Lancer le visuel</button>
@@ -117,13 +122,27 @@ function pilami_hydra_render_workspace() {
         </div>
         <p data-hydra-preset-note class="pilami-strudel-muted" hidden></p>
         <details data-hydra-preset-categories class="pilami-preset-categories" hidden>
-            <summary>Catégories du preset</summary>
+            <summary>Classer ce preset</summary>
             <p data-hydra-category-help class="pilami-strudel-muted">Choisis un preset de la bibliothèque.</p>
             <fieldset data-hydra-category-fields disabled>
                 <legend>Classement dans WordPress</legend>
                 <div data-hydra-category-choices class="pilami-category-choices"></div>
             </fieldset>
             <button type="button" data-hydra-action="save-categories" disabled>Enregistrer les catégories</button>
+            <details data-hydra-category-manager class="pilami-category-manager">
+                <summary>Gérer les catégories</summary>
+            <div class="pilami-tools-row" data-hydra-category-create>
+                <label>Nouvelle catégorie <input type="text" data-hydra-category-name maxlength="100" placeholder="Particules, Géométrie, Live…" autocomplete="off"></label>
+                <button type="button" data-hydra-action="create-category" disabled>＋ Créer la catégorie</button>
+            </div>
+            <p data-hydra-category-create-status role="status" aria-live="polite" class="pilami-strudel-muted"></p>
+                <div class="pilami-tools-row" data-hydra-category-delete>
+                    <label>Catégorie à supprimer <select data-hydra-category-delete-select><option value="">Choisir une catégorie…</option></select></label>
+                    <button type="button" data-hydra-action="delete-category" data-color-role="stop" disabled>Supprimer la catégorie</button>
+                </div>
+                <p class="pilami-strudel-muted">La suppression retire la catégorie de tous les presets. Les presets et leurs autres catégories sont conservés.</p>
+                <p data-hydra-category-delete-status role="status" aria-live="polite" class="pilami-strudel-muted"></p>
+            </details>
         </details>
         <p data-hydra-status role="status" aria-live="polite">Choisis un preset Hydra.</p>
         <div data-hydra-mic-anchor></div>

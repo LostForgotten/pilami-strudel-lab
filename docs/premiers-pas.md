@@ -16,11 +16,23 @@ Ouvre l’espace Hydra, choisis un preset puis lance-le. S’il expose des param
 
 Le Designer permet d’explorer visuellement des chaînes Hydra. **Importer le code**, puis **Update**, importe les constructions reconnues ; un script JavaScript arbitraire ou un effet personnalisé peut dépasser les possibilités de conversion. Les contrôleurs du Designer et d’Hydra utilisent les mêmes paramètres quand le script est pris en charge.
 
+## Retrouver une valeur et régler la résolution
+
+Un **clic droit** sur un curseur, potentiomètre, fader, interrupteur ou sa valeur manuelle rappelle sa valeur au lancement du preset. Sur un pad XY, il rappelle les deux axes ensemble. Les bornes et pas actuels sont respectés, et les liaisons audio/MIDI restent actives. Relancer ou appliquer le code définit de nouvelles valeurs initiales à partir de ce code.
+
+Le sélecteur **Résolution Hydra**, dans les réglages visuels et les fenêtres Code / Contrôleurs, change la taille du rendu sans modifier le script. Il reste fixe en plein écran et mémorise le choix sur ce navigateur. **Selon le preset** retrouve la taille prévue par le script. Voir [résolution et fluidité](performance.md).
+
+## Bibliothèque de presets
+
+La liste et la fiche **Preset sélectionné** sont réunies. Le menu **Trier par** propose les plus récents, les plus anciens et le nom ; le choix reste mémorisé. Le tri porte sur la date d’ajout du preset.
+
+La fiche rassemble l’import, le partage et l’export du preset. Selon les droits WordPress, elle permet aussi de créer, mettre à jour ou supprimer un preset et de gérer ses catégories. L’import est également accessible en haut des fenêtres Hydra Code / Contrôleurs. Pour l’administrateur connecté, il utilise la sauvegarde WordPress habituelle, sans lancer automatiquement le visuel.
+
 ## Photos et Performance
 
 Dans **Photos · importer et choisir une image**, importe tes photos et utilise-les dans un preset image, ou prépare un nouveau visuel **Image vivante**. Les photos restent dans ce navigateur ; leur publication dans la médiathèque WordPress demande une action explicite.
 
-Le bouton **Performance ✦** ouvre le pad XY Pixi, quatre commandes réassignables et les snapshots graphiques. Choisis les axes du pad et les paramètres des grandes commandes. Sélectionne **Rappeler**, **Morpher** ou **Capturer**, puis un snapshot. Régler une durée et arrêter une transition reste possible. Les valeurs sont communes aux contrôleurs habituels, au MIDI et aux morphings.
+Le bouton **Performance ✦** ouvre le pad XY Pixi, quatre commandes réassignables et les snapshots graphiques. Choisis les axes du pad et les paramètres des grandes commandes. Sélectionne **Rappeler**, **Morpher** ou **Capturer**, puis un snapshot. Régler une durée et arrêter une transition reste possible. Les valeurs sont communes aux contrôleurs habituels, au MIDI et aux morphings. Le panneau s’ouvre dans la fenêtre de son bouton, reste visible en plein écran et son pad suit le glisser jusqu’au relâchement. Le clic droit réinitialise aussi ses curseurs et son pad.
 
 Le [nuage de particules](../examples/Nuage-Particules-Pixi.hydra.txt) constitue un exemple à importer : ses contrôleurs règlent notamment l’opacité globale, la plage d’opacité aléatoire et sa vitesse d’évolution. Chaque particule évolue indépendamment.
 
@@ -70,6 +82,8 @@ Les commandes fixes sont affichées au survol et dans **Raccourcis et écrans** 
 | Ctrl + I / Cmd + I | Importer un preset Hydra, depuis la page ou une fenêtre Hydra |
 
 Les commandes Hydra restent disponibles dans le code Hydra. Les champs de nom et autres champs de saisie ordinaires restent protégés.
+
+Dans la fenêtre **Hydra · Code**, l’éditeur reste visible sans plein écran. Le volet sous le code rassemble nom, photos, partage et catégories.
 
 L’affectation automatique aux écrans dépend des capacités du navigateur et des permissions accordées. Utilise le bouton de plein écran proposé dans la fenêtre ou F11 si nécessaire. Le dock visuel démarre réduit ; déplie-le pour accéder aux commandes, au clavier et aux réglages.
 

@@ -4,6 +4,78 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.48' => array('Sélecteur de résolution Hydra', array(
+            'Choix de la résolution dans les réglages visuels et les fenêtres Hydra Code / Contrôleurs : du 640 × 360 au Full HD.',
+            'Application immédiate et dimensions conservées en plein écran ; choix mémorisé sur le navigateur pour tous les presets.',
+            'Selon le preset restaure la taille définie dans le script, ou le dimensionnement automatique en son absence.',
+            'Sélecteurs synchronisés, code et snapshots conservés, même réglage dans le Pack VJ hors ligne.',
+        )),
+        '0.39.47' => array('Éditeur visible dans la fenêtre Code', array(
+            'Le code Hydra est placé en premier dans sa fenêtre, avec une hauteur minimale utilisable dès l’ouverture.',
+            'Nom, photos, partage et catégories du preset sont regroupés dans un volet repliable sous le code, indépendant des réglages de la fenêtre Contrôleurs.',
+            'Les petites fenêtres défilent sans faire disparaître l’éditeur ; même protection pour le code Strudel.',
+            'Synchronisation, import, application et plein écran conservés ; Pack VJ actualisé.',
+        )),
+        '0.39.46' => array('Résolution de rendu du preset verrouillée', array(
+            'Les dimensions définies par setResolution sont conservées en plein écran, au redimensionnement et lors des changements de mode d’affichage.',
+            'Le visuel remplit toujours l’écran ; sa taille de calcul n’augmente plus automatiquement lorsqu’une résolution est définie dans le preset.',
+            'Le verrouillage repart de zéro au lancement du preset suivant : les scripts sans résolution explicite continuent à suivre la taille de la fenêtre.',
+            'Même comportement dans le Pack VJ hors ligne, sans modifier les presets existants.',
+        )),
+        '0.39.45' => array('Pad Performance et retour aux valeurs initiales', array(
+            'Glisser continu sur le pad Performance, y compris dans une fenêtre détachée et en plein écran ; le pointeur reste capturé jusqu’au relâchement.',
+            'Clic droit sur un curseur, fader, potentiomètre, interrupteur ou sa valeur manuelle pour rappeler sa valeur au lancement du preset.',
+            'Clic droit sur un pad XY pour réinitialiser ses deux axes ensemble ; mêmes commandes dans Performance et dans le Pack VJ.',
+            'Les bornes et pas actuels sont respectés. Les liaisons audio et MIDI sont conservées ; le clic droit sur une source audio garde ses réglages.',
+        )),
+        '0.39.44' => array('Performance dans la bonne fenêtre et import accessible', array(
+            'Le panneau Performance s’ouvre dans la fenêtre où son bouton est utilisé, y compris en plein écran dans Hydra · Contrôleurs.',
+            'Habillage du panneau chargé dans cette même fenêtre ; fermeture et retour aux contrôleurs sans quitter le plein écran.',
+            'Importer un preset est directement accessible dans la fiche Preset sélectionné, près du partage et de l’export.',
+            'Import également disponible dans les barres des fenêtres Hydra · Contrôleurs et Code, avec le même traitement et la sauvegarde WordPress administrateur.',
+            'Pack VJ hors ligne actualisé ; import sans lancement automatique du visuel.',
+        )),
+        '0.39.43' => array('Trier les presets par date d’ajout', array(
+            'Menu Trier par près de la catégorie et de la recherche : Plus récents, Plus anciens ou Nom : A → Z.',
+            'Les presets les plus récents apparaissent en premier par défaut ; le choix de tri est mémorisé sur ce navigateur.',
+            'Tri selon la date d’ajout, conservée lors des modifications ; les imports simultanés gardent un ordre stable.',
+            'Recherche, catégories, sélection et visuel en cours conservés lors du tri ; date visible au survol.',
+            'Dates conservées dans les nouveaux Packs VJ ; classement alphabétique de repli pour les anciens exports sans date.',
+        )),
+        '0.39.42' => array('Bibliothèque de presets compacte et sans colonne vide', array(
+            'Liste des presets sur toute la largeur et fiche de sélection immédiatement en dessous.',
+            'Nom et commandes regroupés face au classement, avec adaptation à la largeur réelle du panneau.',
+            'Aide au classement simplifiée ; partage, export et gestion des catégories conservés.',
+            'Fenêtres détachées et Pack VJ actualisés.',
+        )),
+        '0.39.41' => array('Partager un visuel depuis la fiche du preset', array(
+            'Bouton Partager ce preset dans la fiche près du nom, avec Exporter le preset à côté.',
+            'Lien court et confirmation de copie affichés dans cette fiche ; copie manuelle possible si le presse-papiers est refusé.',
+            'Commandes et lien synchronisés dans les fenêtres Code et Contrôleurs.',
+            'Code et nom courants partagés ; ouverture du lien sans lecture automatique. Partages Strudel et duo conservés.',
+            'Pack VJ actualisé avec l’export du preset depuis sa fiche.',
+        )),
+        '0.39.40' => array('Presets réunis, suppression des catégories et couleurs corrigées', array(
+            'Fiche du preset sélectionné près de la liste : nom, classement, mise à jour et suppression regroupés.',
+            'Gérer les catégories rassemble création et suppression avec confirmation ; presets et autres catégories conservés.',
+            'Dans Toutes les catégories, une catégorie personnalisée prend la priorité sur Imports pour la couleur du bouton.',
+            'Pastilles de couleur et actualisation au retour des réglages WordPress, sans remplacer les brouillons ou les contrôleurs.',
+            'Sélection sans saut vers le code, fenêtres détachées synchronisées et Pack VJ actualisé.',
+        )),
+        '0.39.39' => array('Créer ses catégories depuis le laboratoire', array(
+            'Champ Nouvelle catégorie dans Catégories du preset, accessible aux administrateurs connectés à WordPress.',
+            'La nouvelle catégorie est cochée pour le preset courant ; Enregistrer les catégories valide son classement.',
+            'Noms existants réutilisés, choix en cours et brouillons conservés, fonctionnement partagé avec les fenêtres détachées.',
+            'Pack VJ et sources actualisés ; création et classement réservés à la session WordPress.',
+            'Preset séparé Nuage Pixi v5 : traînées individuelles avec longueur, intensité et détail, en conservant la profondeur de champ.',
+        )),
+        '0.39.38' => array('Moteur Pixi pour nuages de particules optimisés', array(
+            'ParticleContainer et Particle exposés dans le moteur Pixi local, avec une nouvelle ressource pour renouveler le cache.',
+            'Preset Nuage de particules v3 : texture lumineuse partagée et un seul conteneur, sans objet Graphics par particule.',
+            'Même plage de 100 à 2400 particules, mêmes 19 contrôleurs, réaction audio et opacité aléatoire indépendante.',
+            'Seules les particules actives sont envoyées au rendu ; libération de la texture et du conteneur au changement de preset.',
+            'Panneau Performance et Pack VJ hors ligne compatibles avec le moteur étendu.',
+        )),
         '0.39.37' => array('Connexions en tête de page et import au clavier', array(
             'Barre commune Audio, MIDI et Link avec activation, désactivation et état de connexion visible.',
             'Entrée audio activable avant le premier visuel ; connexion conservée au changement de preset et arrêtée par Désactiver l’audio.',

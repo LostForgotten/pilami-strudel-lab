@@ -1,3 +1,107 @@
+Pilami Strudel Lab 0.39.48 — Choisir la résolution sans éditer le code
+
+- Dans les réglages visuels (bouton ▤ puis ⚙), le sélecteur Résolution Hydra propose Selon le preset, 640 × 360, 800 × 450, 960 × 540, 1280 × 720 et 1920 × 1080.
+- Le même sélecteur est accessible en haut des fenêtres Hydra · Code et Hydra · Contrôleurs. Les sélecteurs restent synchronisés et affichent la résolution en cours.
+- Le changement s’applique immédiatement au rendu et aux textures de feedback, sans modifier le code, les contrôleurs ou les snapshots. La résolution choisie reste fixe en plein écran.
+- Le choix est mémorisé sur ce navigateur pour tous les presets. Une résolution manuelle est prioritaire sur setResolution ; Selon le preset reprend la dernière taille demandée par le script, ou suit la fenêtre si le script n’en définit pas.
+- Le sélecteur peut aussi être réglé avant de lancer un visuel. Le Pack VJ hors ligne possède le même choix dans son en-tête et ses fenêtres détachées.
+- Certains presets utilisent leur propre moteur et une définition interne supplémentaire : celle-ci reste pilotée par leurs contrôleurs. Un changement de taille peut réinitialiser les traces du feedback Hydra.
+- Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.47 — Code visible dès l’ouverture de sa fenêtre
+
+- La fenêtre Hydra · Code donne la priorité à l’éditeur, visible et utilisable sans passer en plein écran.
+- Nom, photos, partage et catégories du preset sont regroupés dans un volet sous le code, replié au premier accès. Ils ne prennent plus toute la hauteur avant l’éditeur.
+- L’éditeur garde une hauteur minimale ; les petites fenêtres peuvent défiler. Les commandes, la saisie, l’application et la synchronisation avec la page principale sont conservées.
+- La même protection de hauteur s’applique à la fenêtre de code Strudel. Les réglages repliables des fenêtres Code et Contrôleurs sont indépendants.
+- Pack VJ hors ligne actualisé. Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.46 — Résolution du preset conservée en plein écran
+
+- Un appel setResolution(800, 450), ou toute autre résolution du preset, verrouille sa taille de calcul. Agrandir la fenêtre ou passer en plein écran agrandit l’affichage sans augmenter le nombre de pixels calculés par Hydra.
+- La résolution reste conservée lors des changements Panneau / Fenêtre séparée / Fond et du déplacement entre écrans. Aucune modification des presets existants n’est nécessaire.
+- Le dernier appel setResolution du preset reste prioritaire. Les appels sur le moteur renvoyé par initHydra fonctionnent aussi.
+- Chaque lancement / application de preset repart en mode automatique : si le nouveau script ne fixe pas de résolution, le rendu suit la taille de l’affichage. Le verrouillage ne se transmet pas d’un preset à l’autre.
+- Pack VJ hors ligne actualisé. Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.45 — Glisser sur le pad et valeurs par défaut
+
+- Le pad Performance suit le glisser en continu dans la page, les fenêtres détachées et le plein écran. Le déplacement continue au-delà du pad tant que le bouton reste appuyé.
+- Clic droit sur un curseur, fader vertical, potentiomètre, interrupteur ou sa valeur manuelle : rappeler la valeur au lancement du preset, avec les bornes et le pas actuels.
+- Clic droit sur un pad XY : rappeler les valeurs initiales des deux axes ensemble. Dans Performance, le clic droit fonctionne aussi sur les curseurs des axes, les commandes et leurs valeurs affichées.
+- Les valeurs initiales restent stables pendant les réglages, le Random et les rappels de snapshots. Relancer / appliquer le code définit de nouvelles valeurs initiales à partir de ce code.
+- Les liaisons audio et MIDI restent actives. Pour un contrôleur audio, seule sa valeur manuelle revient à l’initiale : le son continue à la moduler. Le clic droit sur une source audio conserve son menu.
+- Pack VJ actualisé. Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.44 — Performance et import dans les fenêtres Hydra
+
+- Performance s’ouvre dans la fenêtre de ses contrôleurs et reste visible en plein écran, avec son habillage complet.
+- Fermer le panneau ramène aux contrôleurs sans changer de fenêtre ni quitter le plein écran.
+- Importer un preset se trouve dans la fiche Preset sélectionné, près de Partager et Exporter.
+- Le bouton est aussi accessible en haut des fenêtres Hydra · Contrôleurs et Code ; la sélection du fichier s’ouvre dans cette fenêtre.
+- Même validation, même import et même sauvegarde automatique WordPress pour l’administrateur ; le visuel ne démarre pas automatiquement.
+- Pack VJ actualisé. Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.43 — Trier les presets par date d’ajout
+
+- Dans la bibliothèque Hydra, le menu Trier par se trouve à côté du filtre de catégorie et de la recherche.
+- Plus récents est le tri initial ; Plus anciens et Nom : A → Z restent disponibles. Le choix est mémorisé sur ce navigateur.
+- La date correspond à l’ajout du preset dans la bibliothèque. Une modification du nom, du code ou des catégories ne change pas cette date. Elle est visible au survol du bouton du preset.
+- Le tri conserve le filtre, la recherche, la sélection, le brouillon et le visuel en lecture. Les nouveaux imports se placent directement au bon endroit.
+- Les nouveaux Packs VJ conservent ces dates. Les presets d’un ancien export sans date sont classés par nom après les presets datés.
+- Installer le ZIP en remplaçant le plugin, puis recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.42 — Bibliothèque de presets plus compacte
+
+- La liste des presets utilise toute la largeur disponible ; la fiche du preset sélectionné se place immédiatement dessous.
+- Dans la fiche, nom, état et commandes sont regroupés à gauche, classement et gestion des catégories à droite. La fiche s’adapte à la largeur réelle du panneau et s’empile sur téléphone.
+- Suppression du grand vide sous la liste et du nom répété dans l’aide au classement. La liste reste défilante pour les grandes bibliothèques.
+- Partager, exporter, créer, mettre à jour et supprimer restent accessibles depuis la fiche. Les fenêtres détachées et le Pack VJ conservent les mêmes commandes.
+- Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.41 — Partager depuis la fiche du preset
+
+- « Partager ce preset » se trouve dans la fiche Preset sélectionné, sous son nom, à côté des commandes du preset. « Exporter le preset » permet aussi de transmettre le fichier .hydra.txt.
+- Le partage crée un lien court vers le code et le nom actuellement affichés, y compris les réglages inscrits dans le script. Le lien et le résultat de sa copie s’affichent directement dans la fiche.
+- Si le navigateur refuse le presse-papiers, le lien est sélectionné pour une copie manuelle avec Ctrl + C. Les erreurs restent visibles près du bouton et un nouvel essai est possible.
+- Le destinataire retrouve le visuel dans Hydra et choisit quand le lancer. L’ouverture du lien ne déclenche pas le visuel automatiquement.
+- La commande et le lien sont également accessibles dans les fenêtres Code et Contrôleurs. Le partage par lien reste disponible aux visiteurs du site, sans session administrateur.
+- Les partages Strudel et musique + visuels conservent leurs commandes existantes. Dans le Pack VJ hors ligne, Exporter le preset reste accessible ; le partage par lien nécessite le site WordPress.
+- Installer le ZIP en remplaçant le plugin, puis recharger la page et rouvrir les fenêtres détachées.
+
+Pilami Strudel Lab 0.39.40 — Presets et catégories réunis
+
+- Dans Hydra, la liste des presets et la fiche du preset sélectionné sont regroupées en haut. Le nom, le classement, la mise à jour et la suppression du preset sont accessibles dans cette fiche.
+- « Filtrer par catégorie » sert à parcourir la bibliothèque. « Classer ce preset » affiche ses catégories, sans passer par Sauvegarder et partager.
+- « Gérer les catégories » regroupe leur création et leur suppression. La suppression demande confirmation et retire uniquement la catégorie ; les presets, les autres catégories et les sous-catégories sont conservés. Un preset sans autre classement apparaît dans Sans catégorie.
+- Création, classement et suppression des catégories restent réservés aux administrateurs connectés à WordPress. Les fenêtres Code et Contrôleurs partagent les mêmes commandes.
+- Dans Toutes les catégories, la couleur suit la première catégorie alphabétique hors Imports. Imports fournit la couleur de repli. Avec un filtre actif, la catégorie filtrée garde la priorité.
+- Les couleurs enregistrées dans WordPress sont relues au retour sur le laboratoire ; brouillon, choix de classement et contrôleurs restent en place. Les cases de classement affichent aussi une pastille de couleur.
+- Choisir un preset ne lance pas le visuel et ne déplace plus le focus vers l’éditeur de code.
+- Pack VJ actualisé ; les opérations WordPress y restent indisponibles.
+- Installer le ZIP en remplaçant le plugin, recharger la page principale et rouvrir les fenêtres détachées. Le preset Nuage v5 déjà importé reste utilisable.
+
+Pilami Strudel Lab 0.39.39 — Créer des catégories dans l’application
+
+- Connecté comme administrateur WordPress : dans Hydra, ouvrir Catégories du preset, saisir Nouvelle catégorie puis cliquer Créer la catégorie (ou Entrée).
+- Le nom existant est réutilisé. La catégorie créée est cochée pour le preset courant ; Enregistrer les catégories valide le classement. Les autres cases cochées et les modifications de code sont conservées.
+- Même fonctionnement dans les fenêtres Code et Contrôleurs. Une création sans preset sélectionné reste disponible pour les classements suivants.
+- Le classement concerne les presets de la bibliothèque WordPress. Les essais locaux du navigateur ne deviennent pas automatiquement des presets WordPress.
+- Création et classement protégés par la session administrateur et le nonce REST WordPress ; indisponibles pour les visiteurs et dans le Pack VJ hors ligne.
+- Preset séparé Nuage-Particules-Pixi-Pilami-v5-trainees.hydra.txt : Longueur_Trainee (0–2 secondes), Intensite_Trainee (0–1), Detail_Trainee (0–12 segments par particule). Détail, intensité ou longueur à 0 désactivent les traces.
+- Profondeur de champ, résolution, opacités individuelles, audio, MIDI et snapshots conservés. Les traces suivent chaque particule, s’atténuent avec l’âge et s’arrêtent avec le visuel.
+- Pour commencer sur GTX 770 : 500–700 particules, détail 2–4, résolution 0.5–0.75. Le détail ajoute des segments à chaque particule ; mesurer le débit sur la machine cible.
+- Installer le ZIP dans WordPress en remplaçant la version actuelle, recharger la page et rouvrir les fenêtres détachées. Importer ensuite le preset v5 avec Ctrl + I.
+
+Pilami Strudel Lab 0.39.38 — Nuage Pixi avec ParticleContainer
+
+- Nouveau moteur Pixi local exposant ParticleContainer, Particle et Rectangle ; bibliothèque toujours embarquée, sans CDN.
+- Le preset Nuage-Particules-Pixi-Pilami-v3-ParticleContainer.hydra.txt utilise une texture lumineuse partagée et un seul conteneur au lieu d’un Graphics par particule.
+- Les 19 contrôleurs et leurs plages sont conservés : position, mouvement, taille, couleur, audio et opacité indépendante. 1100 particules par défaut pour comparer avec la v2 ; 100 à 2400 réglables.
+- Le conteneur ne transmet que les particules actives au rendu. La texture et le conteneur sont libérés au changement de preset.
+- Panneau Performance et Pack VJ actualisés. Réinstaller le plugin, recharger la page puis importer le preset v3 avec Ctrl + I.
+- Le gain réel dépend du navigateur, du GPU et de la résolution ; à comparer sur la machine cible, à réglages égaux.
+
 Pilami Strudel Lab 0.39.37 — Connexions et import au clavier
 
 - En haut du laboratoire : Activer l’audio, Activer le MIDI et Connecter Link, avec voyants et état visible.

@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 // must enumerate its own entries so those helpers are never treated as systems.
 await build({
   entryPoints: ['entry.mjs'], bundle: true, format: 'iife', minify: true,
-  legalComments: 'linked', outfile: '../../assets/vendor/pilami-pixi-ui-8.14.3-2.3.2.min.js',
+  legalComments: 'linked', outfile: '../../assets/vendor/pilami-pixi-ui-8.14.3-2.3.2-particles.min.js',
   plugins: [{ name: 'hydra-array-compatibility', setup(builder) {
     builder.onLoad({ filter: /AbstractRenderer\.mjs$/ }, async ({ path }) => {
       let contents = await readFile(path, 'utf8');

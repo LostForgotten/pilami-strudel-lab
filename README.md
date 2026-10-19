@@ -4,13 +4,14 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.37 — projet en développement.**
+**Version actuelle : 0.39.48 — projet en développement.**
 
 ## Ce que l’on peut faire
 
 - Écrire et jouer des patterns Strudel, charger des presets et conserver ses essais.
 - Créer des visuels Hydra, les rendre réactifs au son et explorer des presets.
-- Manipuler les visuels avec des sliders, potentiomètres et pads XY, ou ouvrir le panneau Performance basé sur PixiJS / PixiUI.
+- Manipuler les visuels avec des sliders, potentiomètres et pads XY, ouvrir le panneau Performance basé sur PixiJS / PixiUI, et retrouver les valeurs initiales au clic droit.
+- Choisir la résolution de rendu, du 640 × 360 au Full HD, sans éditer le code et en conservant la taille choisie en plein écran.
 - Importer et conserver ses photos dans le navigateur pour créer des visuels et alimenter les presets image.
 - Construire et importer des chaînes Hydra dans le Designer visuel, dans les limites des fonctions prises en charge.
 - Associer un appareil MIDI aux paramètres, corriger les associations et lisser les mouvements.
@@ -19,6 +20,16 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Détacher le visuel, le code et les contrôleurs dans des fenêtres, et configurer des raccourcis pour plusieurs écrans.
 - Exporter un Pack VJ hors ligne depuis l’interface Hydra.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
+
+## Nouveautés de la version 0.39.48
+
+- **Finesse et fluidité** : sélecteur Résolution Hydra dans les réglages visuels et les fenêtres Code / Contrôleurs. Choix immédiat, conservé sur ce navigateur pour tous les presets ; Selon le preset retrouve la résolution du script.
+- **Clic droit** : retour à la valeur du contrôleur au lancement du preset, ou aux deux valeurs initiales d’un pad XY, en conservant les liaisons audio et MIDI.
+- **Fenêtres** : code visible dès l’ouverture, Performance dans la fenêtre de son bouton et glisser continu sur son pad, y compris en plein écran.
+- **Bibliothèque** : fiche de preset compacte, partage et import à proximité, création/suppression des catégories et tri du plus récent au plus ancien.
+- **Hors ligne** : mêmes améliorations dans les nouveaux Packs VJ exportés.
+
+Voir le [guide de résolution et de fluidité](docs/performance.md) et le [journal des versions](CHANGELOG.md).
 
 ## Essayer
 
@@ -30,7 +41,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.37.zip` lorsqu’il est fourni avec une version.
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.48.zip` lorsqu’il est fourni avec une version.
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -57,6 +68,7 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 - [Installation et mises à jour](docs/installation.md)
 - [Premiers pas et raccourcis](docs/premiers-pas.md)
 - [Connexion Ableton Link](docs/ableton-link.md)
+- [Résolution, fluidité et plein écran](docs/performance.md)
 - [Organisation du code](docs/developpement.md)
 - [Contribuer ou signaler un problème](CONTRIBUTING.md)
 - [Derniers changements](CHANGELOG.md)

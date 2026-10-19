@@ -1,6 +1,6 @@
 # Organisation du code
 
-Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.37. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
+Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.48. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
 
 ## Repères
 
@@ -39,11 +39,13 @@ Les sources, versions et liens amont déjà livrés sont détaillés dans `READM
 
 ## Performance et connexions
 
-Le panneau Performance est dans `assets/pilami-performance-0.39.35.js`. Il utilise le modèle de contrôleurs existant et charge la bibliothèque locale Pixi à la demande. Les sources de compilation sont dans `sources/pixi-performance/` : `npm ci`, puis `npm run build`. Le build adapte l’énumération des systèmes Pixi aux méthodes héritées des tableaux Hydra ; conserve cette adaptation et les notices.
+Le panneau Performance est dans `assets/pilami-performance-0.39.45.js`. Il utilise le modèle de contrôleurs existant et charge la bibliothèque locale Pixi à la demande. Les sources de compilation sont dans `sources/pixi-performance/` : `npm ci`, puis `npm run build`. Le build adapte l’énumération des systèmes Pixi aux méthodes héritées des tableaux Hydra ; conserve cette adaptation et les notices.
 
-La barre Audio / MIDI / Link est montée par `assets/pilami-connections-0.39.37.js`. Elle réutilise les API MIDI et Link. L’adaptateur `pilami-hydra-0.39.37.js` conserve une connexion audio de session, indépendante du rendu et réutilisée au changement de preset. La désactivation ferme le flux et son contexte, et remet les mesures à zéro. Le compactage du thème est limité par la classe de page ajoutée pour le shortcode.
+La barre Audio / MIDI / Link est montée par `assets/pilami-connections-0.39.37.js`. Elle réutilise les API MIDI et Link. L’adaptateur `pilami-hydra-0.39.48.js` conserve une connexion audio de session, indépendante du rendu et réutilisée au changement de preset. La désactivation ferme le flux et son contexte, et remet les mesures à zéro. Le compactage du thème est limité par la classe de page ajoutée pour le shortcode.
 
 Le Pack VJ incorpore des scripts et des sources en JSON : modifier uniquement un fichier chargé par WordPress ne suffit pas à le mettre à jour. Vérifie aussi le modèle autonome après tout changement partagé.
+
+L’adaptateur Hydra distingue la taille demandée par le preset, les dimensions de l’affichage et le choix de résolution du navigateur. Les changements d’affichage passent par le redimensionnement interne ; les appels `setResolution` du preset mémorisent sa demande. Une préférence manuelle a la priorité sans réécrire le code. Les sélecteurs partagent ce même état, y compris dans les fenêtres détachées.
 
 ## Vérifications
 
@@ -61,7 +63,9 @@ Avec PHP installé, utilise `php -l` sur les fichiers PHP modifiés. Avec Node.j
 - Lecture/Update et Stop Strudel, puis lancement d’un visuel Hydra.
 - Modification d’un contrôleur, capture de snapshots, rappel et morphing.
 - Clics Rappel/Morphing de la grille, lecture et Random.
-- Ouverture des fenêtres et raccourcis hors saisie.
+- Ouverture des fenêtres, éditeur visible sans plein écran et raccourcis hors saisie.
+- Clic droit sur les différents contrôleurs et glisser continu sur le pad Performance.
+- Résolutions fixes, retour Selon le preset, plein écran et synchronisation des sélecteurs.
 - Modification d’un preset en administrateur et consultation en visiteur.
 - Export VJ hors ligne, et Link/MIDI si la modification les concerne.
 

@@ -15,18 +15,95 @@ function pilami_hydra_editor_session() {
         'media_api' => current_user_can('upload_files') ? rest_url('wp/v2/media') : null,
         'catalog' => pilami_hydra_catalog(),
         'category_options' => pilami_hydra_category_options(),
+        'category_api' => rest_url('pilami-strudel/v1/hydra-categories'),
         'snapshot_banks' => pilami_hydra_snapshot_catalog(),
     ));
 }
 add_action('wp_ajax_pilami_hydra_editor_session', 'pilami_hydra_editor_session');
 add_action('wp_ajax_nopriv_pilami_hydra_editor_session', 'pilami_hydra_editor_session');
 
-function pilami_hydra_category_options() {
-    $terms = get_terms(array('taxonomy' => 'pilami_hydra_cat', 'hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC'));
+function pilami_hydra_category_options($hide_empty = false) {
+    $terms = get_terms(array('taxonomy' => 'pilami_hydra_cat', 'hide_empty' => $hide_empty, 'orderby' => 'name', 'order' => 'ASC'));
     if (is_wp_error($terms)) { return array(); }
-    $options = array();
-    foreach ($terms as $term) { $options[] = array('id' => (int) $term->term_id, 'name' => $term->name); }
+    $options = array(); $appearance = pilami_strudel_appearance();
+    foreach ($terms as $term) { $options[] = array('id' => (int) $term->term_id, 'name' => $term->name,
+        'revision' => pilami_hydra_term_revision($term), 'color' => pilami_strudel_hydra_category_color($term, $appearance)); }
     return $options;
+}
+
+// Public category colors can change while the cached laboratory page remains open.
+function pilami_hydra_category_colors() {
+    nocache_headers();
+    header('Cache-Control: private, no-store, max-age=0');
+    wp_send_json_success(array('category_options' => pilami_hydra_category_options(!current_user_can('manage_options'))));
+}
+add_action('wp_ajax_pilami_hydra_category_colors', 'pilami_hydra_category_colors');
+add_action('wp_ajax_nopriv_pilami_hydra_category_colors', 'pilami_hydra_category_colors');
+
+function pilami_hydra_term_revision($term) {
+    return hash('sha256', wp_json_encode(array((int) $term->term_id, (int) $term->term_taxonomy_id,
+        $term->name, (int) $term->parent)));
+}
+
+function pilami_hydra_delete_category($request) {
+    $id = (int) $request['id'];
+    $term = get_term($id, 'pilami_hydra_cat');
+    if (!$term || is_wp_error($term)) {
+        return new WP_Error('pilami_category_missing', 'Cette catégorie n’existe plus. Recharge la page.', array('status' => 404));
+    }
+    $data = $request->get_json_params();
+    if (!is_array($data) || !isset($data['revision']) || !is_string($data['revision']) ||
+        !preg_match('/^[a-f0-9]{64}$/D', $data['revision'])) {
+        return new WP_Error('pilami_category_invalid', 'La demande de suppression est invalide.', array('status' => 400));
+    }
+    if (!hash_equals(pilami_hydra_term_revision($term), $data['revision'])) {
+        return new WP_Error('pilami_category_conflict', 'Cette catégorie a changé. Recharge la page avant de la supprimer.', array('status' => 409));
+    }
+    // WordPress removes term relationships and reparents children; presets are never deleted.
+    $deleted = wp_delete_term($id, 'pilami_hydra_cat');
+    if (is_wp_error($deleted) || $deleted !== true) {
+        return new WP_Error('pilami_category_delete', 'Impossible de supprimer cette catégorie.', array('status' => 503));
+    }
+    $actual = get_term($id, 'pilami_hydra_cat');
+    if (is_wp_error($actual) || $actual) {
+        return new WP_Error('pilami_category_delete', 'Impossible de vérifier la suppression. Recharge la page.', array('status' => 503));
+    }
+    return new WP_REST_Response(array('id' => $id, 'name' => $term->name, 'deleted' => true,
+        'category_options' => pilami_hydra_category_options(), 'catalog' => pilami_hydra_catalog()), 200);
+}
+
+function pilami_hydra_create_category($request) {
+    $data = $request->get_json_params();
+    if (!is_array($data) || !isset($data['name']) || !is_string($data['name']) ||
+        strlen($data['name']) > 400 || strpos($data['name'], "\0") !== false ||
+        wp_check_invalid_utf8($data['name']) !== $data['name']) {
+        return new WP_Error('pilami_category_invalid', 'Le nom de catégorie est invalide (100 caractères maximum).', array('status' => 400));
+    }
+    $name = trim(sanitize_text_field($data['name']));
+    if ($name === '' || preg_match_all('/./us', $name) > 100) {
+        return new WP_Error('pilami_category_invalid', 'Donne un nom de catégorie de 1 à 100 caractères.', array('status' => 400));
+    }
+    $term = term_exists($name, 'pilami_hydra_cat');
+    $created = false;
+    if (!$term) {
+        $term = wp_insert_term($name, 'pilami_hydra_cat');
+        $created = !is_wp_error($term);
+    }
+    // Concurrent requests and repeated clicks reuse the same WordPress term.
+    if (is_wp_error($term) && $term->get_error_code() === 'term_exists') {
+        $term = array('term_id' => $term->get_error_data('term_exists'));
+    }
+    if (is_wp_error($term) || !$term) {
+        return new WP_Error('pilami_category_write', 'Impossible de créer la catégorie. Réessaie dans un instant.', array('status' => 503));
+    }
+    $actual = get_term((int) (is_array($term) ? $term['term_id'] : $term), 'pilami_hydra_cat');
+    if (!$actual || is_wp_error($actual)) {
+        return new WP_Error('pilami_category_read', 'Impossible de vérifier la catégorie. Recharge la page avant de réessayer.', array('status' => 503));
+    }
+    return new WP_REST_Response(array(
+        'category' => array('id' => (int) $actual->term_id, 'name' => $actual->name),
+        'created' => $created, 'category_options' => pilami_hydra_category_options(),
+    ), $created ? 201 : 200);
 }
 
 function pilami_hydra_import_result($id, $created) {
@@ -39,6 +116,7 @@ function pilami_hydra_import_result($id, $created) {
     return new WP_REST_Response(array(
         'id' => (string) $id, 'name' => $post->post_title, 'code' => $code,
         'revision' => pilami_hydra_preset_revision($code, $post->post_title), 'created' => $created,
+        'createdAt' => get_post_time('c', true, $post) ?: null,
         'categories' => $categories ?: array('Sans catégorie'), 'category_colors' => $colors,
         'category_ids' => $ids, 'category_revision' => is_wp_error($terms) ? null : pilami_hydra_category_revision($ids),
         'category_options' => pilami_hydra_category_options(),
@@ -225,6 +303,14 @@ function pilami_hydra_delete_preset($request) {
 }
 
 add_action('rest_api_init', function () {
+    register_rest_route('pilami-strudel/v1', '/hydra-categories/(?P<id>[1-9][0-9]*)', array(
+        'methods' => 'DELETE', 'callback' => 'pilami_hydra_delete_category',
+        'permission_callback' => function () { return current_user_can('manage_options'); },
+    ));
+    register_rest_route('pilami-strudel/v1', '/hydra-categories', array(
+        'methods' => 'POST', 'callback' => 'pilami_hydra_create_category',
+        'permission_callback' => function () { return current_user_can('manage_options'); },
+    ));
     register_rest_route('pilami-strudel/v1', '/hydra-presets/(?P<id>[1-9][0-9]*)/categories', array(
         'methods' => 'POST', 'callback' => 'pilami_hydra_update_categories',
         'permission_callback' => function () { return current_user_can('manage_options'); },

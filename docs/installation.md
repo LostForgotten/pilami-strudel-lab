@@ -26,7 +26,7 @@ Des images du séquenceur, images sources de presets et le lien vers le guide PD
 
 ## Mettre à jour
 
-Sauvegarde d’abord les fichiers et la base WordPress avec ton outil habituel. Téléverse ensuite le nouveau ZIP et accepte le remplacement. Recharge la page avec Ctrl + F5, puis purge le cache du site si nécessaire.
+Sauvegarde d’abord les fichiers et la base WordPress avec ton outil habituel. Téléverse ensuite le nouveau ZIP et accepte le remplacement. Recharge la page principale avec Ctrl + F5 et ferme puis rouvre les fenêtres détachées pour charger les nouveaux modules. Purge le cache du site si nécessaire. Exporte un nouveau Pack VJ pour emporter ces améliorations hors ligne.
 
 Les essais, réglages MIDI, raccourcis et patterns peuvent être conservés dans le stockage local du navigateur. Ils ne sont pas tous synchronisés avec WordPress. Conserve les exports proposés dans l’interface avant de changer de navigateur ou d’effacer ses données.
 

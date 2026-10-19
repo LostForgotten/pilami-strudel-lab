@@ -6,7 +6,6 @@ Le code original de l’extension Pilami Strudel Lab annonce **AGPL-3.0-or-later
 |---|---|---|
 | Strudel / `@strudel/web` 1.3.0 | Felix Roos, Alex McLean et contributeurs | AGPL-3.0-or-later ; `assets/vendor/LICENSE-Strudel.txt`, `sources/strudel-web/`, [dépôt amont](https://codeberg.org/uzu/strudel) |
 | Hydra Synth 1.3.29 adapté | Olivia Jack et contributeurs | AGPL v3 ; `assets/vendor/LICENSE-Hydra.txt`, `sources/hydra-synth/`, [dépôt amont](https://github.com/ojack/hydra-synth) |
-| PixiJS 8.14.3 et PixiUI 2.3.2 | Contributeurs PixiJS et PixiUI | MIT ; `assets/vendor/LICENSE-Pixi-Performance.txt`, notices du bundle et `sources/pixi-performance/` |
 | Acorn 8.15.0 | Contributeurs Acorn | MIT ; `assets/vendor/LICENSE-Acorn.txt`, [dépôt amont](https://github.com/acornjs/acorn) |
 | hydra-midi 0.4.6 adapté | Arno Schlipf et contributeurs | MIT ; `sources/hydra-midi/LICENSE`, source originale et `PILAMI-ADAPTATION.txt`, [dépôt amont](https://github.com/arnoson/hydra-midi) |
 | Extensions couleur et bruit | Thomas Jourdan / Metagrowing | AGPL-3.0-or-later ; `sources/hydra-extensions/`, [projet amont](https://metagrowing.org/extra-shaders-for-hydra/) |

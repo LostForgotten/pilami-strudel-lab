@@ -1,0 +1,196 @@
+/*
+ * BOL DE VERRE — billes colorées et mélangeur audio — Pilami v1.13
+ * Scène originale ; pas d'adaptation d'un shader de démonstration existant.
+ * Physique de sphères : contacts bille/bille, grosse bille, bol, rebord et table.
+ * Pas fixe 1/120 s, correction pondérée par la masse, rebond et frottement.
+ * La grosse bille est pilotée par le son : c'est un mélangeur cinématique.
+ * Bol ouvert : une agitation très forte peut éjecter des billes sur la table.
+ * Verre stylisé : transparence et reflets de surface, sans caustiques calculées.
+ * Rendu WebGL 2 original et autonome ; aucune bibliothèque externe.
+ */
+// Mes essais Hydra → Importer, puis Hydra / Update.
+// WebGL 2 et un navigateur récent requis. Départ 640 × 360, résolution réglable.
+// Audio : basses → Mélange ; médiums → Agitation_Verticale.
+// Sans son, monter Melange vers 0.5 pour tester manuellement le brassage.
+// Minima artistiques retirés : zéro est accepté pour tailles, gravité, zoom, lumière et opacité.
+// Zoom : pas de plafond dans le moteur ; le Max du contrôleur reste modifiable.
+// Taille / rayon zéro désactive les billes concernées ; zoom zéro donne un cadrage vide.
+// Les tailles restent non négatives, la précision conserve au moins une passe de collision.
+// Les plages peuvent descendre sous zéro pour gravité, vitesses et angles.
+// Nombre_Billes : pas de plafond fixe dans le moteur ; le Max du curseur est modifiable.
+// Graine reremplit le bol ; Nombre_Billes ajoute / retire des billes.
+// Transparence_Billes=0 rend les petites billes opaques.
+// Le mélangeur a ses propres réglages d'aspect ; il est métallique par défaut.
+// Pour du chrome : Metallicite_Melangeur=1 et Saturation_Melangeur=0.
+// Pour du verre : Metallicite_Melangeur=0 et monter Transparence_Melangeur.
+// Reperes_Billes / Reperes_Melangeur : bande et points solidaires de chaque objet.
+// Les petites billes tournent selon les impulsions de frottement aux contacts.
+// Le mélangeur cinématique roule selon son déplacement sur la tangente du bol.
+// Trajet_Aleatoire=1 active une trajectoire lissée ; Mouvement_Autonome agit sans son.
+// Métal, rugosité et grain modifient la surface visuelle, pas les rayons de collision.
+// Les snapshots mémorisent les réglages. La simulation poursuit son état physique.
+// Vitesse_Physique=0 fige la physique ; Stop Hydra suspend aussi le rendu.
+// Pour alléger, réduire Nombre_Billes vers 30 et conserver 640 × 360.
+
+var bowlHydra=await initHydra({detectAudio:true,precision:'highp',pixelated:false})
+setResolution(640, 360)
+a.setBins(6)
+a.setSmooth(0.9)
+
+var Nombre_Billes = H(slider(54, 0, 1000, 1))
+var Taille_Billes = H(slider(1, 0, 1.4, 0.001))
+// Variation_Taille : 0 = tailles identiques ; 1 = de presque zéro à 2 × la référence.
+// Exemple : 0.6 donne 40 à 160 % de Taille_Billes. Graine renouvelle le tirage.
+// La variation est stable, lissée en direct ; rayons et masses suivent la taille.
+var Variation_Taille = H(slider(0.6, 0, 1, 0.01))
+var Rayon_Melangeur = H(slider(0.48, 0, 0.7, 0.001))
+var Melange = H(audioMod(slider(0, 0, 1, 0.01), {band:0,depth:0.9}))
+var Sensibilite = H(slider(1.4, 0, 3, 0.01))
+var Vitesse_Melange = H(slider(1, 0, 2, 0.01))
+var Amplitude_Melange = H(slider(1, 0, 1.4, 0.01))
+var Agitation_Verticale = H(audioMod(slider(0.12, 0, 0.5, 0.01), {band:1,depth:0.12}))
+var Gravite = H(slider(9.81, 0, 18, 0.01))
+var Rebond = H(slider(0.28, 0, 0.8, 0.01))
+var Frottement = H(slider(0.38, 0, 0.9, 0.01))
+var Amortissement = H(slider(0.24, 0, 2, 0.01))
+var Vitesse_Physique = H(slider(1, 0, 1.5, 0.01))
+var Precision_Physique = H(slider(8, 1, 14, 1))
+var Transparence_Billes = H(slider(0.55, 0, 0.9, 0.01))
+var Rugosite_Billes = H(slider(0.12, 0, 1, 0.01))
+var Saturation_Couleurs = H(slider(0.78, 0, 1, 0.01))
+var Metallicite_Billes = H(slider(0, 0, 1, 0.01))
+var Texture_Billes = H(slider(0, 0, 1, 0.01))
+var Echelle_Texture = H(slider(1, 0, 4, 0.01))
+var Reflets_Billes = H(slider(1, 0, 2, 0.01))
+var Reperes_Billes = H(slider(0.8, 0, 1, 0.01))
+var Reperes_Melangeur = H(slider(0.9, 0, 1, 0.01))
+var Metallicite_Melangeur = H(slider(1, 0, 1, 0.01))
+var Rugosite_Melangeur = H(slider(0.22, 0, 1, 0.01))
+var Transparence_Melangeur = H(slider(0, 0, 0.9, 0.01))
+var Texture_Melangeur = H(slider(0, 0, 1, 0.01))
+var Echelle_Texture_Melangeur = H(slider(1, 0, 4, 0.01))
+var Reflets_Melangeur = H(slider(1, 0, 2, 0.01))
+var Teinte_Melangeur = H(slider(0.11, -1, 1, 0.01))
+var Saturation_Melangeur = H(slider(0.65, 0, 1, 0.01))
+var Trajet_Aleatoire = H(slider(1, 0, 1, 1))
+var Vitesse_Aleatoire = H(slider(1, 0, 3, 0.01))
+var Amplitude_Aleatoire = H(slider(1, 0, 2, 0.01))
+var Mouvement_Autonome = H(slider(0.35, 0, 1, 0.01))
+var Teinte = H(slider(0, -1, 1, 0.01))
+var Opacite_Bol = H(slider(0.18, 0, 0.4, 0.01))
+var Reflets_Bol = H(slider(1, 0, 2, 0.01))
+var Lumiere = H(slider(1.2, 0, 2, 0.01))
+var Zoom = H(slider(1.1, 0, 10, 0.01))
+// Cadrage : translation de la caméra et de sa cible, selon les axes de l'écran.
+// X déplace le centre du regard vers la droite, Y vers le haut ; zéro recentre.
+// La perspective et la distance de zoom restent les mêmes.
+var Cadrage_X = H(slider(0, -3, 3, 0.001))
+var Cadrage_Y = H(slider(0, -3, 3, 0.001))
+var Angle_Camera = H(slider(0.65, -3.14, 3.14, 0.01))
+var Elevation_Camera = H(slider(0.78, 0, 1.25, 0.01))
+var Vitesse_Camera = H(slider(0, -0.2, 0.2, 0.001))
+var Graine = H(slider(7, 0, 9999, 1))
+// SON DES IMPACTS — volume indépendant du moteur audio Strudel.
+// Activer Son_Collisions ; Mode_Clic=0 : sinus, 1 : clic filtré.
+// Frequence_Collisions règle la note ou le centre fréquentiel du clic (Hz).
+// Seuil_Impact évite les sons dus aux contacts au repos ; zéro reste accepté.
+// Variation_Frequence est en octaves : zéro donne une hauteur identique.
+// Espacement_Impacts s'applique à une même paire, après séparation/recontact.
+// En surcharge, les impacts les plus forts sont prioritaires (Polyphonie).
+// Stop Hydra coupe la sortie ; aucun son n'est produit pendant le préremplissage.
+var Son_Collisions = H(toggle(0))
+var Mode_Clic = H(toggle(0))
+var Volume_Collisions = H(slider(0.2, 0, 1, 0.01))
+var Frequence_Collisions = H(slider(440, 0, 8000, 1))
+var Duree_Collisions = H(slider(0.06, 0, 1, 0.001))
+var Seuil_Impact = H(slider(0.25, 0, 3, 0.01))
+var Dynamique_Impact = H(slider(0.75, 0, 1, 0.01))
+var Variation_Frequence = H(slider(0, 0, 2, 0.01))
+var Espacement_Impacts = H(slider(0.045, 0, 0.5, 0.001))
+var Polyphonie = H(slider(12, 1, 64, 1))
+var Stereo_Collisions = H(slider(0.6, 0, 1, 0.01))
+
+// LUCIOLES — lueur au point réel de collision, solidaire de la rotation.
+// Fonctionne même si Son_Collisions=0 ; le mélangeur s'éclaire aussi.
+// Émission autonome : la lueur reste visible avec Lumiere=0.
+// Seuil_Impact, Espacement_Impacts et Dynamique_Impact sont communs au son/lueur.
+// Duree_Lueur = durée totale en secondes, montée et extinction incluses.
+// Si montée + extinction dépasse la durée totale, elles sont réduites au prorata.
+// Lissage_Lueur=1 : ease in/out doux ; 0 : rampes linéaires.
+// Etendue_Lueur = taille du point sur la surface ; Diffusion_Lueur = lumière interne.
+// Les impacts superposés restent indépendants ; les nouveaux réglages de durée
+// s'appliquent aux prochains impacts. Intensité et étendue agissent immédiatement.
+var Lueur_Collisions = H(toggle(1))
+// Couleur_Lueur_Perso=0 : chaque bille émet sa propre couleur (y compris le cœur).
+// La couleur reste distincte à forte intensité ; Teinte_Lueur n'agit pas dans ce mode.
+// Couleur_Lueur_Perso=1 : une couleur commune, réglée avec Teinte/Saturation_Lueur.
+// Teinte_Lueur : rouge=0, jaune=0.167, vert=0.333, cyan=0.5, bleu=0.667, violet=0.8.
+// Saturation_Lueur=0 donne du blanc. La couleur agit aussi sur les lueurs en cours.
+// Diffusion_Lueur reste interne à la bille ; Diffusion_Voisines éclaire les autres.
+var Couleur_Lueur_Perso = H(toggle(0))
+var Teinte_Lueur = H(slider(0.12, 0, 1, 0.001))
+var Saturation_Lueur = H(slider(1, 0, 1, 0.01))
+var Intensite_Lueur = H(slider(3, 0, 10, 0.01))
+var Duree_Lueur = H(slider(0.9, 0, 5, 0.001))
+var Montee_Lueur = H(slider(0.04, 0, 2, 0.001))
+var Extinction_Lueur = H(slider(0.6, 0, 5, 0.001))
+var Etendue_Lueur = H(slider(0.55, 0, 2, 0.01))
+var Diffusion_Lueur = H(slider(0.5, 0, 1, 0.01))
+var Lissage_Lueur = H(toggle(1))
+// DIFFUSION LOCALE — lumière colorée reçue par les billes proches, mélangeur inclus.
+// Les lueurs réelles sont les seules sources ; une bille éclairée ne réémet pas.
+// Portee_Diffusion est la distance au-delà de la surface de la source.
+// Qualite_Diffusion choisit le nombre de sources locales les plus fortes par bille.
+// Diffusion directe stylisée, sans ombres directionnelles ni rebonds lumineux.
+var Diffusion_Voisines = H(toggle(1))
+var Intensite_Diffusion = H(slider(1, 0, 5, 0.01))
+var Portee_Diffusion = H(slider(0.65, 0, 3, 0.01))
+var Qualite_Diffusion = H(slider(4, 0, 16, 1))
+// OCCLUSION AMBIANTE LOCALE — creux entre les sphères et proximité de la table.
+// Assombrit le matériau et la part ambiante de la diffusion ; conserve l'émission.
+// Approximation analytique stable, sans ray tracing ni échantillonnage aléatoire.
+// Qualite_AO = nombre de sphères voisines retenues par bille. Zéro désactive l'AO.
+var Occlusion_Ambiante = H(toggle(1))
+var Intensite_AO = H(slider(1, 0, 4, 0.01))
+var Portee_AO = H(slider(0.4, 0, 2, 0.01))
+var Qualite_AO = H(slider(6, 0, 16, 1))
+
+xyPad('Orbite de la caméra', Angle_Camera, Elevation_Camera)
+xyPad('Cadrage de la caméra', Cadrage_X, Cadrage_Y)
+
+if(window.__pilamiGlassBowl)window.__pilamiGlassBowl.dispose()
+// Le moteur suit toujours le code présent dans cet éditeur, sans cache global.
+var bowlModuleCode=__PILAMI_BOWL_MODULE__
+var bowlModuleURL=URL.createObjectURL(new Blob([bowlModuleCode],{type:'text/javascript'}))
+var bowlLibrary
+try{bowlLibrary=await import(bowlModuleURL)}finally{URL.revokeObjectURL(bowlModuleURL)}
+var bowlEngine=await bowlLibrary.createGlassBowl(()=>({
+ count:Nombre_Billes(),size:Taille_Billes(),sizeVariation:Variation_Taille(),bigRadius:Rayon_Melangeur(),drive:Melange(),sensitivity:Sensibilite(),
+ randomMode:Trajet_Aleatoire(),randomSpeed:Vitesse_Aleatoire(),randomAmplitude:Amplitude_Aleatoire(),autonomy:Mouvement_Autonome(),
+ speed:Vitesse_Melange(),amplitude:Amplitude_Melange(),lift:Agitation_Verticale(),gravity:Gravite(),
+ restitution:Rebond(),friction:Frottement(),damping:Amortissement(),physicsSpeed:Vitesse_Physique(),iterations:Precision_Physique(),
+ metal:Metallicite_Billes(),texture:Texture_Billes(),textureScale:Echelle_Texture(),ballReflections:Reflets_Billes(),
+ marker:Reperes_Billes(),bigMarker:Reperes_Melangeur(),bigMetal:Metallicite_Melangeur(),bigRoughness:Rugosite_Melangeur(),
+ bigTransparency:Transparence_Melangeur(),bigTexture:Texture_Melangeur(),bigTextureScale:Echelle_Texture_Melangeur(),
+ bigReflections:Reflets_Melangeur(),bigHue:Teinte_Melangeur(),bigSaturation:Saturation_Melangeur(),
+ transparency:Transparence_Billes(),roughness:Rugosite_Billes(),saturation:Saturation_Couleurs(),hue:Teinte(),
+ bowlOpacity:Opacite_Bol(),bowlReflections:Reflets_Bol(),light:Lumiere(),zoom:Zoom(),
+ soundEnabled:Son_Collisions(),soundClick:Mode_Clic(),soundVolume:Volume_Collisions(),soundFrequency:Frequence_Collisions(),
+ soundDuration:Duree_Collisions(),soundThreshold:Seuil_Impact(),soundDynamics:Dynamique_Impact(),soundVariation:Variation_Frequence(),
+ soundSpacing:Espacement_Impacts(),soundVoices:Polyphonie(),soundStereo:Stereo_Collisions(),
+ aoEnabled:Occlusion_Ambiante(),aoIntensity:Intensite_AO(),aoRange:Portee_AO(),aoQuality:Qualite_AO(),
+ spillEnabled:Diffusion_Voisines(),spillIntensity:Intensite_Diffusion(),spillRange:Portee_Diffusion(),spillQuality:Qualite_Diffusion(),
+ glowColorMode:Couleur_Lueur_Perso(),glowHue:Teinte_Lueur(),glowSaturation:Saturation_Lueur(),
+ glowEnabled:Lueur_Collisions(),glowIntensity:Intensite_Lueur(),glowDuration:Duree_Lueur(),glowAttack:Montee_Lueur(),
+ glowRelease:Extinction_Lueur(),glowSize:Etendue_Lueur(),glowDiffusion:Diffusion_Lueur(),glowSmooth:Lissage_Lueur(),
+ cameraPanX:Cadrage_X(),cameraPanY:Cadrage_Y(),cameraAngle:Angle_Camera(),cameraElevation:Elevation_Camera(),cameraSpeed:Vitesse_Camera(),seed:Graine()
+}),()=>[bowlHydra.canvas.width,bowlHydra.canvas.height])
+window.__pilamiGlassBowl=bowlEngine
+var bowlDraw=()=>{
+  var now=Number(time),dt=bowlEngine.clock.last===null?0:now-bowlEngine.clock.last
+  bowlEngine.clock.last=Number.isFinite(now)?now:null;bowlEngine.frame(dt)
+}
+s0.init({src:bowlEngine.canvas,dynamic:true})
+src(s0).color(()=>{bowlDraw();return 1},1,1).out(o0)
+render(o0)
+

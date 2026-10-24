@@ -4,7 +4,7 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.48 — projet en développement.**
+**Version actuelle : 0.39.51 — projet en développement.**
 
 ## Ce que l’on peut faire
 
@@ -19,17 +19,18 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Séquencer ces variations sur une grille de 16 ou 32 pas, avec remplissage aléatoire et synchronisation Ableton Link facultative.
 - Détacher le visuel, le code et les contrôleurs dans des fenêtres, et configurer des raccourcis pour plusieurs écrans.
 - Exporter un Pack VJ hors ligne depuis l’interface Hydra.
+- Exporter le visuel courant en une page HTML autonome, avec ses réglages et sa résolution.
+- Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés de la version 0.39.48
+## Nouveautés de la version 0.39.51
 
-- **Finesse et fluidité** : sélecteur Résolution Hydra dans les réglages visuels et les fenêtres Code / Contrôleurs. Choix immédiat, conservé sur ce navigateur pour tous les presets ; Selon le preset retrouve la résolution du script.
-- **Clic droit** : retour à la valeur du contrôleur au lancement du preset, ou aux deux valeurs initiales d’un pad XY, en conservant les liaisons audio et MIDI.
-- **Fenêtres** : code visible dès l’ouverture, Performance dans la fenêtre de son bouton et glisser continu sur son pad, y compris en plein écran.
-- **Bibliothèque** : fiche de preset compacte, partage et import à proximité, création/suppression des catégories et tri du plus récent au plus ancien.
-- **Hors ligne** : mêmes améliorations dans les nouveaux Packs VJ exportés.
+- **Une scène devient une page web** : export HTML autonome du preset lancé, avec les valeurs actuelles des contrôleurs, les images référencées et la résolution choisie. Lecture sans WordPress, pause, plein écran et sources incluses.
+- **Le son reste choisi par le visiteur** : les collisions du bol peuvent être activées par un clic. La page ne sollicite ni micro ni MIDI ; les entrées FFT restent à zéro.
+- **Mettre à jour sans refaire ses variations** : le nouveau code reprend les snapshots et réglages compatibles par nom de contrôleur. La sauvegarde WordPress vérifie le nom et le code relus après l’enregistrement.
+- **Nouvel exemple original** : [bol de verre et billes](docs/bol-de-verre.md), avec collisions, sons, lueurs de la couleur de chaque bille, éclairage des voisines, occlusion ambiante et cadrage X/Y. Version du preset : 1.13.
 
-Voir le [guide de résolution et de fluidité](docs/performance.md) et le [journal des versions](CHANGELOG.md).
+Voir [l’export web](docs/export-web.md), le [guide de résolution et de fluidité](docs/performance.md) et le [journal des versions](CHANGELOG.md).
 
 ## Essayer
 
@@ -41,7 +42,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.48.zip` lorsqu’il est fourni avec une version.
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.51.zip` lorsqu’il est fourni avec une version.
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -51,7 +52,11 @@ Pour fabriquer le ZIP à partir des sources, lance `python3 scripts/build_plugin
 
 Le dépôt contient le code de l’extension. Les presets, images et réglages enregistrés dans la base de données de pilami.fr ne constituent pas une sauvegarde incluse dans ce dépôt. Certaines ressources personnalisées pointent encore vers la médiathèque de pilami.fr ; consulte le [guide d’installation](docs/installation.md).
 
-## Exemple de preset Pixi
+## Exemples de presets
+
+Le [bol de verre et ses billes](examples/Bol-de-verre-billes-audio.hydra.txt) ajoute une simulation originale WebGL 2, avec mélangeur, matières, collisions sonores et lueurs locales. Le [guide du bol](docs/bol-de-verre.md) présente ses réglages ; ses sources séparées et leur script de compilation sont inclus. Une [scène publique](https://pilami.fr/visuels/billes/) illustre l’export HTML autonome.
+
+### Nuage Pixi
 
 Le [nuage de particules réactives](examples/Nuage-Particules-Pixi.hydra.txt) combine Pixi et Hydra : mouvement, couleurs, réaction au son et opacité aléatoire évoluant indépendamment pour chaque particule. Télécharge le fichier texte puis importe-le dans Hydra avec **Ctrl + I**. Il utilise la bibliothèque Pixi embarquée, sans chargement depuis un CDN.
 
@@ -69,6 +74,8 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 - [Premiers pas et raccourcis](docs/premiers-pas.md)
 - [Connexion Ableton Link](docs/ableton-link.md)
 - [Résolution, fluidité et plein écran](docs/performance.md)
+- [Exporter une page web autonome](docs/export-web.md)
+- [Bol de verre, collisions et lueurs](docs/bol-de-verre.md)
 - [Organisation du code](docs/developpement.md)
 - [Contribuer ou signaler un problème](CONTRIBUTING.md)
 - [Derniers changements](CHANGELOG.md)

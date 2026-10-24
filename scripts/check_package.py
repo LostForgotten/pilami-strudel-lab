@@ -14,6 +14,8 @@ def check():
     paths = set(re.findall(r"['\"](assets/[^'\"]+\.(?:js|css))['\"]", main))
     required = {'LICENSE', 'README.txt', 'includes/version-history.php',
                 'assets/offline/pilami-hydra-vj.html',
+                'assets/offline/pilami-hydra-public.html',
+                'assets/offline/public-player-0.39.51.js',
                 'tools/ableton-link-bridge/LICENSE.md',
                 'tools/ableton-link-bridge/COPYING.GPLv2.md'}
     missing = sorted(p for p in paths | required if not (ROOT / p).is_file())

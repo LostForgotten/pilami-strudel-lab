@@ -1,5 +1,31 @@
 # Journal des versions
 
+## 0.39.51 — pages web autonomes et bol de billes (24 octobre 2026)
+
+- Export du visuel lancé vers un HTML autonome, depuis la fiche du preset et les fenêtres Code / Contrôleurs.
+- Valeurs des contrôleurs capturées au clic, résolution fixe, images référencées embarquées et outils de lecture discrets.
+- Pause, plein écran, sources et licences incluses ; lecture du fichier local ou depuis un hébergement statique.
+- Aucun micro ni MIDI demandé ; FFT à zéro. Les sons de collision sont soumis au clic du visiteur.
+- Aucun autre preset, banque de snapshots, association MIDI ou identifiant WordPress inclus.
+- Imports distants et sources caméra/écran/vidéo refusés explicitement ; extensions locales color/noise/fractals/blend prises en charge.
+- Exemple original Bol de verre v1.13 : sphères avec collisions, matières indépendantes, tailles aléatoires, mélangeur autonome/audio, sons d’impacts, lueurs propres, éclairage voisin, occlusion ambiante et caméra X/Y.
+- Sources du bol et scripts de reconstruction ajoutés au dépôt, avec guides d’utilisation et d’hébergement de l’export.
+
+## 0.39.50 — enregistrement vérifié des presets
+
+- Mettre à jour le preset applique le nouveau fichier chargé si nécessaire, puis enregistre le code et le nom sur le même preset.
+- Renommage seul sans relancer le visuel ; champs des fenêtres détachées synchronisés et validés avant sauvegarde.
+- Relire le nom et le code sans cache après l’enregistrement avant d’annoncer la réussite ; conserver le brouillon si la vérification échoue.
+- Un changement MIDI pendant le chargement d’un fichier n’annule plus son import.
+
+## 0.39.49 — mise à jour du code avec conservation des snapshots
+
+- Mettre à jour le code permet de remplacer le script du preset sélectionné sans créer un doublon.
+- Migration par noms uniques des contrôleurs compatibles : valeurs précises, plages, audio, MIDI et snapshots.
+- Nouveaux contrôleurs initialisés aux valeurs du nouveau script ; anciennes banques conservées et banque cible existante protégée.
+- Commande disponible dans la page principale, les fenêtres détachées et les nouveaux Packs VJ hors ligne.
+
+
 ## 0.39.48 — résolution du rendu et confort de jeu (19 octobre 2026)
 
 - Sélecteur de résolution dans les réglages visuels, les fenêtres Code / Contrôleurs et le Pack VJ : de 640 × 360 au Full HD, dont 1280 × 720.

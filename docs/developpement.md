@@ -1,6 +1,6 @@
 # Organisation du code
 
-Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.48. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
+Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.51. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
 
 ## Repères
 
@@ -47,6 +47,21 @@ Le Pack VJ incorpore des scripts et des sources en JSON : modifier uniquement un
 
 L’adaptateur Hydra distingue la taille demandée par le preset, les dimensions de l’affichage et le choix de résolution du navigateur. Les changements d’affichage passent par le redimensionnement interne ; les appels `setResolution` du preset mémorisent sa demande. Une préférence manuelle a la priorité sans réécrire le code. Les sélecteurs partagent ce même état, y compris dans les fenêtres détachées.
 
+## Export public et exemple du bol
+
+L’export est orchestré par `assets/pilami-public-export-0.39.51.js`. Le lecteur minimal est `assets/offline/public-player-0.39.51.js` ; le modèle exporté est `assets/offline/pilami-hydra-public.html`. Il est distinct du Pack VJ complet.
+
+Après modification de ces modules, régénère le modèle public, puis sa copie embarquée dans le Pack VJ :
+
+```sh
+python3 scripts/build_public_template.py
+python3 scripts/sync_public_export_offline.py
+```
+
+Ces scripts utilisent le modèle VJ et les sources déjà présents ; ils ne recompilent pas les moteurs tiers. Vérifie les exports en ligne et hors ligne après synchronisation.
+
+Le bol possède ses sources dans `sources/glass-bowl/` et son exemple autonome dans `examples/`. `python3 scripts/build_glass_bowl.py` recompile ce seul preset avec esbuild 0.25.4. Les noms des contrôleurs du modèle servent à migrer les snapshots : leur stabilité est importante.
+
 ## Vérifications
 
 ```sh
@@ -68,5 +83,7 @@ Avec PHP installé, utilise `php -l` sur les fichiers PHP modifiés. Avec Node.j
 - Résolutions fixes, retour Selon le preset, plein écran et synchronisation des sélecteurs.
 - Modification d’un preset en administrateur et consultation en visiteur.
 - Export VJ hors ligne, et Link/MIDI si la modification les concerne.
+- Mise à jour du code d’un preset avec snapshots, renommage et vérification de sa sauvegarde.
+- Export public après rappel d’un snapshot, son de collision opt-in, fichier local et page hébergée sans requête externe.
 
 Le code seul n’embarque pas les contenus de la base WordPress du site. Pour reproduire un problème lié à un preset, joins son code et les réglages pertinents au signalement.

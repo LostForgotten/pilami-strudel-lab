@@ -40,3 +40,7 @@ python3 scripts/build_plugin.py
 ```
 
 Sous Windows, `py` peut remplacer `python3`. Le ZIP apparaît dans `dist/`, avec un fichier d’empreinte SHA-256. Les sources tierces et les licences sont conservées dans l’archive ; les fichiers réservés au dépôt GitHub sont exclus.
+
+## Publier seulement un visuel
+
+L’export **Exporter la page web** produit un HTML autonome à déposer dans les fichiers publics de l’hébergement. Il ne demande pas d’installer WordPress chez le visiteur. Consulte le [guide de publication](export-web.md) pour le placement du fichier, les réglages capturés et les limites audio.

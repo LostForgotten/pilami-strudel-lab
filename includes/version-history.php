@@ -4,6 +4,24 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.51' => array('Exporter une page web autonome', array(
+            'Nouveau bouton près du preset et dans les fenêtres Code / Contrôleurs : exporter le rendu et ses réglages actuels en un fichier HTML.',
+            'Résolution conservée, images intégrées, aucune bibliothèque de presets ni session WordPress incluse.',
+            'Lecture visuelle automatique sans micro ni MIDI ; sons de collision uniquement après activation par le visiteur.',
+            'Pause, plein écran, sources et licences disponibles ; export également accessible dans le Pack VJ hors ligne.',
+        )),
+        '0.39.50' => array('Renommage et mise à jour vérifiés', array(
+            'Mettre à jour le preset applique désormais un fichier en attente, transfère les snapshots puis enregistre le code et le nom.',
+            'Relecture authentifiée du code et du nom après la sauvegarde ; aucun message de réussite si WordPress ne confirme pas ces données.',
+            'Saisie du nom protégée dans les fenêtres séparées et validée avant la sauvegarde ; renommage seul sans relancer le visuel.',
+            'Les réglages MIDI et morphings pendant le chargement d’un fichier n’annulent plus sa mise à jour ; statut en attente clarifié.',
+        )),
+        '0.39.49' => array('Mettre à jour le code et conserver les snapshots', array(
+            'Nouveau bouton sur le preset sélectionné : importer un nouveau code sans créer de doublon ni changer ses catégories.',
+            'Transfert des valeurs précises, snapshots, liaisons audio et MIDI des contrôleurs ayant le même nom ; nouveaux contrôleurs aux valeurs par défaut.',
+            'Durée et lissage du morphing conservés ; reprise du séquenceur local, banques précédentes gardées et version cible jamais écrasée.',
+            'Fonction disponible dans les fenêtres Hydra Code / Contrôleurs et le Pack VJ hors ligne ; appliquer puis enregistrer le preset pour sauvegarder dans WordPress.',
+        )),
         '0.39.48' => array('Sélecteur de résolution Hydra', array(
             'Choix de la résolution dans les réglages visuels et les fenêtres Hydra Code / Contrôleurs : du 640 × 360 au Full HD.',
             'Application immédiate et dimensions conservées en plein écran ; choix mémorisé sur le navigateur pour tous les presets.',

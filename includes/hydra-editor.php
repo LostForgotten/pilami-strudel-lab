@@ -178,6 +178,19 @@ function pilami_hydra_create_preset($request) {
     return pilami_hydra_import_result($id, true);
 }
 
+function pilami_hydra_read_preset($request) {
+    $id = (int) $request['id'];
+    $post = get_post($id);
+    if (!$post || $post->post_type !== 'pilami_hydra' || $post->post_status !== 'publish') {
+        return new WP_Error('pilami_preset_missing', 'Ce preset Hydra est introuvable.', array('status' => 404));
+    }
+    $code = get_post_meta($id, '_pilami_hydra_code', true);
+    if (!is_string($code)) { return new WP_Error('pilami_preset_invalid', 'Le code enregistré est invalide.', array('status' => 503)); }
+    $response = new WP_REST_Response(array('id' => (string) $id, 'name' => $post->post_title,
+        'code' => $code, 'revision' => pilami_hydra_preset_revision($code, $post->post_title)), 200);
+    $response->header('Cache-Control', 'private, no-store, max-age=0');
+    return $response;
+}
 function pilami_hydra_update_preset($request) {
     $id = (int) $request['id'];
     $post = get_post($id);
@@ -320,6 +333,8 @@ add_action('rest_api_init', function () {
         'permission_callback' => function () { return current_user_can('manage_options'); },
     ));
     register_rest_route('pilami-strudel/v1', '/hydra-presets/(?P<id>[1-9][0-9]*)', array(
+        array('methods' => 'GET', 'callback' => 'pilami_hydra_read_preset',
+            'permission_callback' => function () { return current_user_can('manage_options'); }),
         array('methods' => 'POST', 'callback' => 'pilami_hydra_update_preset',
             'permission_callback' => function () { return current_user_can('manage_options'); }),
         array('methods' => 'DELETE', 'callback' => 'pilami_hydra_delete_preset',

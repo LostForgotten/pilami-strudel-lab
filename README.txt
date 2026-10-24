@@ -1,3 +1,54 @@
+Pilami Strudel Lab 0.39.51 — Exporter une page web autonome
+
+1. Charger et lancer le preset Hydra.
+2. Rappeler le snapshot désiré ou régler les contrôleurs.
+3. Choisir la résolution voulue.
+4. Cliquer sur « Exporter la page web », près du preset ou dans la fenêtre Code / Contrôleurs.
+5. Ouvrir le HTML téléchargé pour vérifier le rendu.
+6. Placer ce fichier sur l’hébergement dans un dossier public (par exemple visuels/bol/index.html).
+   La page sera alors accessible sous l’URL correspondante. Ne pas coller le HTML dans l’éditeur WordPress.
+
+La page fonctionne sans WordPress ni serveur de calcul. Le navigateur du visiteur anime le visuel.
+Les réglages sont figés à l’export ; la simulation et ses positions se recalculent à l’ouverture.
+Les entrées FFT restent à zéro, sans demande de micro ni de MIDI. La réaction à un son extérieur n’est donc pas reproduite.
+Les sons de collision, s’ils sont activés dans le preset, nécessitent un clic sur « Activer le son ».
+Le rendu garde sa résolution même en plein écran. Pause et plein écran sont accessibles par Espace et F.
+Les outils s’effacent après quelques secondes et réapparaissent au mouvement ou au clavier.
+Le preset exporté et ses images sont les seuls contenus personnels inclus. Les autres presets, snapshots, catégories, liens MIDI et identifiants WordPress ne sont pas exportés.
+Les crédits et sources nécessaires sont inclus et téléchargeables depuis le bouton d’information.
+Les extensions Hydra locales color/noise/fractals/blend sont incluses. Les imports distants, captures caméra/écran et vidéos sont refusés avec un message explicite.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.50 — Renommage et mise à jour du code vérifiés
+
+Choisir le nouveau fichier avec « Mettre à jour le code », puis cliquer sur « Mettre à jour le preset ».
+Ce second bouton applique le code si nécessaire, transfère les snapshots puis enregistre le code et le nom dans WordPress.
+Hydra / Update reste disponible pour tester le nouveau code avant de le sauvegarder.
+Le statut du preset indique explicitement qu’un fichier chargé reste à enregistrer.
+Un réglage MIDI ou un morphing pendant le chargement du fichier n’annule plus l’import.
+Le renommage seul ne relance pas le visuel. Les champs des fenêtres séparées sont validés aussi au changement, à la sortie du champ et avant la sauvegarde.
+La sauvegarde relit le nom et le code via une requête authentifiée sans cache avant d’annoncer la réussite.
+En cas d’échec de validation ou de conflit, le brouillon et les snapshots locaux sont conservés.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.49 — Mettre à jour un preset sans refaire les snapshots
+
+Sélectionner le preset existant, puis « ↑ Mettre à jour le code » et choisir le nouveau fichier Hydra.
+Appliquer avec Hydra / Update : les valeurs et snapshots sont repris par nom de contrôleur.
+Enregistrer avec « Mettre à jour le preset » pour sauvegarder le nouveau code et ses snapshots dans WordPress.
+Le nom, l’identité du preset et ses catégories restent conservés. Aucun doublon n’est créé.
+Les contrôleurs ajoutés utilisent les nouveaux réglages par défaut ; ceux supprimés ne sont pas transférés.
+Les noms en double et les contrôleurs anonymes ne sont pas associés automatiquement.
+Les valeurs précises, plages personnelles, modulations audio, MIDI et durée/lissage des snapshots compatibles sont conservés.
+Les plages sont élargies si la nouvelle version le prévoit. Le séquenceur local est repris également.
+Les banques précédentes restent disponibles ; une banque existante de la version cible n’est jamais écrasée.
+Action accessible aussi dans les fenêtres séparées Hydra et dans les nouveaux Packs VJ hors ligne.
+Un ancien fichier Pack VJ déjà exporté doit être réexporté pour bénéficier de cette fonction.
+
+--- Historique précédent ---
+
 Pilami Strudel Lab 0.39.48 — Choisir la résolution sans éditer le code
 
 - Dans les réglages visuels (bouton ▤ puis ⚙), le sélecteur Résolution Hydra propose Selon le preset, 640 × 360, 800 × 450, 960 × 540, 1280 × 720 et 1920 × 1080.

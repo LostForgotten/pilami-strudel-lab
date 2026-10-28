@@ -1,6 +1,10 @@
 # Premiers pas
 
+Pour un premier essai guidé sans code, commence par [Ton premier visuel en dix minutes](demarrer.md). Cette page décrit ensuite les outils et les raccourcis.
+
 Choisis un preset puis clique sur **Lecture / Update** ou utilise **Ctrl + Entrée**. Le choix d’un preset ne lance pas automatiquement la lecture. Dans Strudel, **Stop** arrête le son ; dans Hydra, applique les modifications avec Update.
+
+Dans l’interface actuelle, le bouton Hydra se nomme **Lancer le visuel**, puis **Appliquer les modifications** pendant la lecture. « Hydra / Update » désigne cette même commande. **Mettre à jour le preset** est une sauvegarde WordPress distincte. Voir [presets et snapshots](presets-et-snapshots.md).
 
 ## Connexions en haut de page
 

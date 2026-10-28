@@ -1,6 +1,6 @@
 # Organisation du code
 
-Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.51. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
+Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.58. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
 
 ## Repères
 
@@ -41,7 +41,9 @@ Les sources, versions et liens amont déjà livrés sont détaillés dans `READM
 
 Le panneau Performance est dans `assets/pilami-performance-0.39.45.js`. Il utilise le modèle de contrôleurs existant et charge la bibliothèque locale Pixi à la demande. Les sources de compilation sont dans `sources/pixi-performance/` : `npm ci`, puis `npm run build`. Le build adapte l’énumération des systèmes Pixi aux méthodes héritées des tableaux Hydra ; conserve cette adaptation et les notices.
 
-La barre Audio / MIDI / Link est montée par `assets/pilami-connections-0.39.37.js`. Elle réutilise les API MIDI et Link. L’adaptateur `pilami-hydra-0.39.48.js` conserve une connexion audio de session, indépendante du rendu et réutilisée au changement de preset. La désactivation ferme le flux et son contexte, et remet les mesures à zéro. Le compactage du thème est limité par la classe de page ajoutée pour le shortcode.
+La barre Audio / MIDI / Link est montée par `assets/pilami-connections-0.39.37.js`. Elle réutilise les API MIDI et Link. L’adaptateur `pilami-hydra-0.39.56.js` conserve une connexion audio de session, indépendante du rendu et réutilisée au changement de preset. La désactivation ferme le flux et son contexte, et remet les mesures à zéro. Le compactage du thème est limité par la classe de page ajoutée pour le shortcode.
+
+L’adaptation WordPress est dans `includes/account.php`, `assets/pilami-account-0.39.57.js` et `assets/pilami-site-menu-0.39.58.js`. Elle vérifie la connexion sans cache et déplace les nœuds de l’en-tête Blocksy dans un panneau, sans cloner ses liens ni ses gestionnaires de recherche. Ces outils ne sont pas intégrés aux exports publics ou aux Packs VJ.
 
 Le Pack VJ incorpore des scripts et des sources en JSON : modifier uniquement un fichier chargé par WordPress ne suffit pas à le mettre à jour. Vérifie aussi le modèle autonome après tout changement partagé.
 
@@ -49,7 +51,9 @@ L’adaptateur Hydra distingue la taille demandée par le preset, les dimensions
 
 ## Export public et exemple du bol
 
-L’export est orchestré par `assets/pilami-public-export-0.39.51.js`. Le lecteur minimal est `assets/offline/public-player-0.39.51.js` ; le modèle exporté est `assets/offline/pilami-hydra-public.html`. Il est distinct du Pack VJ complet.
+L’export est orchestré par `assets/pilami-public-export-0.39.55.js`. Le lecteur minimal est `assets/offline/public-player-0.39.55.js` ; le modèle exporté est `assets/offline/pilami-hydra-public.html`. Il est distinct du Pack VJ complet.
+
+Le canevas lisible de la page exportée est `templates/public-page.html`. Les versions actives sont regroupées dans `scripts/export_assets.py` : une mise à jour du plugin ne signifie pas que tous les modules portent ce même numéro.
 
 Après modification de ces modules, régénère le modèle public, puis sa copie embarquée dans le Pack VJ :
 
@@ -58,7 +62,7 @@ python3 scripts/build_public_template.py
 python3 scripts/sync_public_export_offline.py
 ```
 
-Ces scripts utilisent le modèle VJ et les sources déjà présents ; ils ne recompilent pas les moteurs tiers. Vérifie les exports en ligne et hors ligne après synchronisation.
+Ces scripts utilisent le canevas public, le modèle VJ et les sources déjà présents ; ils ne recompilent pas les moteurs tiers. Le synchroniseur conserve les modules MIDI récents et embarque l’icône MIDI Learn pour la lecture locale. `check_package.py` vérifie aussi la cohérence du lecteur public, de sa copie embarquée et des sources d’export archivées. Vérifie les exports en ligne et hors ligne après synchronisation.
 
 Le bol possède ses sources dans `sources/glass-bowl/` et son exemple autonome dans `examples/`. `python3 scripts/build_glass_bowl.py` recompile ce seul preset avec esbuild 0.25.4. Les noms des contrôleurs du modèle servent à migrer les snapshots : leur stabilité est importante.
 

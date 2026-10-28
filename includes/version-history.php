@@ -4,6 +4,54 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.58' => array('Menu du site et recherche derrière une icône', array(
+            'Sur la page du laboratoire, l’en-tête du site est rangé derrière une petite icône en haut à droite de l’application, près du voyant de connexion.',
+            'Le panneau est fermé par défaut ; il réutilise les liens et la recherche du thème, sans les dupliquer ni modifier leur destination.',
+            'Ouverture au clic ou au clavier ; fermeture au clic extérieur ou avec Échap, en respectant la fenêtre de recherche du thème.',
+            'Disponible sur ordinateur et mobile ; les autres pages du site, packs VJ et exports HTML conservent leur présentation.',
+        )),
+        '0.39.57' => array('Labo sans barre WordPress et voyant de connexion', array(
+            'La barre d’administration WordPress est masquée uniquement sur les pages contenant le laboratoire ; les autres pages et l’administration restent inchangées.',
+            'Un voyant discret apparaît en haut à droite de l’interface après vérification de la connexion : vert si connecté, avec la mention Administrateur au survol si les droits le permettent.',
+            'État vérifié sans cache au chargement, au retour sur la page, périodiquement ou au clic ; gris après déconnexion, orange si la connexion ne peut plus être confirmée.',
+            'Aucun nom de compte ni donnée de session dans la page publique mise en cache ; les packs VJ et pages exportées restent indépendants de WordPress.',
+        )),
+        '0.39.56' => array('Une balle, un rebond, une note MIDI', array(
+            'Nouveau preset Balle — Rebond MIDI, dans Expériences MIDI : chute, collision avec le sol et éclair à chaque impact.',
+            'Choix explicite de la sortie MIDI, activation de l’envoi et note de test ; canal, note, durée et vélocité réglables.',
+            'Gravité, restitution, vitesse et hauteur de lâcher réglables ; compteur des impacts et des notes effectivement envoyées.',
+            'Note Off programmé indépendamment de l’animation ; arrêt, changement de preset ou de port coupent la note suivie.',
+            'Disponible aussi dans les nouveaux Packs VJ ; les pages publiques restent uniquement visuelles, sans sortie MIDI.',
+        )),
+        '0.39.55' => array('Menu compact et résolution des pages publiques', array(
+            'Les nouveaux exports HTML affichent une seule icône ; le menu regroupe lecture, son, plein écran, réglages et infos.',
+            'Sélecteur de résolution : origine, 640 × 360, 800 × 450, HD 1280 × 720 et Full HD 1920 × 1080.',
+            'Choix conservé pendant le plein écran et les redimensionnements ; retour aux valeurs exportées au rechargement.',
+            'Panneau refermable au clic extérieur ou avec Échap, utilisable au clavier et défilant sur mobile.',
+            'Disponible aussi dans les nouveaux Packs VJ hors ligne ; réexporter et remplacer les pages existantes.',
+        )),
+        '0.39.54' => array('Import des presets et changement d’heure', array(
+            'La création et la publication des presets transmettent des dates locale et UTC issues du même instant, avec edit_date explicite.',
+            'Évite une publication programmée par erreur pendant l’heure répétée du passage à l’heure d’hiver.',
+            'En cas de refus persistant, le message indique le statut obtenu ou la référence d’erreur WordPress, sans exposer de requête SQL.',
+            'Code conservé dans l’éditeur et le brouillon du navigateur en cas d’échec ; contrôles d’accès et limite de 64 Ko inchangés.',
+        )),
+        '0.39.53' => array('Pages publiques avec contrôleurs et liens du projet', array(
+            'L’export permet de choisir aucun, un ou deux contrôleurs à laisser accessibles au visiteur, en conservant leurs bornes et leur pas.',
+            'Bouton Réglages sur la page publique : curseurs et saisie manuelle, interrupteurs, retour aux valeurs exportées et clic droit pour réinitialiser un paramètre.',
+            'Les changements du visiteur restent dans sa page et disparaissent au rechargement ; le preset et ses snapshots WordPress restent inchangés.',
+            'Le panneau Infos ajoute Ouvrir le laboratoire et Code sur GitHub, en conservant le téléchargement des sources et licences en JSON.',
+            'Choix des contrôleurs mémorisé pour chaque preset sur le navigateur de l’auteur ; disponible dans les exports HTML simples et les ZIP de partage.',
+            'Réexporter les pages existantes pour intégrer ces liens et commandes. Aucun accès micro ou MIDI ajouté ; le son reste soumis au clic du visiteur.',
+        )),
+        '0.39.52' => array('Miniature et aperçu de partage des pages web', array(
+            'Exporter la page web ouvre un formulaire de titre, description et adresse publique, dans la fenêtre utilisée, y compris en plein écran.',
+            'Option réseaux sociaux : ZIP contenant la page HTML, une miniature JPEG 1200 × 630 et les instructions de publication.',
+            'Métadonnées Open Graph et Twitter intégrées dès le début du HTML ; image nommée selon son contenu pour limiter les anciens aperçus en cache.',
+            'Capture du dernier rendu sans avancer le temps, la physique ni le feedback ; proportions et cadrage conservés.',
+            'Réglages de partage mémorisés sur ce navigateur pour chaque preset ; export HTML seul toujours disponible, aucune publication automatique.',
+            'Fonction disponible aussi dans les nouveaux Packs VJ hors ligne. Déposer la page et son image ensemble dans le dossier public choisi.',
+        )),
         '0.39.51' => array('Exporter une page web autonome', array(
             'Nouveau bouton près du preset et dans les fenêtres Code / Contrôleurs : exporter le rendu et ses réglages actuels en un fichier HTML.',
             'Résolution conservée, images intégrées, aucune bibliothèque de presets ni session WordPress incluse.',

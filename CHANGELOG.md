@@ -1,5 +1,46 @@
 # Journal des versions
 
+## 0.39.58 — menu du site compact et documentation (28 octobre 2026)
+
+- Menu et recherche Blocksy réunis derrière une icône en haut à droite du labo, fermée par défaut ; liens et recherche natifs conservés.
+- Fermeture au clic extérieur et au clavier, avec priorité à la fenêtre de recherche ; accès direct sur mobile, sans repli supplémentaire « Plus ».
+- README actualisé, nouveau parcours de démarrage sans code, guides de sauvegarde et de MIDI, dépannage et export web réécrits pour les débutants.
+- Scripts de fabrication et de synchronisation alignés sur les ressources d’export et du Pack VJ actuellement livrées.
+
+## 0.39.57 — voyant de connexion WordPress (28 octobre 2026)
+
+- Barre d’administration masquée seulement sur les pages hébergeant le laboratoire.
+- Voyant vert après confirmation de connexion, mention Administrateur selon les droits, gris après déconnexion et orange si le contrôle échoue.
+- Vérification sans cache au chargement, au retour et périodiquement ; aucune identité dans le HTML public mis en cache.
+
+## 0.39.56 — balle et sortie MIDI (25 octobre 2026)
+
+- Preset Balle — Rebond MIDI avec collision au sol, lueur et note MIDI.
+- Port choisi explicitement, autorisation, note de test, canal, note, durée et vélocité réglables.
+- Arrêt et changements de preset ou de port libèrent la note ; envoi également disponible dans les nouveaux Packs VJ, absent des pages publiques.
+
+## 0.39.55 — menu et résolution des exports
+
+- Une icône regroupe lecture, son éventuel, plein écran, réglages et informations sur les nouvelles pages HTML.
+- Résolution de la visite : origine, 640 × 360, 800 × 450, HD et Full HD ; choix conservé en plein écran, réinitialisé au rechargement.
+- Réexport nécessaire pour mettre à jour les pages déjà publiées.
+
+## 0.39.54 — import pendant le changement d’heure
+
+- Dates locale et UTC calculées depuis le même instant pour éviter une publication programmée involontaire pendant l’heure répétée.
+- Refus de publication expliqué sans exposer de requête interne ; brouillon conservé.
+
+## 0.39.53 — réglages du visiteur
+
+- Choix de zéro, un ou deux contrôleurs dans l’export ; bornes, pas et valeur initiale conservés.
+- Modifications limitées à la visite, sans écriture WordPress ; retour aux valeurs exportées et liens vers le laboratoire et GitHub.
+
+## 0.39.52 — aperçu pour les réseaux sociaux
+
+- Formulaire de titre, description et adresse publique ; capture du dernier rendu en JPEG 1200 × 630 sans avancer la simulation.
+- ZIP HTML + miniature + instructions, avec métadonnées Open Graph et Twitter présentes dans le HTML.
+- Formulaire accessible dans les fenêtres détachées, y compris en plein écran.
+
 ## 0.39.51 — pages web autonomes et bol de billes (24 octobre 2026)
 
 - Export du visuel lancé vers un HTML autonome, depuis la fiche du preset et les fenêtres Code / Contrôleurs.

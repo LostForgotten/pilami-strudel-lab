@@ -1,43 +1,80 @@
-# Exporter un visuel en page web autonome
+# Partager un visuel en page web
 
-Depuis la version 0.39.51, un preset Hydra lancé peut être exporté dans un seul fichier HTML. Le navigateur du visiteur calcule l’animation : aucun WordPress ni serveur de rendu n’est nécessaire pour lire cette page.
+L’export fabrique une scène autonome. Le navigateur du visiteur calcule son animation : il n’a pas besoin de WordPress, du laboratoire complet ni de ton compte. Tu peux proposer jusqu’à deux contrôleurs pour qu’il joue avec le rendu.
 
-## Choisir le rendu
+## 1. Préparer la scène
 
-1. Charge et lance ton preset avec **Hydra / Update**.
-2. Rappelle le snapshot voulu, attends la fin du morphing si tu veux son état final, puis affine les contrôleurs.
-3. Choisis la résolution dans le sélecteur Hydra.
-4. Clique sur **Exporter la page web**, dans la fiche du preset ou la fenêtre Hydra · Code / Contrôleurs.
-5. Ouvre le fichier HTML téléchargé pour vérifier son rendu.
+1. Charge et lance le preset dans Hydra.
+2. Rappelle le snapshot voulu et attends la fin du morphing, puis affine les paramètres si nécessaire.
+3. Choisis une résolution adaptée, par exemple **1280 × 720**. Sur une machine moins puissante, commence plus bas.
+4. Dans la fiche du preset ou une fenêtre Hydra Code / Contrôleurs, clique sur **Exporter la page web**.
 
-L’export capture les valeurs de base des contrôleurs au moment du clic. La résolution de calcul reste fixe, même si le visiteur agrandit la fenêtre ou passe en plein écran. La page adapte l’affichage en conservant ses proportions.
+Le formulaire capture les valeurs de base des contrôleurs et la résolution. Une simulation vivante recommence son calcul à l’ouverture : la position exacte des billes, d’un fluide ou du feedback n’est pas une image figée dans le fichier.
 
-## Mettre la page en ligne
+## 2. Choisir ce que le visiteur verra
 
-Renomme le fichier en `index.html`, puis place-le dans un dossier public de ton hébergement, par exemple `visuels/ma-scene/index.html`. La page sera accessible à l’adresse `https://ton-domaine.example/visuels/ma-scene/`.
+Renseigne le **Titre** et la **Description**. Dans **Contrôleur 1** et **Contrôleur 2**, laisse **Aucun** pour une scène sans réglages, ou choisis un ou deux paramètres distincts.
 
-Avec WordPress, utilise les fichiers du serveur ou le gestionnaire de fichiers de l’hébergeur. Place le dossier `visuels` dans la racine web réellement servie pour ce domaine, généralement à côté de `wp-admin`, `wp-content` et `wp-includes`. Coller le HTML dans un bloc WordPress ne publie pas cette page autonome. Un téléversement en médiathèque ne crée pas cette arborescence.
+Le visiteur retrouvera leurs valeurs de départ, leurs bornes et leur pas dans le menu **Réglages**. Ses changements restent propres à sa visite : ils ne réécrivent ni ton preset ni WordPress. Recharger la page restaure les valeurs exportées.
 
-Si WordPress affiche sa page « introuvable », vérifie que `visuels/ma-scene/index.html` existe bien dans cette racine, que le serveur peut le lire et que l’URL `/visuels/ma-scene/index.html` fonctionne. Avec la configuration Apache habituelle de WordPress, les fichiers et dossiers existants ne sont pas réécrits vers `index.php`. Une configuration de proxy ou de serveur personnalisée peut demander un réglage supplémentaire.
+## 3. Télécharger un HTML ou un ZIP de partage
 
-Avec Docker, utilise le dossier ou volume persistant monté dans le serveur web. Un ancien dossier de site statique peut ne plus être servi depuis une migration vers WordPress. Le montage conservé dans la configuration Docker permet de garder le fichier lors des recréations du conteneur.
+| Besoin | Choix dans le formulaire | Fichiers obtenus |
+|---|---|---|
+| Lire ou publier simplement la scène | Télécharger le HTML | Un fichier `.html` autonome |
+| Préparer une miniature pour Facebook ou un autre réseau | Cocher **Préparer une miniature pour Facebook et les réseaux sociaux** et indiquer l’adresse publique finale | Un ZIP avec le HTML, un JPEG et `LISEZ-MOI.txt` |
 
-Pour publier une nouvelle variation à la même adresse, réexporte le visuel puis remplace ce seul `index.html`. Recharge sans cache ou purge le cache de cette URL si l’ancien rendu reste affiché.
+L’adresse publique est l’endroit où tu vas déposer la page, par exemple `https://ton-domaine.example/visuels/ma-scene/`. L’export prépare les fichiers ; il ne les téléverse pas sur ton hébergement.
 
-## Lecture et son
+La capture produit une miniature de **1200 × 630**, avec les proportions conservées. **Capturer maintenant** permet d’actualiser son aperçu ; la miniature finale est capturée au téléchargement. Le JPEG reçoit un nom comme `apercu-1234abcd.jpg`.
 
-- **Espace** met en pause ou reprend le visuel ; **F** demande le plein écran.
-- Les commandes s’effacent après quelques secondes et reviennent au mouvement ou au clavier.
-- Les entrées FFT restent à zéro. La page ne demande ni micro ni appareil MIDI ; une modulation audio extérieure n’est donc pas reproduite.
-- Pour le bol de billes, les sons de collision exportés nécessitent un clic du visiteur sur **Activer le son**. Le bouton apparaît si `Son_Collisions` était activé lors de l’export.
-- Un snapshot mémorise des réglages. Les positions physiques des billes et l’état exact d’une simulation ne sont pas figés : ils se recalculent à l’ouverture.
+Les balises de titre, description et image sont présentes dans le HTML dès son chargement. Le réseau social n’a pas besoin de lancer l’animation pour lire ces informations.
 
-## Contenu et limites
+## 4. Mettre les fichiers en ligne
 
-Le fichier contient le code du preset choisi, ses réglages, les images qu’il référence et le moteur nécessaire. Les autres presets, catégories, banques de snapshots, associations MIDI et identifiants WordPress ne sont pas inclus. Le code et les images de la scène exportée sont publics, comme tout contenu servi dans une page web.
+Pour un HTML seul, renomme-le en `index.html`. Dépose-le dans un dossier public, par exemple :
 
-Les images locales référencées sont embarquées. Une image distante doit pouvoir être téléchargée par le navigateur ; un blocage CORS peut empêcher l’export. Les extensions Hydra locales color/noise/fractals/blend sont prises en charge. Les imports distants, captures caméra/écran et sources vidéo sont refusés avec un message explicite. Tous les presets et moteurs externes ne sont donc pas compatibles.
+```text
+visuels/ma-scene/index.html
+```
 
-Le bouton **Infos** permet de télécharger les sources et licences incluses. Conserve les crédits et vérifie les conditions propres aux œuvres que tu publies.
+Avec le ZIP de partage, décompresse-le et dépose **le HTML et son JPEG ensemble**, aux noms fournis, dans le dossier correspondant à l’adresse renseignée. N’envoie pas seulement le ZIP à la médiathèque WordPress et ne renomme pas le JPEG sans adapter le HTML.
 
-Voir aussi le [bol de billes](bol-de-verre.md) et le [guide de fluidité](performance.md).
+Utilise le gestionnaire de fichiers de l’hébergement ou les fichiers du serveur. Pour un WordPress classique, la racine web est généralement le dossier contenant `wp-admin`, `wp-content` et `wp-includes`. Un ancien dossier de site statique peut ne plus être servi après une migration.
+
+Teste ensuite l’adresse publique dans un autre onglet. Si WordPress répond « page introuvable », essaie directement `/visuels/ma-scene/index.html` et vérifie le dossier réellement servi. Le serveur peut avoir une configuration de réécriture particulière.
+
+Sur un hébergement en conteneurs, dépose les fichiers dans le stockage persistant réellement monté dans le serveur web. Le guide de ton hébergeur ou de ton installation indique ce dossier ; ce dépôt ne contient pas de configuration privée d’hébergement.
+
+## 5. Utiliser la page exportée
+
+Au départ, seule l’icône de menu est visible en bas à droite. Elle donne accès à :
+
+- la pause / reprise et au plein écran ;
+- **Résolution du rendu** : origine, 640 × 360, 800 × 450, 1280 × 720 ou 1920 × 1080 ;
+- **Réglages**, si tu as proposé des contrôleurs ;
+- **Infos**, avec les liens du laboratoire, du dépôt et le téléchargement des sources et licences.
+
+Un clic extérieur ou **Échap** referme le menu. **Espace** met en pause ou reprend ; **F** demande le plein écran. Le choix de résolution reste fixe pendant le plein écran et les redimensionnements. Recharger la page rétablit la résolution d’origine.
+
+Une taille inférieure allège le calcul. Changer de résolution peut réinitialiser le feedback Hydra ; certaines simulations conservent leur propre état.
+
+## Son, images et sources
+
+Les entrées FFT restent à zéro : l’export ne demande ni micro ni MIDI. Le son extérieur utilisé pendant ta préparation n’est donc pas enregistré ni reproduit.
+
+Un preset qui génère lui-même du son peut demander un clic du visiteur. Pour le bol de billes, **Activer le son** est proposé si `Son_Collisions` était activé lors de l’export. Ce comportement ne garantit pas que tous les moteurs sonores personnalisés soient compatibles.
+
+Les photos locales référencées par le preset sont embarquées. Pour une image distante, le navigateur doit pouvoir la télécharger ; un blocage d’accès intersites (CORS) peut empêcher l’export. Les imports distants et les sources caméra, écran ou vidéo non pris en charge sont refusés avec un message.
+
+Le fichier contient le preset sélectionné et les ressources nécessaires ; il n’embarque pas toute la bibliothèque, les dix snapshots, les associations MIDI ou les identifiants WordPress. Son code et ses images sont publics comme le reste d’une page web.
+
+**Télécharger les sources et licences (.json)** fournit une archive de textes et de crédits destinée à consulter le code et ses conditions de réutilisation. Ce JSON n’est ni un second fichier à mettre en ligne pour faire jouer la scène, ni un preset à importer directement dans Hydra. Conserve les crédits des auteurs.
+
+## Actualiser une scène déjà publiée
+
+Réexporte, puis remplace le HTML et le nouveau JPEG si tu utilises l’aperçu social. Teste la page avec **Ctrl + F5**. Le cache du site et celui du réseau social sont indépendants : Facebook peut encore montrer une ancienne miniature après la mise à jour du navigateur.
+
+Les anciens exports ne reçoivent pas les nouveautés du plugin automatiquement. Il faut les réexporter et remplacer leurs fichiers.
+
+Voir aussi le [bol de billes](bol-de-verre.md), les [sauvegardes](presets-et-snapshots.md) et le [guide de fluidité](performance.md).

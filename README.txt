@@ -1,3 +1,144 @@
+Pilami Strudel Lab 0.39.58 — Menu du site compact
+
+Installer ce ZIP en remplacement du plugin, puis recharger le labo avec Ctrl + F5.
+Le menu et la recherche du site se trouvent derrière une petite icône en haut à droite du labo.
+Le panneau est fermé au chargement. Cliquer sur l’icône pour ouvrir ou refermer ; clic extérieur et Échap le ferment aussi.
+La recherche conserve la fenêtre native du thème. Échap ferme d’abord cette fenêtre, puis le menu au second appui.
+Les liens et leurs destinations sont conservés ; aucun menu en double.
+Sur mobile, le panneau présente directement les liens et la recherche, sans étape de menu supplémentaire.
+Le voyant de connexion WordPress reste disponible à côté de l’icône.
+
+Cette présentation concerne uniquement les pages du labo. Le reste du site conserve l’en-tête habituel.
+Si l’en-tête attendu est absent, aucune modification n’est appliquée.
+Les pages publiques exportées et les packs VJ hors ligne restent inchangés.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.57 — Voyant de connexion WordPress
+
+Installer ce ZIP en remplacement du plugin, puis recharger le labo avec Ctrl + F5.
+La barre d’administration WordPress disparaît sur les pages contenant [pilami_strudel].
+Elle reste disponible sur les autres pages du site et dans l’administration WordPress.
+
+Un petit voyant apparaît en haut à droite du labo quand WordPress confirme la connexion.
+Vert : connecté. Survol ou focus : précise Administrateur si ce compte possède les droits.
+Gris : déconnexion constatée après une session connectée. Orange : vérification en cours ou connexion impossible à confirmer.
+Le voyant est absent pour un visiteur non connecté. Cliquer dessus relance la vérification.
+Vérification au chargement, au retour sur la page, et toutes les deux minutes lorsque la page est visible.
+
+Le statut vient d’une réponse WordPress non mise en cache : aucun identifiant de compte, nom, mot de passe ou nonce n’est intégré à la page pour ce voyant.
+Le voyant indique la connexion constatée ; il ne modifie pas les droits ni les autorisations de sauvegarde.
+Les packs VJ hors ligne et les pages HTML publiques ne possèdent pas ce voyant WordPress.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.56 — Balle et sortie MIDI
+
+PREMIER ESSAI
+1. Mets à jour le plugin avec ce ZIP, puis recharge le laboratoire (Ctrl + F5 si nécessaire).
+2. Dans les visuels, catégorie Expériences MIDI, choisis « Balle — Rebond MIDI ».
+3. Lance le visuel (Ctrl + Entrée). La balle rebondit ; le compteur avance à chaque contact.
+4. Ouvre les contrôleurs : le panneau « Rebond → sortie MIDI » est sous les sections habituelles.
+5. Windows : lance loopMIDI, crée un port nommé « Pilami Rebond » et garde loopMIDI ouvert.
+6. Dans ce panneau : Autoriser le MIDI → choisir Pilami Rebond → Activer l’envoi.
+7. Dans Ableton : Préférences > Link Tempo MIDI > entrée Pilami Rebond > Piste activée.
+8. Sur une piste MIDI avec un Drum Rack ou un instrument : MIDI From = Pilami Rebond ; Monitor = In, ou Auto avec la piste armée.
+9. Clique « Envoyer une note de test ». Si tu l’entends, chaque impact doit ensuite produire la même note.
+
+Réglages initiaux : note MIDI 36 (le numéro évite les différences de noms d’octave entre logiciels), canal 1, durée 80 ms, vélocité selon la force du choc.
+Pour un test constant, décoche la vélocité selon le choc et laisse la vélocité fixe à 100.
+Rebond = 1 entretient le mouvement. Baisse Rebond pour amortir la balle jusqu’au repos, puis « Relâcher la balle » pour recommencer.
+Hauteur_du_lacher s’applique au prochain lâcher. Gravite, Rebond et Vitesse s’appliquent pendant la lecture.
+Le compteur des impacts inclut les contacts sans MIDI. Le compteur des notes augmente après acceptation de l’envoi par Web MIDI ; il ne confirme pas le son reçu par Ableton.
+
+Arrêter le visuel coupe la note en cours. Changer de preset libère la simulation précédente. Un Note Off est aussi programmé pour chaque note, même si l’animation cesse entre deux images.
+Une déconnexion de port désactive l’envoi. Rechoisis le port et réactive-le après reconnexion.
+Les réglages de sortie restent dans la session du navigateur, sans être ajoutés aux snapshots ou au code publié.
+L’entrée MIDI Learn et la sortie MIDI sont indépendantes. Ableton Link ne transporte pas les notes.
+Aucun accès MIDI n’est demandé au chargement de la page : l’autorisation est demandée au clic.
+Utiliser un navigateur compatible Web MIDI et HTTPS ou localhost. Si aucune sortie n’apparaît, lance d’abord loopMIDI et vérifie les autorisations du navigateur.
+
+PACKS ET EXPORTS
+Les nouveaux Packs VJ contiennent la sortie MIDI. Régénère un ancien pack pour obtenir cette fonction.
+Les exports de pages publiques montrent la balle, sans autorisation ni envoi MIDI.
+Le preset source est aussi fourni dans assets/presets/balle-rebond-midi.txt (import possible via Mes essais Hydra).
+
+VALIDATION
+Simulation et messages testés avec des ports MIDI simulés : contacts, amortissement, Note On/Off, retrigger, pause, changement de preset, déconnexion et refus d’autorisation.
+Le trajet réel jusqu’au son dans Ableton doit être validé sur ton poste avec le bouton de test.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.55 — Menu compact et résolution des pages publiques
+
+Les nouveaux exports index.html n’affichent qu’une icône de menu en bas à droite au démarrage.
+Le menu regroupe pause / lecture, son si disponible, plein écran, contrôleurs proposés et informations.
+Un clic sur l’icône, à l’extérieur du menu ou la touche Échap referme le panneau.
+Le menu reste accessible au clavier et sur mobile, avec défilement si l’espace est réduit.
+
+Résolution du rendu : Origine (valeur exacte exportée), 640 × 360, 800 × 450, 1280 × 720, 1920 × 1080.
+Le choix s’applique au rendu Hydra et reste verrouillé lors d’un redimensionnement ou d’un passage en plein écran.
+Il reste propre à la visite ; recharger la page retrouve la résolution exportée et les valeurs initiales.
+Un changement de résolution réinitialise les textures de feedback Hydra ; les simulations qui possèdent leur propre état peuvent le conserver.
+Installer cette version, recharger l’application avec Ctrl + F5 et réexporter la page HTML ou le ZIP de partage.
+Les fichiers index.html déjà publiés doivent être remplacés. La fonction est aussi disponible dans les nouveaux Packs VJ hors ligne.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.54 — Import des presets et changement d’heure
+
+L’import publie immédiatement les presets avec des dates locale et UTC calculées depuis le même instant.
+Cela évite de programmer la publication une heure plus tard pendant l’heure répétée du passage à l’heure d’hiver.
+Si WordPress refuse encore la publication, le message précise le statut obtenu ou sa référence d’erreur, sans données internes de la base.
+Le code reste dans l’éditeur et le brouillon local en cas d’échec. Les permissions administrateur, catégories et vérifications de sauvegarde restent actives.
+Installer cette version, recharger avec Ctrl + F5, puis réimporter le fichier concerné. Aucun changement de php.ini nécessaire.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.53 — Contrôleurs publics et liens du projet
+
+1. Lance le preset et rappelle la variation à exporter.
+2. Clique sur Exporter la page web. Dans Contrôleurs pour le visiteur, choisis Aucun, un ou deux paramètres.
+3. Les bornes Min / Max, le pas et les valeurs au téléchargement sont conservés. Ajuste les plages dans les contrôleurs de l’application avant l’export si nécessaire.
+4. Télécharge le HTML ou le ZIP de partage, puis publie les fichiers comme auparavant.
+
+Sur la page publique, le bouton Réglages apparaît uniquement si au moins un contrôleur a été choisi.
+Le visiteur dispose de curseurs et de saisie numérique, ou d’un interrupteur pour un toggle.
+Valeurs initiales rappelle les deux valeurs exportées ; le clic droit sur un contrôleur rappelle seulement sa valeur exportée.
+Les réglages restent propres à cette visite : recharger la page retrouve la variation de départ. Aucune modification du preset, des snapshots ou de la base WordPress.
+Les noms et les plages des paramètres choisis sont les seuls réglages supplémentaires exposés. Le code du preset exporté reste public comme auparavant.
+Les choix sont mémorisés localement pour le preset par son auteur. Une mise à jour qui supprime un contrôleur demande de choisir un autre paramètre.
+Si Son_Collisions fait partie des contrôleurs, Activer le son reste nécessaire avant qu’il puisse produire du son. Aucun micro ni MIDI n’est demandé.
+Le panneau Infos conserve Télécharger les sources et licences (.json), et ajoute deux liens : Ouvrir le laboratoire (pilami.fr/strudel) et Code sur GitHub (LostForgotten/pilami-strudel-lab).
+Les liens s’ouvrent dans un nouvel onglet. Le téléchargement JSON reste une archive locale du code et des licences, utile même sans connexion.
+Réexporter les pages déjà publiées pour obtenir les nouveaux liens et les contrôleurs choisis. Installer la version, recharger avec Ctrl + F5 et rouvrir les fenêtres détachées.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.52 — Miniatures et partage des pages web
+
+1. Lance le preset et choisis son snapshot, son cadrage et sa résolution.
+2. Clique sur Exporter la page web, depuis la page ou une fenêtre Hydra Code / Contrôleurs.
+3. Renseigne le titre et la description. Pour un simple fichier autonome, Télécharge le HTML.
+4. Pour Facebook et les réseaux sociaux, coche la miniature et renseigne l’adresse HTTPS où tu déposeras la page.
+5. Vérifie l’aperçu ; Capturer maintenant actualise son image. Le rendu final et les réglages sont capturés au téléchargement.
+6. Télécharge le ZIP de partage, décompresse-le et dépose la page HTML et le JPEG ensemble dans le dossier public choisi.
+
+L’export génère les balises Open Graph et Twitter, une miniature JPEG 1200 × 630 sans déformation et des instructions LISEZ-MOI.txt.
+Le nom du JPEG dépend de son contenu ; si la miniature change, son adresse change aussi pour limiter les anciennes images en cache.
+L’adresse publique permet de générer les liens absolus ; l’export ne publie rien sur le serveur et ne téléverse rien dans WordPress.
+Une adresse de dossier utilise index.html ; une adresse terminée par un nom de fichier .html ou .htm utilise ce nom.
+Le titre, la description, l’adresse et l’option sont mémorisés localement pour le preset ; ils ne modifient pas son nom dans WordPress.
+Les réglages et la résolution sont capturés au clic de téléchargement, même si un contrôleur MIDI évolue pendant la préparation.
+La capture relit le dernier rendu sans avancer la simulation ou le feedback. Une simulation se recalcule à chaque ouverture de la page exportée.
+Les fenêtres détachées ouvrent le formulaire dans leur propre document, au-dessus du plein écran.
+Si Facebook conserve l’ancien aperçu : débogueur de partage → Re-collecter, puis Ctrl + F5 sur Facebook et nouvelle publication si nécessaire.
+L’avertissement fb:app_id n’empêche pas l’aperçu. Les caches du réseau social peuvent demander un délai.
+Les entrées FFT restent nulles dans le lecteur public ; aucune demande de micro ou MIDI. Son de collision uniquement après clic du visiteur.
+Réexporter les anciens Packs VJ pour bénéficier de cette version hors ligne.
+
+--- Historique précédent ---
+
 Pilami Strudel Lab 0.39.51 — Exporter une page web autonome
 
 1. Charger et lancer le preset Hydra.

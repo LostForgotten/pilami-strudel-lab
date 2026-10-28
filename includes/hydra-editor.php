@@ -123,6 +123,18 @@ function pilami_hydra_import_result($id, $created) {
     ), $created ? 201 : 200);
 }
 
+function pilami_hydra_import_dates() {
+    // Local clock time is ambiguous during the autumn DST overlap. Derive both
+    // dates from the same real instant instead of converting the local string
+    // back to UTC (which could turn an immediate import into a future post).
+    $now = time();
+    return array(
+        'post_date' => wp_date('Y-m-d H:i:s', $now, wp_timezone()),
+        'post_date_gmt' => gmdate('Y-m-d H:i:s', $now),
+        'edit_date' => true,
+    );
+}
+
 function pilami_hydra_create_preset($request) {
     $data = $request->get_json_params();
     if (!is_array($data) || !isset($data['code'], $data['name']) ||
@@ -158,7 +170,7 @@ function pilami_hydra_create_preset($request) {
         return new WP_Error('pilami_import_category', 'Impossible de préparer la catégorie Imports.', array('status' => 503));
     }
     // Publish only after the complete code and category have been stored.
-    $id = wp_insert_post(array('post_type' => 'pilami_hydra', 'post_status' => 'draft', 'post_title' => wp_slash($title)), true);
+    $id = wp_insert_post(array_merge(array('post_type' => 'pilami_hydra', 'post_status' => 'draft', 'post_title' => wp_slash($title)), pilami_hydra_import_dates()), true);
     if (is_wp_error($id) || !$id) {
         return new WP_Error('pilami_import_write', 'Impossible de créer le preset.', array('status' => 503));
     }
@@ -170,10 +182,17 @@ function pilami_hydra_create_preset($request) {
         wp_delete_post($id, true);
         return new WP_Error('pilami_import_write', 'Impossible d’enregistrer le code et sa catégorie.', array('status' => 503));
     }
-    $published = wp_update_post(array('ID' => $id, 'post_status' => 'publish'), true);
-    if (is_wp_error($published) || !$published || get_post($id)->post_status !== 'publish') {
+    // Recompute the timestamp at publication and keep edit_date, otherwise
+    // wp_update_post can clear the explicit dates when updating a draft.
+    $published = wp_update_post(array_merge(array('ID' => $id, 'post_status' => 'publish'), pilami_hydra_import_dates()), true);
+    clean_post_cache($id);
+    $actual = get_post($id);
+    if (is_wp_error($published) || !$published || !$actual || $actual->post_status !== 'publish') {
+        // Show a safe reason, never the database error text (it may contain SQL).
+        $reason = is_wp_error($published) ? 'référence WordPress : ' . sanitize_key($published->get_error_code()) :
+            (!$published ? 'écriture non confirmée' : 'statut WordPress : ' . ($actual ? sanitize_key($actual->post_status) : 'introuvable'));
         wp_delete_post($id, true);
-        return new WP_Error('pilami_import_write', 'Impossible de publier le preset.', array('status' => 503));
+        return new WP_Error('pilami_import_write', 'Impossible de publier le preset (' . $reason . ').', array('status' => 503));
     }
     return pilami_hydra_import_result($id, true);
 }

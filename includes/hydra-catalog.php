@@ -56,6 +56,14 @@ function pilami_hydra_migrate_catalog() {
     if ($ok) { update_option('pilami_hydra_catalog_version', '1', false); }
 }
 add_action('init', 'pilami_hydra_migrate_catalog', 12);
+function pilami_hydra_seed_bounce_midi() {
+    if (get_option('pilami_hydra_bounce_midi_seed') === '1') { return; }
+    $code = file_get_contents(dirname(__DIR__) . '/assets/presets/balle-rebond-midi.txt');
+    if (is_string($code) && trim($code) !== '' && pilami_hydra_insert_preset('seed-balle-rebond-midi-v1', 'Balle — Rebond MIDI', $code, 'Expériences MIDI')) {
+        update_option('pilami_hydra_bounce_midi_seed', '1', false);
+    }
+}
+add_action('init', 'pilami_hydra_seed_bounce_midi', 13);
 add_action('add_meta_boxes_pilami_hydra', function () {
     add_meta_box('pilami-hydra-code', 'Code Hydra', function ($post) {
         wp_nonce_field('pilami_hydra_save', 'pilami_hydra_nonce');

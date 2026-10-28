@@ -1,0 +1,87 @@
+// Balle — premier test des collisions vers Ableton.
+// Contrôleurs > Rebond → sortie MIDI : autoriser, choisir le port, activer.
+// Une seule balle, un seul sol. Les pages publiques restent purement visuelles.
+await initHydra({ detectAudio: false })
+setResolution(1280, 720)
+
+var Gravite = H(slider(1, 0.2, 3, 0.01))
+var Rebond = H(slider(1, 0.6, 1, 0.01))
+var Vitesse = H(slider(1, 0.25, 2, 0.01))
+var Hauteur_du_lacher = H(slider(350, 100, 480, 1))
+
+const scene = document.createElement('canvas')
+scene.width = 1280; scene.height = 720
+const ctx = scene.getContext('2d')
+if (!ctx) throw Error('Le rendu de la balle est indisponible.')
+const floor = 610, radius = 30
+let height = Hauteur_du_lacher(), velocity = 0, impacts = 0
+let flash = 0, lastForce = 0, alive = true, resting = false, midiSent = false
+const resetBall = () => {
+  height = Math.max(100, Math.min(480, Hauteur_du_lacher()))
+  velocity = 0; impacts = 0; flash = 0; resting = false; lastForce = 0
+  drawBall()
+}
+const midi = window.PilamiMidiOutput?.source({
+  reset: resetBall,
+  dispose: () => { alive = false }
+})
+
+function drawBall() {
+  ctx.fillStyle = '#080d18'; ctx.fillRect(0, 0, 1280, 720)
+  const x = 640, y = floor - radius - height
+  const shadow = Math.max(0.15, 1 - height / 650)
+  ctx.fillStyle = 'rgba(109,220,195,' + (0.12 * shadow) + ')'
+  ctx.beginPath(); ctx.ellipse(x, floor + 5, 55 * shadow, 9 * shadow, 0, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = 'rgba(109,220,195,' + (0.35 + flash * 0.65) + ')'
+  ctx.lineWidth = 2 + flash * 4
+  ctx.beginPath(); ctx.moveTo(180, floor); ctx.lineTo(1100, floor); ctx.stroke()
+  ctx.shadowColor = '#6ddcc3'; ctx.shadowBlur = 12 + 30 * flash
+  ctx.fillStyle = flash > 0.3 ? '#f4fff9' : '#6ddcc3'
+  ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0
+  if (flash > 0) {
+    ctx.strokeStyle = 'rgba(109,220,195,' + flash + ')'; ctx.lineWidth = 2
+    ctx.beginPath(); ctx.ellipse(x, floor, 40 + (1 - flash) * 100, 12 + (1 - flash) * 25, 0, 0, Math.PI * 2); ctx.stroke()
+  }
+  ctx.fillStyle = '#e5f0f5'; ctx.font = '600 24px sans-serif'; ctx.textAlign = 'left'
+  ctx.fillText('REBOND MIDI', 70, 65)
+  ctx.fillStyle = '#879aa9'; ctx.font = '18px sans-serif'
+  ctx.fillText('Une balle · un sol · une note par impact', 70, 99)
+  ctx.textAlign = 'right'; ctx.fillText('IMPACTS  ' + String(impacts).padStart(3, '0'), 1210, 65)
+  ctx.font = '16px sans-serif'
+  ctx.fillText(impacts ? 'Force du dernier choc  ' + Math.round(lastForce * 100) + ' %' : 'En attente du premier impact', 1210, 96)
+  ctx.textAlign = 'center'; ctx.fillStyle = '#a7babf'; ctx.font = '18px sans-serif'
+  ctx.fillText(resting ? 'Balle au repos · clique sur Relâcher la balle' : 'Rebond = 1 : mouvement entretenu · baisse Rebond pour amortir', 640, 670)
+  if (flash > 0.15) {
+    ctx.fillStyle = midiSent ? '#6ddcc3' : '#c8d4dd'; ctx.font = '600 16px sans-serif'
+    ctx.fillText(midiSent ? 'NOTE MIDI ENVOYÉE' : 'CONTACT', 640, floor + 42)
+  }
+}
+
+// Le temps vient du moteur visuel : arrêter Hydra arrête aussi la physique.
+// La trajectoire est calculée jusqu’au contact exact, puis sur le temps restant.
+update = (dt) => {
+  if (!alive) return
+  let remaining = Math.max(0, Math.min(0.05, Number(dt) / 1000 || 0)) * Math.max(0.25, Math.min(2, Vitesse()))
+  flash = Math.max(0, flash - remaining * 5)
+  const gravity = 900 * Math.max(0.2, Math.min(3, Gravite()))
+  const bounce = Math.max(0.6, Math.min(1, Rebond()))
+  for (let i = 0; i < 8 && remaining > 0 && !resting; i++) {
+    const next = height + velocity * remaining - 0.5 * gravity * remaining * remaining
+    if (next > 0) {
+      height = next; velocity -= gravity * remaining; remaining = 0
+    } else {
+      const force = Math.sqrt(Math.max(0, velocity * velocity + 2 * gravity * height))
+      const contactTime = Math.max(0, Math.min(remaining, (velocity + force) / gravity))
+      remaining -= contactTime; height = 0; velocity = force * bounce
+      impacts++; flash = 1; lastForce = Math.max(0, Math.min(1, force / 1500))
+      midiSent = midi?.hit(lastForce) || false
+      if (velocity < 35) { velocity = 0; resting = true }
+    }
+  }
+  drawBall()
+}
+
+drawBall()
+s0.init({ src: scene })
+src(s0).out(o0)
+render(o0)

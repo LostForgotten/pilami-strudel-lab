@@ -4,7 +4,9 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.51 — projet en développement.**
+**Version actuelle : 0.39.58 — projet en développement.**
+
+**Tu découvres l’application ?** Commence par [ton premier visuel en dix minutes](docs/demarrer.md). Aucun code, appareil MIDI ni Ableton n’est nécessaire pour ce premier essai. Le [sommaire de la documentation](docs/README.md) propose ensuite un parcours pas à pas.
 
 ## Ce que l’on peut faire
 
@@ -20,10 +22,21 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Détacher le visuel, le code et les contrôleurs dans des fenêtres, et configurer des raccourcis pour plusieurs écrans.
 - Exporter un Pack VJ hors ligne depuis l’interface Hydra.
 - Exporter le visuel courant en une page HTML autonome, avec ses réglages et sa résolution.
+- Préparer sa miniature de partage, proposer jusqu’à deux contrôleurs au visiteur et choisir la résolution depuis le menu de la page exportée.
 - Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés de la version 0.39.51
+## Nouveautés de cette mise à jour, de 0.39.52 à 0.39.58
+
+- **Plus de place pour créer** : sur la page du laboratoire, la barre d’administration WordPress est masquée et un petit menu regroupe navigation du site et recherche. Un voyant vérifie la connexion WordPress ; le thème des autres pages est conservé.
+- **Partager un visuel avec son aperçu** : titre, description, adresse publique et miniature JPEG sont préparés dans un ZIP pour les réseaux sociaux.
+- **Laisser jouer le visiteur** : l’export peut proposer un ou deux contrôleurs. Un menu compact regroupe lecture, plein écran, résolution, réglages et informations.
+- **Sortie MIDI expérimentale** : le preset Balle — Rebond MIDI peut envoyer une note à chaque impact, vers un port choisi explicitement. [Guide MIDI](docs/midi.md).
+- **Import WordPress plus fiable** : les dates locale et UTC sont cohérentes, y compris pendant le changement d’heure.
+
+Voir le [journal des versions](CHANGELOG.md), le [guide de sauvegarde](docs/presets-et-snapshots.md) et [l’export web](docs/export-web.md).
+
+## Déjà disponible depuis la version 0.39.51
 
 - **Une scène devient une page web** : export HTML autonome du preset lancé, avec les valeurs actuelles des contrôleurs, les images référencées et la résolution choisie. Lecture sans WordPress, pause, plein écran et sources incluses.
 - **Le son reste choisi par le visiteur** : les collisions du bol peuvent être activées par un clic. La page ne sollicite ni micro ni MIDI ; les entrées FFT restent à zéro.
@@ -42,7 +55,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.51.zip` lorsqu’il est fourni avec une version.
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.58.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -70,8 +83,13 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 
 ## Documentation
 
+- [Commencer : ton premier visuel en dix minutes](docs/demarrer.md)
+- [Sommaire et parcours conseillé](docs/README.md)
 - [Installation et mises à jour](docs/installation.md)
 - [Premiers pas et raccourcis](docs/premiers-pas.md)
+- [Presets, sauvegardes, snapshots et morphing](docs/presets-et-snapshots.md)
+- [Audio, MIDI Learn et notes envoyées à Ableton](docs/midi.md)
+- [Dépannage des premiers essais](docs/depannage.md)
 - [Connexion Ableton Link](docs/ableton-link.md)
 - [Résolution, fluidité et plein écran](docs/performance.md)
 - [Exporter une page web autonome](docs/export-web.md)

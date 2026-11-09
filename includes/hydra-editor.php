@@ -117,6 +117,7 @@ function pilami_hydra_import_result($id, $created) {
         'id' => (string) $id, 'name' => $post->post_title, 'code' => $code,
         'revision' => pilami_hydra_preset_revision($code, $post->post_title), 'created' => $created,
         'createdAt' => get_post_time('c', true, $post) ?: null,
+        'rating' => pilami_hydra_rating($id),
         'categories' => $categories ?: array('Sans catégorie'), 'category_colors' => $colors,
         'category_ids' => $ids, 'category_revision' => is_wp_error($terms) ? null : pilami_hydra_category_revision($ids),
         'category_options' => pilami_hydra_category_options(),
@@ -139,10 +140,10 @@ function pilami_hydra_create_preset($request) {
     $data = $request->get_json_params();
     if (!is_array($data) || !isset($data['code'], $data['name']) ||
         !is_string($data['code']) || !is_string($data['name']) ||
-        trim($data['code']) === '' || strlen($data['code']) > 65536 || strlen($data['name']) > 400 ||
+        trim($data['code']) === '' || strlen($data['code']) > 16777216 || strlen($data['name']) > 400 ||
         strpos($data['code'], "\0") !== false || strpos($data['name'], "\0") !== false ||
         wp_check_invalid_utf8($data['code']) !== $data['code'] || wp_check_invalid_utf8($data['name']) !== $data['name']) {
-        return new WP_Error('pilami_import_invalid', 'Le fichier est invalide ou dépasse 64 Ko.', array('status' => 400));
+        return new WP_Error('pilami_import_invalid', 'Le fichier est invalide ou dépasse 16 Mo.', array('status' => 400));
     }
     $title = sanitize_text_field($data['name']);
     if ($title === '') {
@@ -220,9 +221,9 @@ function pilami_hydra_update_preset($request) {
     if (!is_array($data) || !isset($data['code'], $data['revision']) ||
         !is_string($data['code']) || !is_string($data['revision']) ||
         !preg_match('/^[a-f0-9]{64}$/D', $data['revision']) ||
-        trim($data['code']) === '' || strlen($data['code']) > 65536 ||
+        trim($data['code']) === '' || strlen($data['code']) > 16777216 ||
         strpos($data['code'], "\0") !== false || wp_check_invalid_utf8($data['code']) !== $data['code']) {
-        return new WP_Error('pilami_preset_invalid', 'Le code est invalide ou dépasse 64 Ko.', array('status' => 400));
+        return new WP_Error('pilami_preset_invalid', 'Le code est invalide ou dépasse 16 Mo.', array('status' => 400));
     }
     $title = $post->post_title;
     if (array_key_exists('name', $data)) {

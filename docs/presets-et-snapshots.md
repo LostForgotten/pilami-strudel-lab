@@ -28,6 +28,16 @@ Tester un code et l’enregistrer sur le site sont donc deux actions distinctes.
 
 Effacer les données du navigateur peut supprimer les essais et photos locaux. Pour changer d’ordinateur, conserve tes exports et sauvegarde les éléments nécessaires dans WordPress.
 
+## Stockage local et rechargement
+
+Les brouillons et essais Hydra, puis les banques de snapshots et leurs associations MIDI, utilisent **IndexedDB**. La migration conserve une copie de récupération et retire l’ancienne entrée localStorage uniquement après une écriture réussie. Cela évite que **Recharger le preset** échoue lorsque l’ancien quota est atteint.
+
+**Recharger le preset** restaure le code, les snapshots et le MIDI enregistrés pour ce preset. Les captures locales non enregistrées de ce preset sont remplacées ; les banques des autres presets restent en place. Les données du navigateur restent propres à la machine et ne constituent pas une sauvegarde WordPress.
+
+## Noter et retrouver ses presets
+
+Un administrateur peut noter un preset de **1 à 5 étoiles**, ou retirer sa note. Les visiteurs voient les notes. Dans le tri, **0 étoile** sélectionne les presets sans note ; les autres filtres sélectionnent exactement la note choisie. Ces filtres se combinent avec la catégorie et la recherche. Le tri **Mieux notés** affiche les meilleures notes en premier.
+
 ## Créer ou modifier un preset WordPress
 
 Il faut un compte autorisé : le voyant vert confirme une connexion, pas à lui seul le droit de modifier le catalogue. Son survol précise les droits administrateur.

@@ -1,3 +1,152 @@
+VERSION 0.39.75 — STOCKAGE DES SNAPSHOTS
+
+- Snapshots et associations MIDI migrés vers IndexedDB, avec copie de récupération avant suppression de l’ancien stockage.
+- Recharger le preset attend la restauration des banques avant de relancer le visuel.
+- Brouillons, autres presets, notes et données du site conservés.
+
+VERSION 0.39.74 — SUPPRESSION DU FOND BLEU DES ÉTOILES
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+La note sélectionnée ne reçoit plus le fond coloré du style général des boutons.
+Les étoiles restent transparentes au repos, au survol et au focus, avec ou sans palette personnalisée.
+Notes, filtres et progression depuis la droite conservés.
+
+VERSION 0.39.73 — FILTRE PAR NOTE
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+Trier par > Afficher une note précise propose 0, 1, 2, 3, 4 et 5 étoiles.
+La note choisie est exacte : 3 étoiles affiche uniquement les presets notés 3/5. 0 étoile affiche les presets non notés.
+Le filtre se combine avec la catégorie et la recherche. Les résultats restent classés du plus récent au plus ancien.
+Choisir Plus récents, Plus anciens, Nom ou Mieux notés pour retrouver toutes les notes.
+Le choix est mémorisé dans le navigateur ; les nouveaux Packs VJ disposent aussi de ce filtre.
+
+VERSION 0.39.72 — ÉTOILES SANS CARRÉ
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+Suppression du carré hérité du style des boutons sélectionnés sur la note attribuée.
+Le clavier conserve un petit soulignement pour repérer le focus ; aucun cadre autour des étoiles.
+Après un clic de souris, aucun focus forcé sur une étoile.
+Notes, icônes transparentes et progression depuis la droite conservées.
+
+VERSION 0.39.71 — NOTATION DEPUIS LA DROITE
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+La première étoile est à droite. Chaque point supplémentaire ajoute une étoile vers la gauche.
+Les étoiles déjà attribuées restent au même endroit au survol et au clavier.
+Icônes transparentes, masquage des presets sans note et notes enregistrées conservés.
+
+VERSION 0.39.70 — ÉTOILES DISCRÈTES
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+Aucune étoile au repos sur les presets sans note. Seules les étoiles attribuées restent visibles sur les autres.
+Icônes PNG transparentes de 12 px, sans bandeau ni fond ; vignettes plus compactes.
+Administrateur : survoler une vignette ou y accéder au clavier pour afficher les cinq emplacements. Sur écran tactile, sélectionner la vignette, puis toucher une étoile.
+Cliquer de nouveau sur la note actuelle pour la retirer. Les notes déjà enregistrées sont conservées.
+
+VERSION 0.39.69 — NOTATION DES PRESETS
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+Administrateur connecté : cliquer sur une des cinq étoiles en haut à droite du preset.
+Cliquer de nouveau sur la note actuelle pour retirer la note. La notation ne charge ni ne lance le preset.
+Les notes sont enregistrées dans WordPress, conservées entre appareils et visibles par tous. Seul un administrateur peut les modifier.
+Trier par > Mieux notés ★ place les notes les plus élevées en premier, puis les presets sans note. Recherche et catégories restent utilisables.
+Les nouveaux Packs VJ emportent les notes en lecture seule.
+
+VERSION 0.39.68 — ACCÈS À L’ADMINISTRATION WORDPRESS
+Un clic sur le voyant vert ouvre le tableau de bord WordPress dans le même onglet.
+Le voyant gris conserve son accès à la page de connexion.
+Installer le ZIP en remplacement, puis recharger avec Ctrl + F5.
+
+VERSION 0.39.67 — BROUILLONS HYDRA VOLUMINEUX
+Installer le ZIP en remplacement, puis Ctrl + F5. Avant de recharger un onglet qui signale une erreur de sauvegarde, exporter son code actuel.
+Brouillons et essais Hydra utilisent IndexedDB, dans les données du navigateur pour le site. Ils restent locaux à ce navigateur et à cette origine.
+L’ancienne copie localStorage est retirée uniquement après écriture confirmée ; une copie de récupération de la migration est conservée dans la base.
+Les presets et snapshots déjà enregistrés dans WordPress ne sont pas modifiés. Les banques locales de snapshots restent conservées.
+Une confirmation près du statut indique quand le brouillon est enregistré. Si IndexedDB est indisponible, repli sur localStorage ; si les deux échouent, exporter le code.
+Les nouveaux Packs VJ prennent aussi en charge les gros brouillons. L’export reste la sauvegarde transportable entre ordinateurs.
+
+VERSION 0.39.66 — PRESETS HYDRA AVEC BANQUES AUDIO
+Import et code Hydra : 16 Mo maximum. Mise à jour, lecture et contrôleurs suivent cette limite. Les exports HTML embarquent le code et les données. Les quotas localStorage du navigateur restent applicables : les gros presets doivent être conservés en fichier ou enregistrés dans WordPress. La configuration PHP/serveur doit accepter les requêtes JSON correspondantes (post_max_size > 16M recommandé). Designer et morceaux Strudel : limites distinctes.
+
+Pilami Strudel Lab 0.39.65 — Entrée audio facultative et menu discret
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+Réexporter les pages HTML pour bénéficier des nouvelles fonctions.
+Le bouton en bas à droite disparaît après 3 secondes d’inactivité lorsque le menu est fermé.
+Bouger la souris, toucher l’écran ou utiliser le clavier le fait revenir.
+Le menu ouvert reste visible pendant les réglages.
+Dans le menu, Activer l’entrée audio demande l’autorisation du navigateur.
+La liste des entrées devient disponible après autorisation. Choisir une autre entrée reconnecte l’analyse.
+Désactiver l’entrée audio libère le micro et remet les FFT à zéro.
+Les réglages a.setBins / setSmooth / setCutoff / setScale utilisent le moteur Hydra embarqué.
+Les formules a.fft et audioMod réagissent à l’entrée choisie. Aucune sortie vers les haut-parleurs.
+Publier en HTTPS pour autoriser l’entrée audio. Les autorisations et appareils dépendent du navigateur.
+La capture du son système et les sources par note/MIDI ne sont pas incluses.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.64 — Export HTML près des actions du preset
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+Exporter la page web rejoint la rangée Partager / Importer / Mettre à jour le code / Exporter le preset.
+Accessible aux visiteurs aussi : appliquer le preset pour activer le bouton.
+Le téléchargement ne publie pas automatiquement la page.
+La page exportée utilise des FFT à zéro : elle ne reçoit pas de son et ne conserve pas la réactivité audio.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.63 — Paramètres des contrôleurs dans les pages HTML
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+Dans Exporter une page web, l’option « Permettre de changer les paramètres sur la page publiée » est cochée par défaut.
+Les deux paramètres choisis à l’export restent les sélections initiales.
+Sur la page exportée : ouvrir le menu, puis Réglages, et choisir le paramètre de chaque contrôleur.
+Les bornes, le pas et le type de commande suivent le paramètre choisi.
+Changer la sélection conserve les valeurs pendant la session ; recharger restaure les valeurs exportées.
+Décocher l’option conserve les contrôleurs fixes des exports précédents.
+Fonctionne dans le HTML et le ZIP de partage. Réexporter les anciennes pages pour bénéficier de ce changement.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.62 — Comprendre les liaisons audio du code
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+Sous chaque bande audio utilisée par le script, un résumé indique les paramètres repérés.
+Clic droit sur la bande : « Ce que pilote le code » détaille chaque formule et sa ligne.
+Les contrôleurs concernés portent également la mention « Code : a.fft[…] ».
+Ouvrir / Refermer les contrôleurs liés déplie ou replie leurs réglages en un clic, sans changer leurs valeurs.
+Ces actions sont aussi disponibles pour une source précise dans sa fenêtre.
+Les liaisons ajoutées dans l’interface restent séparées des calculs écrits dans le script.
+Le repérage est statique, calculé une fois au chargement ; aucune formule du preset n’est exécutée pour l’analyser.
+Les calculs trop complexes ne sont pas devinés : les lectures de la source restent consultables.
+Le preset Blob translucide v1 déjà importé est reconnu sans modifier son code.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.61 — Se connecter depuis le voyant gris
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+Le voyant gris est visible après vérification d’une session déconnectée.
+Cliquer dessus ouvre la connexion WordPress avec retour à la page du laboratoire après connexion.
+L’adresse de connexion est fournie par WordPress pour respecter les éventuelles personnalisations du site.
+Le voyant vert reste le signe d’une session connectée ; un clic revérifie son état.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.60 — Recherche directement dans le menu
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+L’icône en haut à droite ouvre un seul panneau : liens du site, champ de recherche et suggestions.
+La recherche du menu n’ouvre plus de seconde fenêtre. Entrée ou la loupe affiche la page des résultats du site.
+Échap ou un clic extérieur referme le panneau. Le formulaire et les suggestions du thème sont conservés.
+
+--- Historique précédent ---
+
+Pilami Strudel Lab 0.39.59 — Recherche compacte et lisible
+
+Installer le ZIP en remplacement du plugin, puis recharger avec Ctrl + F5.
+La recherche du site s’ouvre dans une carte avec titre et croix de fermeture visible.
+La palette reprend celle du laboratoire, le champ est plus compact et le fond laisse mieux voir le contexte.
+Les suggestions et le formulaire restent ceux du thème. Échap et la croix ferment la recherche ; un second Échap ferme le menu.
+Si les suggestions sont ouvertes, Échap les referme d’abord.
+Cette adaptation concerne uniquement la page du laboratoire. Les autres pages et les exports restent inchangés.
+
+--- Historique précédent ---
+
 Pilami Strudel Lab 0.39.58 — Menu du site compact
 
 Installer ce ZIP en remplacement du plugin, puis recharger le labo avec Ctrl + F5.

@@ -74,7 +74,7 @@ add_action('add_meta_boxes_pilami_hydra', function () {
 add_action('save_post_pilami_hydra', function ($id) {
     if (!current_user_can('manage_options') || wp_is_post_revision($id) || wp_is_post_autosave($id) || !isset($_POST['pilami_hydra_nonce'], $_POST['pilami_hydra_code']) || !is_string($_POST['pilami_hydra_code']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['pilami_hydra_nonce'])), 'pilami_hydra_save')) { return; }
     $code = wp_unslash($_POST['pilami_hydra_code']);
-    if (strlen($code) > 65536 || strpos($code, "\0") !== false || wp_check_invalid_utf8($code) !== $code) { return; }
+    if (strlen($code) > 16777216 || strpos($code, "\0") !== false || wp_check_invalid_utf8($code) !== $code) { return; }
     update_post_meta($id, '_pilami_hydra_code', wp_slash($code));
 });
 // A revision covers the name as well as code, including name-only edits.
@@ -97,7 +97,7 @@ function pilami_hydra_catalog() {
         if (!is_wp_error($terms)) { foreach ($terms as $term) { $categories[] = $term->name; $ids[] = (int) $term->term_id; $colors[$term->name] = pilami_strudel_hydra_category_color($term, $appearance); } }
         sort($ids, SORT_NUMERIC);
         $items[] = array('id' => (string) $post->ID, 'name' => $post->post_title, 'code' => $code, 'revision' => pilami_hydra_preset_revision($code, $post->post_title), 'createdAt' => get_post_time('c', true, $post) ?: null, 'categories' => $categories ?: array('Sans catégorie'), 'category_colors' => $colors,
-            'category_ids' => $ids, 'category_revision' => is_wp_error($terms) ? null : pilami_hydra_category_revision($ids));
+            'rating' => pilami_hydra_rating($post->ID), 'category_ids' => $ids, 'category_revision' => is_wp_error($terms) ? null : pilami_hydra_category_revision($ids));
     }
     return $items;
 }
@@ -110,7 +110,7 @@ function pilami_hydra_render_workspace() {
         <div class="pilami-hydra-filters">
             <label>Catégorie <select data-hydra-category><option value="">Toutes les catégories</option></select></label>
             <label>Rechercher <input data-hydra-search type="search" placeholder="Julia, mandala, audio…"></label>
-            <label>Trier par <select data-hydra-sort><option value="recent">Plus récents</option><option value="oldest">Plus anciens</option><option value="name">Nom : A → Z</option></select></label>
+            <label>Trier par <select data-hydra-sort><option value="recent">Plus récents</option><option value="oldest">Plus anciens</option><option value="name">Nom : A → Z</option><option value="rating">Mieux notés ★</option><optgroup label="Afficher une note précise"><option value="rating-0">0 étoile · Non notés</option><option value="rating-1">1 étoile</option><option value="rating-2">2 étoiles</option><option value="rating-3">3 étoiles</option><option value="rating-4">4 étoiles</option><option value="rating-5">5 étoiles</option></optgroup></select></label>
         </div>
         <p data-hydra-count class="pilami-strudel-muted"></p>
         <div data-hydra-presets class="pilami-hydra-preset-list" role="group" aria-label="Presets Hydra"></div>

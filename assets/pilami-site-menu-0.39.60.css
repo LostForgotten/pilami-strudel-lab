@@ -1,0 +1,38 @@
+/* Only the enhanced laboratory owns this disclosure; all other pages keep their header. */
+.pilami-strudel-lab[data-site-menu-ready="1"]{position:relative}
+.pilami-strudel-lab[data-site-menu-ready="1"]>.pilami-connections{margin-right:32px}
+.pilami-strudel-lab[data-site-menu-ready="1"][data-account-visible="1"]>.pilami-connections{margin-right:64px}
+.pilami-strudel-lab button.pilami-site-menu-toggle{position:absolute;right:10px;top:10px;display:grid;place-items:center;width:28px;height:28px;min-width:28px;min-height:28px;padding:0;border:0;border-radius:7px;box-shadow:none;background:transparent;color:var(--studio-text,#e5edf9);cursor:pointer;z-index:3}
+.pilami-strudel-lab[data-account-visible="1"] button.pilami-site-menu-toggle{right:42px}
+.pilami-strudel-lab button.pilami-site-menu-toggle:hover,.pilami-strudel-lab button.pilami-site-menu-toggle[aria-expanded="true"]{background:var(--studio-raised,#1b2939);box-shadow:none}
+.pilami-strudel-lab button.pilami-site-menu-toggle svg{display:block;flex:none}
+.pilami-strudel-lab .pilami-site-menu-panel{position:absolute;right:10px;top:46px;z-index:80;box-sizing:border-box;width:min(360px,calc(100vw - 32px),calc(100% - 20px));max-height:min(70vh,540px);overflow:auto;padding:14px;border:1px solid var(--studio-line,#475569);border-radius:14px;background:var(--studio-card,#131f32);color:var(--studio-text,#e5edf9);box-shadow:0 12px 32px #0005}
+.pilami-strudel-lab .pilami-site-menu-panel[hidden]{display:none!important}
+.pilami-site-menu-panel #header{position:static!important;inset:auto!important;transform:none!important;width:100%!important;min-height:0!important;margin:0!important;padding:0!important;z-index:auto!important;background:transparent!important;box-shadow:none!important}
+.pilami-site-menu-panel #header>[data-device="desktop"]{display:block!important}
+.pilami-site-menu-panel #header>[data-device="mobile"]{display:none!important}
+.pilami-site-menu-panel #header :is([data-row],.ct-container,[data-column],[data-items]){display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:8px!important;width:100%!important;min-width:0!important;min-height:0!important;max-width:100%!important;height:auto!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;--height:auto}
+.pilami-site-menu-panel #header [data-id="logo"]{display:none!important}
+.pilami-site-menu-panel #header nav{width:100%!important;min-width:0!important;overflow:visible!important}
+.pilami-site-menu-panel #header nav>.menu{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important;margin:0!important;padding:0!important;min-height:0!important}
+.pilami-site-menu-panel #header nav .ct-menu-link{min-height:38px!important;padding:10px!important;color:var(--studio-text,#e5edf9)!important;line-height:1.4!important;white-space:normal!important}
+.pilami-site-menu-panel #header [data-id="search"]{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;width:100%!important;min-height:38px!important;padding:10px!important;border:0!important;border-radius:8px!important;color:var(--studio-text,#e5edf9)!important;background:var(--studio-raised,#1b2939)!important}
+.pilami-site-menu-panel #header [data-id="search"] .ct-label{display:inline!important;visibility:visible!important}
+.pilami-site-menu-panel #header [data-id="search"] svg{fill:currentColor!important;flex:none}
+@media(max-width:640px){.pilami-strudel-lab button.pilami-site-menu-toggle{right:6px;top:7px}.pilami-strudel-lab[data-account-visible="1"] button.pilami-site-menu-toggle{right:38px}.pilami-strudel-lab[data-site-menu-ready="1"]>.pilami-connections{margin-right:32px}.pilami-strudel-lab[data-site-menu-ready="1"][data-account-visible="1"]>.pilami-connections{margin-right:64px}.pilami-strudel-lab .pilami-site-menu-panel{right:6px;top:42px}}
+
+/* Search belongs to the same disclosure as the navigation. */
+.pilami-site-menu-panel #header[data-pilami-inline-search="1"] [data-id="search"]{display:none!important}
+.pilami-site-menu-panel .pilami-site-search{margin-top:12px;padding-top:14px;border-top:1px solid var(--studio-line,#475569)}
+.pilami-site-search>label{display:block;margin:0 0 9px;font:600 13px/1.4 system-ui,sans-serif;color:var(--studio-text,#e5edf9)}
+.pilami-site-search .ct-search-form{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;background:transparent!important;--theme-form-font-size:14px;--theme-form-field-height:44px;--theme-form-border-radius:9px}
+.pilami-site-search .ct-search-form-inner{position:relative;width:100%;height:auto!important;min-height:0!important;padding:0!important;box-sizing:border-box;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important}
+.pilami-site-search input[type="search"]{box-sizing:border-box;width:100%!important;min-height:44px!important;height:44px!important;font:16px/1.4 system-ui,sans-serif!important;padding-inline:12px 52px!important;border:1px solid var(--studio-line,#475569)!important;border-radius:9px!important;background:var(--studio-bg,#0c1423)!important;color:var(--studio-text,#e5edf9)!important}
+.pilami-site-search input[type="search"]::placeholder{color:var(--studio-text,#e5edf9);opacity:.6}
+.pilami-site-search input[type="search"]:focus{outline:2px solid var(--studio-accent,#68e8d4)!important;outline-offset:2px}
+.pilami-site-search button[type="submit"]{position:absolute!important;inset-inline-end:5px!important;top:5px!important;display:grid;place-items:center;width:34px!important;height:34px!important;min-height:34px!important;padding:0!important;border:0;border-radius:7px!important;background:var(--studio-accent,#68e8d4)!important;color:var(--studio-bg,#0c1423)!important}
+.pilami-site-search button[type="submit"] svg{fill:currentColor!important}
+.pilami-site-search .ct-search-results{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-height:300px;overflow:auto;margin-top:14px;padding:0!important;box-shadow:none!important;border:0!important;border-radius:0!important;background:transparent!important;color:var(--studio-text,#e5edf9)!important}
+.pilami-site-search .ct-search-results a{color:var(--studio-text,#e5edf9)!important;padding:10px 0;gap:10px}
+.pilami-site-search .ct-search-results a:hover{color:var(--studio-accent,#68e8d4)!important}
+.pilami-site-search button:focus-visible{outline:2px solid var(--studio-accent,#68e8d4);outline-offset:2px}

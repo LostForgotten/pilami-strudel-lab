@@ -4,6 +4,91 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.75' => array('Snapshots et rechargement sans quota localStorage', array(
+            'Snapshots et associations MIDI déplacés vers IndexedDB ; migration automatique avec copie de récupération avant retrait de l’ancien stockage.',
+            'Recharger le preset attend la restauration des banques enregistrées avant de relancer le visuel.',
+            'Presets voisins, brouillons et modifications locales des Packs VJ conservés ; message explicite si la sauvegarde locale échoue.',
+        )),
+        '0.39.74' => array('Étoiles sans fond de bouton', array(
+            'Suppression du fond bleu résiduel de la note sélectionnée : les règles des boutons colorés ne prennent plus le dessus sur la transparence des étoiles.',
+            'Fond, bordure et ombre neutralisés sur les étoiles au repos, au survol et au focus, avec ou sans palette personnalisée.',
+        )),
+        '0.39.73' => array('Filtrer les presets par note', array(
+            'Dans Trier par, sélectionner exactement 0, 1, 2, 3, 4 ou 5 étoiles ; 0 étoile affiche les presets sans note.',
+            'Filtre combinable avec la catégorie et la recherche ; les presets retenus sont affichés du plus récent au plus ancien.',
+            'Choix mémorisé dans le navigateur et disponible aussi dans les nouveaux Packs VJ hors ligne.',
+        )),
+        '0.39.72' => array('Étoiles sans cadre de sélection', array(
+            'Suppression du cadre hérité des boutons sélectionnés sur la note actuelle, y compris avec les couleurs personnalisées.',
+            'Repère clavier sous forme de soulignement discret ; aucun focus forcé sur une étoile après un clic de souris.',
+        )),
+        '0.39.71' => array('Notation depuis la droite', array(
+            'La première étoile se trouve à droite ; les notes plus élevées ajoutent leurs étoiles vers la gauche.',
+            'Les étoiles attribuées gardent leur position quand les cinq emplacements apparaissent au survol ou au clavier.',
+        )),
+        '0.39.70' => array('Étoiles discrètes et transparentes', array(
+            'Seules les étoiles attribuées restent visibles ; aucune étoile au repos pour un preset sans note.',
+            'Petites icônes PNG transparentes, sans bandeau ni fond ; vignettes plus compactes.',
+            'Administrateur : les cinq emplacements apparaissent au survol ou au clavier pour noter ou modifier la note. Sur écran tactile, sélectionner la vignette.',
+        )),
+        '0.39.69' => array('Notation des presets par étoiles', array(
+            'Cinq étoiles en haut à droite de chaque vignette : cliquer pour noter de 1 à 5, cliquer de nouveau sur la note actuelle pour la retirer.',
+            'Notes enregistrées dans WordPress par l’administrateur, visibles en lecture seule pour les visiteurs.',
+            'Tri Mieux notés, combinable avec la recherche et les catégories ; choix du tri mémorisé.',
+            'Les nouveaux Packs VJ conservent les notes en lecture seule.',
+        )),
+        '0.39.68' => array('Administration WordPress depuis le voyant vert', array(
+            'Un clic sur le voyant vert ouvre le tableau de bord WordPress dans le même onglet.',
+            'Infobulle et libellé accessible adaptés ; le voyant gris conserve son accès à la connexion.',
+        )),
+        '0.39.67' => array('Gros brouillons Hydra et sauvegarde locale', array(
+            'Brouillons et essais Hydra déplacés vers IndexedDB pour dépasser le petit quota de localStorage, notamment avec les banques audio intégrées.',
+            'Migration automatique : ancienne copie retirée uniquement après confirmation de l’écriture ; copie de récupération conservée dans la base locale.',
+            'Confirmation de sauvegarde des essais après l’écriture, état du brouillon visible et message français si le navigateur ne peut pas conserver les données.',
+            'Packs VJ : chargement des gros brouillons sans passage par localStorage ; presets WordPress et banques de snapshots conservés.',
+        )),
+        '0.39.66' => array('Presets Hydra avec banques audio intégrées', array(
+            'Import, exécution, mise à jour et contrôleurs Hydra acceptent jusqu’à 16 Mo de code UTF-8, pour les instruments contenant leurs propres sons.',
+            'Les signatures des snapshots conservent une empreinte compacte des gros blocs intégrés, pour ne pas recopier leurs échantillons dans chaque sauvegarde.',
+            'Même limite dans les nouveaux Packs VJ ; les limites du graphe Designer et des morceaux Strudel restent distinctes.',
+            'Pour les gros presets, conserver le fichier exporté ou enregistrer dans WordPress : le quota local du navigateur peut empêcher le brouillon et les essais locaux.',
+        )),
+        '0.39.65' => array('Entrée audio facultative et visuel sans interface', array(
+            'Entrée audio activable dans le menu des pages exportées, avec autorisation du navigateur, choix de source et indicateur de niveau.',
+            'Analyse Hydra locale, réglages FFT du code et modulations audio conservés ; aucune écoute automatique.',
+            'Le bouton du menu disparaît après trois secondes d’inactivité et revient au mouvement, au toucher ou au clavier.',
+            'Le menu ouvert reste accessible pendant les réglages ; fermer le menu pour retrouver le visuel seul.',
+        )),
+        '0.39.64' => array('Exporter la page web depuis la fiche du preset', array(
+            'Bouton Exporter la page web placé à côté de Partager ce preset, Importer un preset, Mettre à jour le code et Exporter le preset.',
+            'Le bouton est retrouvé même après le déplacement des actions vers Sauvegarder et partager.',
+        )),
+        '0.39.63' => array('Réaffecter les contrôleurs des pages exportées', array(
+            'Choix du paramètre de chacun des deux contrôleurs directement dans les réglages de la page HTML publiée.',
+            'Bornes, pas et interrupteurs adaptés au paramètre choisi ; les valeurs restent conservées lors du changement de sélection.',
+            'Option dans la fenêtre d’export pour autoriser la réaffectation, dans le HTML comme dans le ZIP de partage.',
+            'Les pages déjà publiées doivent être exportées à nouveau.',
+        )),
+        '0.39.62' => array('Voir les destinations audio calculées dans le code', array(
+            'Récapitulatif des paramètres et des formules pour chaque source audio dans le script.',
+            'Indications directement sous les bandes FFT et sur les contrôleurs concernés.',
+            'Ouvrir ou refermer en un clic les réglages de tous les contrôleurs liés, globalement ou par source.',
+            'Repérage sans exécuter le code, avec extraits lorsque la destination reste inconnue ; mêmes indications dans les contrôleurs détachés et le Pack VJ.',
+        )),
+        '0.39.61' => array('Connexion WordPress depuis le voyant gris', array(
+            'Voyant gris visible pour les visiteurs déconnectés ; un clic ouvre la connexion WordPress avec retour au laboratoire.',
+            'Voyant vert pour la session connectée ; son clic conserve la vérification de connexion.',
+        )),
+        '0.39.60' => array('Recherche intégrée au menu du site', array(
+            'Champ de recherche et suggestions directement dans le menu, sans seconde fenêtre.',
+            'Formulaire et liens du thème conservés ; fermeture du menu au clic extérieur ou avec Échap.',
+        )),
+        '0.39.59' => array('Recherche du site dans une fenêtre lisible', array(
+            'Le formulaire de recherche Blocksy est présenté dans une carte compacte avec le titre Rechercher sur le site.',
+            'La croix native est déplacée dans la carte et rendue visible malgré le réglage transparent du thème.',
+            'Champ et résultats harmonisés avec la palette du laboratoire ; fond moins opaque, dimensions adaptées au mobile.',
+            'Formulaire, destination, suggestions et clavier natifs conservés ; l’apparence des autres pages du site reste inchangée.',
+        )),
         '0.39.58' => array('Menu du site et recherche derrière une icône', array(
             'Sur la page du laboratoire, l’en-tête du site est rangé derrière une petite icône en haut à droite de l’application, près du voyant de connexion.',
             'Le panneau est fermé par défaut ; il réutilise les liens et la recherche du thème, sans les dupliquer ni modifier leur destination.',

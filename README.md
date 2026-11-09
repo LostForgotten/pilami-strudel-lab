@@ -4,7 +4,7 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.58 — projet en développement.**
+**Version actuelle : 0.39.75 — projet en développement.**
 
 **Tu découvres l’application ?** Commence par [ton premier visuel en dix minutes](docs/demarrer.md). Aucun code, appareil MIDI ni Ableton n’est nécessaire pour ce premier essai. Le [sommaire de la documentation](docs/README.md) propose ensuite un parcours pas à pas.
 
@@ -26,24 +26,15 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés de cette mise à jour, de 0.39.52 à 0.39.58
+## Nouveautés depuis la version GitHub 0.39.58
 
-- **Plus de place pour créer** : sur la page du laboratoire, la barre d’administration WordPress est masquée et un petit menu regroupe navigation du site et recherche. Un voyant vérifie la connexion WordPress ; le thème des autres pages est conservé.
-- **Partager un visuel avec son aperçu** : titre, description, adresse publique et miniature JPEG sont préparés dans un ZIP pour les réseaux sociaux.
-- **Laisser jouer le visiteur** : l’export peut proposer un ou deux contrôleurs. Un menu compact regroupe lecture, plein écran, résolution, réglages et informations.
-- **Sortie MIDI expérimentale** : le preset Balle — Rebond MIDI peut envoyer une note à chaque impact, vers un port choisi explicitement. [Guide MIDI](docs/midi.md).
-- **Import WordPress plus fiable** : les dates locale et UTC sont cohérentes, y compris pendant le changement d’heure.
+- **Comprendre les réactions au son** : les sources audio indiquent les paramètres repérés dans le code. Ouvrir ou refermer leurs contrôleurs liés se fait en un clic, dans le labo ou une fenêtre détachée.
+- **Des pages partagées plus souples** : réaffectation des deux contrôleurs et entrée audio activable par le visiteur, avec choix de source et indicateur de niveau. Le bouton de menu disparaît après une période d’inactivité.
+- **Retrouver ses presets favoris** : notes de 0 à 5 étoiles, tri par note et filtre exact, combinables avec la recherche et les catégories. Les notes sont conservées dans WordPress et dans les nouveaux Packs VJ.
+- **Conserver les gros presets et leurs variations** : scripts Hydra jusqu’à 16 Mo ; brouillons, essais, snapshots et associations MIDI locaux migrés vers IndexedDB, avec conservation des anciennes copies jusqu’à l’écriture réussie.
+- **Navigation plus directe** : recherche intégrée au menu ; voyant gris pour se connecter, voyant vert pour ouvrir l’administration WordPress.
 
-Voir le [journal des versions](CHANGELOG.md), le [guide de sauvegarde](docs/presets-et-snapshots.md) et [l’export web](docs/export-web.md).
-
-## Déjà disponible depuis la version 0.39.51
-
-- **Une scène devient une page web** : export HTML autonome du preset lancé, avec les valeurs actuelles des contrôleurs, les images référencées et la résolution choisie. Lecture sans WordPress, pause, plein écran et sources incluses.
-- **Le son reste choisi par le visiteur** : les collisions du bol peuvent être activées par un clic. La page ne sollicite ni micro ni MIDI ; les entrées FFT restent à zéro.
-- **Mettre à jour sans refaire ses variations** : le nouveau code reprend les snapshots et réglages compatibles par nom de contrôleur. La sauvegarde WordPress vérifie le nom et le code relus après l’enregistrement.
-- **Nouvel exemple original** : [bol de verre et billes](docs/bol-de-verre.md), avec collisions, sons, lueurs de la couleur de chaque bille, éclairage des voisines, occlusion ambiante et cadrage X/Y. Version du preset : 1.13.
-
-Voir [l’export web](docs/export-web.md), le [guide de résolution et de fluidité](docs/performance.md) et le [journal des versions](CHANGELOG.md).
+Voir le [journal des 17 versions regroupées](CHANGELOG.md), les [sauvegardes](docs/presets-et-snapshots.md), l’[audio et le MIDI](docs/midi.md) et l’[export web](docs/export-web.md).
 
 ## Essayer
 
@@ -55,7 +46,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.58.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.75.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.

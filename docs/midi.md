@@ -50,3 +50,9 @@ La sortie dépend de Web MIDI et des autorisations du navigateur. Les paramètre
 ## Partager le tempo avec Link
 
 Link transporte une horloge musicale, pas des notes MIDI ni du son. Utilise le [guide Ableton Link](ableton-link.md) si tu veux synchroniser le tempo et, selon les options, les départs et arrêts du séquenceur.
+
+## Retrouver ce que pilote une source audio
+
+Les sources audio affichent les contrôleurs liés dans l’interface et les paramètres repérés dans les formules du script. Un clic droit sur une source permet de consulter les destinations et les extraits concernés ; une formule complexe peut être montrée sans destination certaine.
+
+**Ouvrir les contrôleurs liés** et **Refermer les contrôleurs liés** déplient ou replient leurs réglages. Les commandes existent globalement et pour une source précise, y compris dans les contrôleurs détachés. Elles ne changent ni les valeurs ni les liaisons.

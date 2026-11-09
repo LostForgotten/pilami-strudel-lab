@@ -15,7 +15,7 @@ Le formulaire capture les valeurs de base des contrôleurs et la résolution. Un
 
 Renseigne le **Titre** et la **Description**. Dans **Contrôleur 1** et **Contrôleur 2**, laisse **Aucun** pour une scène sans réglages, ou choisis un ou deux paramètres distincts.
 
-Le visiteur retrouvera leurs valeurs de départ, leurs bornes et leur pas dans le menu **Réglages**. Ses changements restent propres à sa visite : ils ne réécrivent ni ton preset ni WordPress. Recharger la page restaure les valeurs exportées.
+Le visiteur retrouvera leurs valeurs de départ, leurs bornes et leur pas dans le menu **Réglages**. L’option de réaffectation permet de changer le paramètre de chaque contrôleur sur la page exportée ; les deux choix restent distincts. Ses changements restent propres à sa visite : ils ne réécrivent ni ton preset ni WordPress. Recharger la page restaure les valeurs exportées.
 
 ## 3. Télécharger un HTML ou un ZIP de partage
 
@@ -48,7 +48,7 @@ Sur un hébergement en conteneurs, dépose les fichiers dans le stockage persist
 
 ## 5. Utiliser la page exportée
 
-Au départ, seule l’icône de menu est visible en bas à droite. Elle donne accès à :
+Au départ, seule l’icône de menu est visible en bas à droite. Elle s’efface après trois secondes d’inactivité et revient au mouvement, au toucher ou au clavier. Elle donne accès à :
 
 - la pause / reprise et au plein écran ;
 - **Résolution du rendu** : origine, 640 × 360, 800 × 450, 1280 × 720 ou 1920 × 1080 ;
@@ -61,7 +61,9 @@ Une taille inférieure allège le calcul. Changer de résolution peut réinitial
 
 ## Son, images et sources
 
-Les entrées FFT restent à zéro : l’export ne demande ni micro ni MIDI. Le son extérieur utilisé pendant ta préparation n’est donc pas enregistré ni reproduit.
+L’entrée audio est désactivée au départ. Le visiteur peut cliquer sur **Activer l’entrée audio**, autoriser le navigateur et choisir sa source : les paramètres audio réactifs suivent alors le son reçu sur sa machine. Une page publiée doit être ouverte en HTTPS pour activer cette entrée. Aucun appareil MIDI n’est demandé.
+
+Le son extérieur utilisé pendant la préparation n’est pas enregistré dans l’export. Les valeurs FFT restent à zéro lorsque l’entrée audio est désactivée.
 
 Un preset qui génère lui-même du son peut demander un clic du visiteur. Pour le bol de billes, **Activer le son** est proposé si `Son_Collisions` était activé lors de l’export. Ce comportement ne garantit pas que tous les moteurs sonores personnalisés soient compatibles.
 

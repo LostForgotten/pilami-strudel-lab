@@ -17,7 +17,8 @@ Commence par garder une copie de ton code ou de tes essais si tu envisages de re
 | Les boutons WordPress ne sont pas disponibles | Vérifie la connexion et les droits du compte ; le voyant vert ne garantit pas les droits administrateur |
 | Les snapshots manquent après changement de PC | Vérifie leur banque WordPress et les sauvegardes : une capture locale n’est pas automatiquement une sauvegarde sur le site |
 | La note MIDI de collision n’arrive pas dans Ableton | Teste d’abord **Envoyer une note de test**, le port, l’entrée Track, l’instrument et le monitoring de la piste |
-| L’export reste silencieux | Les entrées audio ne sont pas reproduites ; un son généré par le preset peut aussi demander un clic d’activation |
+| L’export ne réagit pas au son | Ouvre le menu, active l’entrée audio, autorise le navigateur et choisis une source ; sur un site, utilise HTTPS |
+| Le rechargement indique un quota dépassé | Mets à jour vers 0.39.75 ou une version ultérieure : les snapshots migrent vers IndexedDB ; conserve les données du site pendant la migration |
 | Facebook montre une ancienne miniature | Dépose le nouveau HTML et son JPEG ensemble ; le cache du réseau social peut conserver l’ancienne prévisualisation |
 | Une mise à jour semble ne rien changer | Ferme les fenêtres détachées, recharge avec **Ctrl + F5**, puis rouvre-les ; le cache du site peut aussi devoir être purgé |
 

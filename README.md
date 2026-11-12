@@ -4,7 +4,7 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.75 — projet en développement.**
+**Version actuelle : 0.39.82 — projet en développement.**
 
 **Tu découvres l’application ?** Commence par [ton premier visuel en dix minutes](docs/demarrer.md). Aucun code, appareil MIDI ni Ableton n’est nécessaire pour ce premier essai. Le [sommaire de la documentation](docs/README.md) propose ensuite un parcours pas à pas.
 
@@ -17,6 +17,8 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Importer et conserver ses photos dans le navigateur pour créer des visuels et alimenter les presets image.
 - Construire et importer des chaînes Hydra dans le Designer visuel, dans les limites des fonctions prises en charge.
 - Associer un appareil MIDI aux paramètres, corriger les associations et lisser les mouvements.
+- Créer ses gammes et sources par note au diapason 440 ou 432 Hz.
+- Exporter un preset complet avec ses liaisons audio/MIDI et son séquenceur.
 - Capturer jusqu’à dix snapshots, rappeler une variation ou réaliser un morphing entre réglages.
 - Séquencer ces variations sur une grille de 16 ou 32 pas, avec remplissage aléatoire et synchronisation Ableton Link facultative.
 - Détacher le visuel, le code et les contrôleurs dans des fenêtres, et configurer des raccourcis pour plusieurs écrans.
@@ -26,15 +28,15 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés depuis la version GitHub 0.39.58
+## Nouveautés depuis la version GitHub 0.39.75
 
-- **Comprendre les réactions au son** : les sources audio indiquent les paramètres repérés dans le code. Ouvrir ou refermer leurs contrôleurs liés se fait en un clic, dans le labo ou une fenêtre détachée.
-- **Des pages partagées plus souples** : réaffectation des deux contrôleurs et entrée audio activable par le visiteur, avec choix de source et indicateur de niveau. Le bouton de menu disparaît après une période d’inactivité.
-- **Retrouver ses presets favoris** : notes de 0 à 5 étoiles, tri par note et filtre exact, combinables avec la recherche et les catégories. Les notes sont conservées dans WordPress et dans les nouveaux Packs VJ.
-- **Conserver les gros presets et leurs variations** : scripts Hydra jusqu’à 16 Mo ; brouillons, essais, snapshots et associations MIDI locaux migrés vers IndexedDB, avec conservation des anciennes copies jusqu’à l’écriture réussie.
-- **Navigation plus directe** : recherche intégrée au menu ; voyant gris pour se connecter, voyant vert pour ouvrir l’administration WordPress.
+- **Créer ses propres gammes** : notes libres, dièses et bémols, diapason 440 ou 432 Hz, fréquences calculées automatiquement et boutons par demi-ton.
+- **Changer de gamme sans accumuler les sources** : les notes communes gardent leurs réglages et liaisons ; les notes retirées sont nettoyées dans les contrôleurs et snapshots.
+- **Partager ses variations** : le TXT standard inclut désormais les snapshots et les réglages de morphing.
+- **Transférer un preset complet** : sources et liaisons audio, associations MIDI, snapshots et séquenceur réunis dans un TXT, avec restauration sélective.
+- **Nettoyer les commentaires des TXT** : les commentaires JavaScript ordinaires sont retirés à l’export ; mentions de licence et blocs de restauration conservés.
 
-Voir le [journal des 17 versions regroupées](CHANGELOG.md), les [sauvegardes](docs/presets-et-snapshots.md), l’[audio et le MIDI](docs/midi.md) et l’[export web](docs/export-web.md).
+Voir le [journal des versions](CHANGELOG.md), le [guide des gammes personnalisées](docs/gammes.md) et les [exports de presets](docs/presets-et-snapshots.md#exporter-et-réimporter-un-preset).
 
 ## Essayer
 
@@ -46,7 +48,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.75.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.82.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -79,6 +81,7 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 - [Installation et mises à jour](docs/installation.md)
 - [Premiers pas et raccourcis](docs/premiers-pas.md)
 - [Presets, sauvegardes, snapshots et morphing](docs/presets-et-snapshots.md)
+- [Gammes personnalisées et fréquences](docs/gammes.md)
 - [Audio, MIDI Learn et notes envoyées à Ableton](docs/midi.md)
 - [Dépannage des premiers essais](docs/depannage.md)
 - [Connexion Ableton Link](docs/ableton-link.md)

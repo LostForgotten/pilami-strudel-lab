@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pilami Strudel Lab
  * Description: Laboratoire Strudel intégré à WordPress avec presets et commandes de lecture.
- * Version: 0.39.75
+ * Version: 0.39.82
  * Author: pilami.fr
  * License: AGPL-3.0-or-later
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PILAMI_STRUDEL_LAB_VERSION', '0.39.75');
+define('PILAMI_STRUDEL_LAB_VERSION', '0.39.82');
 require_once __DIR__ . '/includes/account.php';
 require_once __DIR__ . '/includes/version-history.php';
 require_once __DIR__ . '/includes/appearance.php';
@@ -67,15 +67,16 @@ function pilami_strudel_lab_enqueue_assets() {
     wp_enqueue_script('pilami-hydra-midi', plugin_dir_url(__FILE__) . 'assets/pilami-midi-0.39.16.js', array('pilami-strudel-hydra'), '0.39.16', true);
     wp_enqueue_script('pilami-midi-output', plugin_dir_url(__FILE__) . 'assets/pilami-midi-output-0.39.56.js', array('pilami-hydra-midi'), '0.39.56', true);
     wp_enqueue_script('pilami-hydra-midi-library', plugin_dir_url(__FILE__) . 'assets/vendor/hydra-midi-0.4.6-pilami.js', array('pilami-hydra-midi'), '0.4.6', true);
-    wp_enqueue_script('pilami-hydra-sequencer', plugin_dir_url(__FILE__) . 'assets/pilami-sequencer-0.39.30.js', array('pilami-ableton-link'), '0.39.30', true);
-    wp_enqueue_script('pilami-hydra-snapshots', plugin_dir_url(__FILE__) . 'assets/pilami-snapshots-0.39.75.js', array('pilami-acorn','pilami-strudel-hydra','pilami-hydra-midi','pilami-ableton-link','pilami-hydra-sequencer'), '0.39.75', true);
+    wp_enqueue_script('pilami-hydra-sequencer', plugin_dir_url(__FILE__) . 'assets/pilami-sequencer-0.39.81.js', array('pilami-ableton-link'), '0.39.81', true);
+    wp_enqueue_script('pilami-hydra-snapshots', plugin_dir_url(__FILE__) . 'assets/pilami-snapshots-0.39.81.js', array('pilami-acorn','pilami-strudel-hydra','pilami-hydra-midi','pilami-ableton-link','pilami-hydra-sequencer'), '0.39.81', true);
     wp_enqueue_style('pilami-performance', plugin_dir_url(__FILE__) . 'assets/pilami-performance-0.39.35.css', array(), '0.39.35');
     wp_enqueue_script('pilami-performance', plugin_dir_url(__FILE__) . 'assets/pilami-performance-0.39.45.js', array(), '0.39.45', true);
-    wp_enqueue_script('pilami-controllers', plugin_dir_url(__FILE__) . 'assets/pilami-controllers-0.39.66.js', array('pilami-midi-output','pilami-performance','pilami-hydra-snapshots','pilami-strudel-hydra','pilami-hydra-midi'), '0.39.66', true);
+    wp_enqueue_script('pilami-controllers', plugin_dir_url(__FILE__) . 'assets/pilami-controllers-0.39.81.js', array('pilami-midi-output','pilami-performance','pilami-hydra-snapshots','pilami-strudel-hydra','pilami-hydra-midi'), '0.39.81', true);
     wp_enqueue_script('pilami-hydra-images', plugin_dir_url(__FILE__) . 'assets/pilami-images-0.39.32.js', array(), '0.39.32', true);
     wp_enqueue_script('pilami-hydra-extensions', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-extensions-0.28.0.js', array(), '0.28.0', true);
     wp_enqueue_script('pilami-public-export', plugin_dir_url(__FILE__) . 'assets/pilami-public-export-0.39.65.js', array('pilami-acorn','pilami-hydra-extensions'), '0.39.65', true);
-    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.75.js', array('pilami-public-export','pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.75', true);
+    wp_enqueue_script('pilami-hydra-transfer', plugin_dir_url(__FILE__) . 'assets/pilami-transfer-0.39.82.js', array('pilami-controllers','pilami-hydra-snapshots','pilami-hydra-sequencer'), '0.39.82', true);
+    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.82.js', array('pilami-hydra-transfer','pilami-public-export','pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.82', true);
 
     wp_enqueue_script('pilami-strudel-share', plugin_dir_url(__FILE__) . 'assets/pilami-share-0.39.41.js', array(), '0.39.41', true);
 

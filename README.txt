@@ -1,3 +1,53 @@
+VERSION 0.39.82 — COMMENTAIRES DES EXPORTS TXT
+- Les exports TXT standard et complet retirent les commentaires JavaScript ordinaires, notamment les conseils matériels personnels.
+- Le code de l’éditeur et les presets enregistrés ne sont pas modifiés par l’export.
+- Mentions de licence et blocs de restauration conservés.
+- Analyse JavaScript : chaînes, URL, expressions régulières et textes GLSL intégrés restent inchangés.
+- Espaces et sauts de ligne conservés pour préserver les identifiants de contrôleurs et le comportement du code.
+
+VERSION 0.39.81 — EXPORT COMPLET DU PRESET
+- Nouveau bouton Exporter le preset complet, à côté de l’export TXT existant.
+- Un seul fichier .complet.hydra.txt : code, contrôleurs, gammes et liaisons audio, snapshots et morphing, associations MIDI (notes, CC, canaux, inversion), lissage, réglages de sortie MIDI et grille du séquenceur.
+- Importer le TXT puis Hydra / Update : choisir les éléments à restaurer. Annuler conserve la session actuelle.
+- Les éléments choisis remplacent ceux du preset dans ce navigateur. Les autres sont conservés ; les liaisons intégrées au code importé suivent le choix audio.
+- Restaurer une grille ne la démarre pas. L’import n’active pas l’envoi MIDI. Sélectionner les périphériques disponibles sur chaque ordinateur.
+- L’export TXT standard avec snapshots reste disponible ; les anciens TXT restent compatibles.
+- Les modifications en direct retirent les blocs portables devenus anciens ; le prochain export utilise les réglages et captures actuels.
+- Restauration locale : enregistrer séparément dans WordPress si souhaité.
+
+VERSION 0.39.80 — SNAPSHOTS DANS LES EXPORTS TXT
+- Le TXT inclut les 10 emplacements de snapshots, leurs valeurs et liaisons audio, et les réglages de morphing.
+- À Hydra / Update après import : choix de restaurer les captures du fichier ou de conserver les captures locales.
+- Compatible avec les anciens TXT, accessible sans compte administrateur.
+- Restauration locale uniquement ; enregistrement WordPress séparé.
+- Séquenceur et associations MIDI non inclus dans ce bloc de snapshots.
+- Validation des contrôleurs, sources audio, données et taille du fichier avant restauration.
+
+VERSION 0.39.79 — SYNCHRONISATION DU MENU DES GAMMES
+- Le menu retrouve la gamme et le diapason à partir des fréquences des sources présentes.
+- E Lydian reste affichée après réouverture du panneau si ses notes sont présentes.
+- Sources personnalisées si aucune gamme ne correspond ; aucun retour trompeur à C Mixophonic.
+- La gamme actuelle est indiquée séparément du choix à appliquer ; sélectionner ne remplace pas les notes.
+- Installer le ZIP en remplacement de l’extension puis recharger la page avec Ctrl + F5.
+
+VERSION 0.39.78 — REMPLACEMENT DES SOURCES PAR GAMME
+- Appliquer la gamme remplace les sources par note actuelles, sans accumulation.
+- Notes communes : conservation des réglages et liaisons, fréquence mise à jour selon le diapason.
+- Notes retirées : suppression des liaisons aux contrôleurs, déclenchements et liaisons dans les snapshots.
+- Sources FFT générales et gammes enregistrées conservées.
+
+VERSION 0.39.77 — SÉPARATEURS DES GAMMES
+- Accepte les tirets -, – et — entre les notes, avec ou sans espaces.
+- Dièses # / ♯ et bémols b / ♭ conservés.
+
+VERSION 0.39.76 — GAMMES PERSONNALISÉES
+- Sources audio : Mes gammes permet de créer, modifier et supprimer une gamme.
+- Notes séparées par des espaces (ex. C3 F3 G3 Bb3 C4), diapason 440 ou 432 Hz, fréquences précalculées.
+- Source personnalisée : choix de note, fréquence automatique et boutons ▼ / ▲ par demi-ton.
+- Fréquences affichées en partie entière ; précision complète conservée pour la détection.
+- Gammes mémorisées dans le navigateur et incluses dans le code du preset après enregistrement de la gamme. Enregistrer le preset pour les conserver dans WordPress.
+- Ajout sans supprimer les sources ou liaisons existantes ; limite de 32 sources avec ajout atomique.
+
 VERSION 0.39.75 — STOCKAGE DES SNAPSHOTS
 
 - Snapshots et associations MIDI migrés vers IndexedDB, avec copie de récupération avant suppression de l’ancien stockage.
@@ -431,7 +481,7 @@ Pilami Strudel Lab 0.39.39 — Créer des catégories dans l’application
 - Création et classement protégés par la session administrateur et le nonce REST WordPress ; indisponibles pour les visiteurs et dans le Pack VJ hors ligne.
 - Preset séparé Nuage-Particules-Pixi-Pilami-v5-trainees.hydra.txt : Longueur_Trainee (0–2 secondes), Intensite_Trainee (0–1), Detail_Trainee (0–12 segments par particule). Détail, intensité ou longueur à 0 désactivent les traces.
 - Profondeur de champ, résolution, opacités individuelles, audio, MIDI et snapshots conservés. Les traces suivent chaque particule, s’atténuent avec l’âge et s’arrêtent avec le visuel.
-- Pour commencer sur GTX 770 : 500–700 particules, détail 2–4, résolution 0.5–0.75. Le détail ajoute des segments à chaque particule ; mesurer le débit sur la machine cible.
+- Pour commencer sur une carte graphique ancienne : 500–700 particules, détail 2–4, résolution 0.5–0.75. Le détail ajoute des segments à chaque particule ; mesurer le débit sur la machine cible.
 - Installer le ZIP dans WordPress en remplaçant la version actuelle, recharger la page et rouvrir les fenêtres détachées. Importer ensuite le preset v5 avec Ctrl + I.
 
 Pilami Strudel Lab 0.39.38 — Nuage Pixi avec ParticleContainer

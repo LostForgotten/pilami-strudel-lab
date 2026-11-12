@@ -36,3 +36,9 @@ Tu peux utiliser le [laboratoire public](https://pilami.fr/strudel/) sans instal
 | Audio réactif | Un paramètre du visuel suit le son reçu |
 | Pack VJ | Une copie du laboratoire Hydra préparée pour jouer hors ligne |
 | Page web exportée | Une scène autonome à partager avec un visiteur |
+
+
+## Gammes et exports portables
+
+- [Créer une gamme personnalisée](gammes.md)
+- [Exporter et réimporter les réglages d’un preset](presets-et-snapshots.md#exporter-et-réimporter-un-preset)

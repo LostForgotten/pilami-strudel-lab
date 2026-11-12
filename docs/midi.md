@@ -56,3 +56,8 @@ Link transporte une horloge musicale, pas des notes MIDI ni du son. Utilise le [
 Les sources audio affichent les contrôleurs liés dans l’interface et les paramètres repérés dans les formules du script. Un clic droit sur une source permet de consulter les destinations et les extraits concernés ; une formule complexe peut être montrée sans destination certaine.
 
 **Ouvrir les contrôleurs liés** et **Refermer les contrôleurs liés** déplient ou replient leurs réglages. Les commandes existent globalement et pour une source précise, y compris dans les contrôleurs détachés. Elles ne changent ni les valeurs ni les liaisons.
+
+
+## Transférer les associations
+
+**Exporter le preset complet** ajoute les associations MIDI et les réglages du séquenceur au TXT. Après import, **Hydra / Update** permet de choisir leur restauration. Sur une autre machine, sélectionne les périphériques disponibles avant de les activer. Voir les [exports de presets](presets-et-snapshots.md#exporter-et-réimporter-un-preset).

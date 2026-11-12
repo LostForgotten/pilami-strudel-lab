@@ -28,6 +28,24 @@ Tester un code et l’enregistrer sur le site sont donc deux actions distinctes.
 
 Effacer les données du navigateur peut supprimer les essais et photos locaux. Pour changer d’ordinateur, conserve tes exports et sauvegarde les éléments nécessaires dans WordPress.
 
+## Exporter et réimporter un preset
+
+| Commande | Contenu du TXT |
+|---|---|
+| Exporter le preset | Code, contrôleurs, gammes et liaisons audio, dix emplacements de snapshots et réglages de morphing |
+| Exporter le preset complet | Même contenu, plus associations MIDI (notes, CC, canaux et inversion), lissage, réglages de sortie MIDI et grille du séquenceur |
+
+1. Prépare tes réglages et captures, puis choisis l’export souhaité. Aucun compte administrateur n’est nécessaire.
+2. Sur l’autre navigateur, importe le `.hydra.txt` avec **Ctrl + I**.
+3. Clique sur **Hydra / Update**. Pour un export complet, coche les éléments à restaurer : audio, snapshots, MIDI, séquenceur. **Annuler** interrompt la restauration. Pour un TXT standard avec snapshots, une confirmation propose de reprendre ses captures.
+4. Vérifie les associations et sélectionne les périphériques MIDI et l’entrée audio disponibles. La grille restaurée reste arrêtée et la sortie MIDI n’est pas activée par la restauration.
+
+Les éléments sélectionnés remplacent ceux de ce preset dans ce navigateur. La publication WordPress reste une action séparée ; l’import administrateur peut déjà avoir créé l’entrée du preset avant son lancement. Les anciens TXT sans données de restauration restent compatibles.
+
+Les fichiers restent du code JavaScript : les données de restauration sont dans des commentaires structurés. Les commentaires JavaScript ordinaires sont retirés lors de l’export, tandis que les mentions de licence et données de restauration sont conservées. Le code de l’éditeur n’est pas modifié. Les chaînes de caractères, URL et textes GLSL intégrés restent inchangés : ce nettoyage ne remplace pas la vérification des ressources que tu souhaites partager.
+
+Le TXT ne contient pas les médias référencés par une URL, les sons enregistrés, les autorisations du navigateur ni l’état physique instantané d’une simulation. Conserve les images nécessaires ou choisis le Pack VJ pour un usage hors ligne. Les anciens Packs VJ déjà exportés conservent leur version d’origine.
+
 ## Stockage local et rechargement
 
 Les brouillons et essais Hydra, puis les banques de snapshots et leurs associations MIDI, utilisent **IndexedDB**. La migration conserve une copie de récupération et retire l’ancienne entrée localStorage uniquement après une écriture réussie. Cela évite que **Recharger le preset** échoue lorsque l’ancien quota est atteint.

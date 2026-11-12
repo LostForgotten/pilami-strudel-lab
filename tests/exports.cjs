@@ -1,0 +1,43 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const path=require('path').join(__dirname,'..','assets')+'/',storage=new Map();
+const ctx={URL,TextEncoder,TextDecoder,performance:{now:()=>0},setTimeout:()=>0,clearTimeout(){},localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},document:{currentScript:{src:'https://test/asset.js'}},window:{addEventListener(){},removeEventListener(){}}};vm.createContext(ctx);
+function load(file){vm.runInContext(fs.readFileSync(path+file,'utf8'),ctx,{filename:file});}
+load('vendor/acorn-8.15.0.js');ctx.window.acorn=ctx.acorn;
+for(const f of ['pilami-midi-0.39.16.js','pilami-midi-output-0.39.56.js','pilami-sequencer-0.39.81.js','pilami-snapshots-0.39.81.js','pilami-controllers-0.39.81.js','pilami-transfer-0.39.82.js','pilami-hydra-workspace-0.39.82.js'])load(f);
+ctx.window.PilamiStrudelHydra={audio:()=>null};
+const W=ctx.window,N=W.PilamiNoteSources,S=W.PilamiHydraSnapshots,T=W.PilamiHydraTransfer,Q=W.PilamiHydraSequencer,C=W.PilamiHydraWorkspace;
+const notes={version:1,sources:[{...N.defaults,band:16,name:'G#3',frequency:N.noteInfo('G#3').frequency}],triggers:[{band:16,target:'snapshot:0'}],mutedBands:[],scriptBands:[],scales:[{name:'Perso',reference:440,notes:['G#3']}]};
+const source=N.write('var Size=H(audioMod(slider(0.5,0,1),{band:16,depth:0.2})); osc(3).out();',notes),entries=C.compile(source).sliders;
+const entry={label:'Size',kind:'slider',value:.5,min:0,max:1,step:'any',sliderStep:'any',audio:{band:16,depth:.2}};
+const midi={version:1,mappings:[{target:'control:0',label:'Size',type:'cc',number:74,channel:2,inputId:'device-1',inputName:'Example controller',manufacturer:'Example',inverted:true},{target:'morph:snapshot:0',label:'Morph',type:'note',number:60,channel:0,inputId:'device-1',inputName:'Example controller',manufacturer:'Example'}]};
+const bank={signature:S.fingerprint(source).signature,slots:Array.from({length:10},(_,i)=>i===4?null:{values:[{...entry,value:i/10}],savedAt:'2026-11-12'}),from:0,to:9,duration:8,easingEnabled:true,easingMode:'in-out',easingShape:'cubic',midi};
+const seq={columns:32,division:'1/8',cells:Array.from({length:32},(_,i)=>i%3===0?{slot:i%10,action:i%2?'recall':'morph'}:null),loop:true,followStop:false,followPlay:true,bpm:123};
+const output=T.exportFull({source,entries,storageKey:'A',preset:'code',bank,sequencer:seq});ctx.acorn.parse(output,{ecmaVersion:'latest'});
+const full=T.read(output,entries);assert.equal(full.midi.mappings.length,2);assert.equal(full.midi.mappings[0].number,74);assert.equal(full.midi.mappings[0].inverted,true);assert.equal(full.sequencer.columns,32);assert.equal(full.bank.slots.filter(Boolean).length,9);assert.equal(N.read(output).sources[0].name,'G#3');
+assert.equal(T.read(source,entries),null);assert.equal(S.readPortable(output,entries).duration,8);
+const noAudio=T.select(output,entries,{audio:false,snapshots:true,midi:true,sequencer:true}),filtered=T.read(noAudio,entries);assert.ok(!T.strip(noAudio).includes('audioMod('));assert.equal(N.read(noAudio).sources.length,0);assert.equal(N.read(noAudio).mutedBands.length,16);assert.equal(filtered.bank.slots[0].values[0].audio,null);assert.equal(filtered.midi.mappings.length,2);
+const codeOnly=T.select(output,entries,{audio:false,snapshots:false,midi:false,sequencer:false});assert.equal(S.readPortable(codeOnly,entries),null);assert.equal(T.read(codeOnly,entries).midi,null);assert.equal(T.read(codeOnly,entries).sequencer,null);
+const emptyMidi=T.exportFull({source:output,entries,storageKey:'A',preset:'code',bank:{...bank,midi:null},sequencer:{...seq,cells:Array(32).fill(null)}});assert.equal(T.read(emptyMidi,entries).midi,null);assert.ok(T.read(emptyMidi,entries).sequencer.cells.every(c=>c===null));
+const passThrough=T.exportFull({source:output,entries,storageKey:'fresh',preset:'code'});assert.equal(T.read(passThrough,entries).midi.mappings.length,2);assert.equal(T.read(passThrough,entries).sequencer.bpm,123);
+assert.throws(()=>T.read(output+'\n'+output,entries));assert.throws(()=>T.read(output.replace('PILAMI_PRESET_FULL_V1 {','PILAMI_PRESET_FULL_V1 !{'),entries));assert.equal(Q.validatePattern({...seq,columns:17}),null);assert.equal(Q.validatePattern({...seq,cells:[{slot:12,action:'oops'}]}),null);
+// Real snapshot and sequencer managers: restore, persist, keep transports stopped.
+let smooth=-1;const model={entries:[entry],available:()=>true,captureState:()=>[entry],midi:{setSmoothing:n=>smooth=n,cancelPending(){}}};
+const manager=S.create({model,source,context:{storageKey:'B',preset:'code',cloud:null},say(){},notify(){}});model.snapshots=manager;
+T.restore(manager,full);assert.equal(manager.state.midi.mappings[0].channel,2);assert.equal(manager.sequencer.state.columns,32);assert.equal(manager.sequencer.state.running,false);assert.equal(manager.state.running,false);assert.equal(smooth,60);assert.equal(W.PilamiMidiOutput.state.enabled,false);
+const reread=Q.readStoredPattern('B|code:'+S.fingerprint(source).hash);assert.equal(reread.bpm,123);
+const persisted=T.exportFull({source,entries,storageKey:'B',preset:'code'});assert.equal(T.read(persisted,entries).midi.mappings.length,2);assert.equal(T.read(persisted,entries).sequencer.bpm,123);
+manager.dispose();console.log('PASS complete TXT roundtrip: audio/gammes, snapshots/morph, MIDI CC/notes/channels/inversion, sequence, partial imports, empty/cleared overrides, stored export, legacy, malformed data, restoration persistence, no transport or MIDI activation.');
+const parsed=C.compile(output);let liveSource=output;const liveEntry={...entry,...parsed.sliders[0],declaredKind:'slider'};
+const controls=W.PilamiHydraControls.create({source:output,parsed,entries:[liveEntry],pairs:[],active:()=>true,write:text=>liveSource=text,say(){},snapshotContext:{storageKey:'C',preset:'code',cloud:null}});
+assert.ok(controls.notes.addScale(432,['F3']));assert.equal(T.read(liveSource,C.compile(liveSource).sliders),null);assert.equal(S.readPortable(liveSource,C.compile(liveSource).sliders),null);assert.equal(N.read(liveSource).sources[0].name,'F3');controls.dispose();
+console.log('PASS live edits remove stale portable metadata while retaining current audio source configuration.');
+const personal='// PRIVATE_WORKSTATION: conseil de test à ne pas exporter.\n/* Test sur mon ordinateur personnel */\n';
+const legal='/* SPDX-License-Identifier: AGPL-3.0-or-later */\n';
+const shader='const glsl = `// GLSL instruction\nfloat f=1.0;`;\n';
+const plain=personal+legal+shader+'const url="https://example.test/image.png";\nconst regex=/a\\/\\/b/;\nosc(3).out();';
+const clean=T.sanitizeExport(plain);assert.ok(!clean.includes('PRIVATE_WORKSTATION'));assert.ok(!clean.includes('ordinateur personnel'));assert.ok(clean.includes('SPDX-License-Identifier'));assert.ok(clean.includes(shader));assert.ok(clean.includes('https://example.test'));assert.equal(clean.length,plain.length);assert.equal(clean.split('\n').length,plain.split('\n').length);
+function tokens(code){const tokens=[];ctx.acorn.parse(code,{ecmaVersion:'latest',onToken:tokens});return JSON.stringify(tokens.map(t=>[t.type.label,t.value]));}
+assert.equal(tokens(clean),tokens(plain));const shared=T.sanitizeExport(personal+output);assert.equal(T.read(shared,C.compile(shared).sliders).midi.mappings.length,2);assert.equal(S.readPortable(shared,C.compile(shared).sliders).slots.filter(Boolean).length,9);assert.equal(N.read(shared).sources[0].name,'G#3');
+const anonymous=personal+'H(slider(.5,0,1)); osc().out();';assert.equal(C.compile(anonymous).sliders[0].label,C.compile(T.sanitizeExport(anonymous)).sliders[0].label);
+assert.equal(T.sanitizeExport('// personal\nconst x=1/* hardware */+2;\nfunction f(){return/*\ncomment\n*/3;}').split('\n').length,5);
+console.log('PASS comment privacy: private comments removed; legal notices, string literals, URLs, regex, JS tokens/ASI, controller line identity and all export metadata preserved.');

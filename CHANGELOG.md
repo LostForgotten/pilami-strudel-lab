@@ -1,5 +1,40 @@
 # Journal des versions
 
+## 0.39.82 — Commentaires des exports TXT
+
+- Retrait des commentaires JavaScript ordinaires des exports TXT standard et complet, sans modifier le code de l’éditeur.
+- Mentions de licence et données de restauration conservées ; chaînes, URL et textes GLSL intégrés inchangés.
+
+## 0.39.81 — Export complet et restauration sélective
+
+- Export complet du preset : code, gammes, sources et liaisons audio, snapshots, morphing, associations MIDI, lissage, réglages de sortie et séquenceur.
+- Choix des éléments à restaurer au lancement du fichier importé ; restauration locale sans démarrage du séquenceur ni activation de la sortie MIDI.
+
+## 0.39.80 — Snapshots dans les exports TXT
+
+- Le TXT emporte les dix emplacements de snapshots et les réglages de morphing.
+- Restauration proposée à Hydra / Update, avec conservation possible des captures locales ; anciens TXT compatibles.
+
+## 0.39.79 — Menu synchronisé avec la gamme actuelle
+
+- Le menu retrouve la gamme et le diapason selon les fréquences des sources présentes.
+- Sources personnalisées si aucune gamme ne correspond ; distinction entre la gamme actuelle et le choix à appliquer.
+
+## 0.39.78 — Remplacer les sources par gamme
+
+- Appliquer la gamme remplace les anciennes sources au lieu de les accumuler.
+- Notes communes : réglages et liaisons conservés ; notes retirées : nettoyage des liaisons aux contrôleurs, déclenchements et snapshots.
+
+## 0.39.77 — Séparateurs de notes
+
+- Tirets simples et typographiques acceptés entre les notes, avec ou sans espaces ; dièses et bémols conservés.
+
+## 0.39.76 — Gammes personnalisées et diapasons
+
+- Création, modification et suppression de gammes dans Mes gammes, sans compte administrateur pour l’usage local.
+- Calcul automatique des fréquences au diapason 440 ou 432 Hz ; affichage entier et précision complète pour la détection.
+- Choix de note dans Source personnalisée et boutons de transposition par demi-ton ; gammes incluses dans le code et mémorisées dans le navigateur.
+
 ## 0.39.75 — Snapshots et rechargement sans quota localStorage
 
 - Snapshots et associations MIDI déplacés vers IndexedDB ; migration automatique avec copie de récupération avant retrait de l’ancien stockage.

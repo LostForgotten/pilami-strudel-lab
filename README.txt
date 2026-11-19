@@ -1,3 +1,103 @@
+VERSION 0.39.92 — JULIA DANS MAX FOR LIVE
+
+Le fichier Julia-curseurs.hydra.txt est désormais convertible sans modification. Ses 11 contrôleurs peuvent tous être exposés dans Live.
+Le convertisseur reconnaît son schéma précis d’animation : pas de temps borné obtenu par performance.now, zoom multiplié par exp(vitesse × dt), et deux compteurs indépendants pour la forme et la couleur. Le runtime Max reproduit ces calculs, avec l’amplification audio du zoom. La vitesse globale du périphérique exporté agit aussi sur ces horloges.
+Vitesse_Zoom à zéro arrête le zoom autonome ; Zoom_Manuel garde son rôle de multiplicateur. Vitesse_Forme et Vitesse_Couleurs règlent indépendamment les autres animations. Les horloges repartent de leurs valeurs initiales au chargement du périphérique.
+Les qualificateurs WebGL highp/mediump/lowp sont retirés du shader GLSL de bureau ; Jitter utilise les flottants de son moteur OpenGL. Le zoom conserve les limites de précision de la fractale d’origine.
+L’analyse audio reste adaptée aux trois enveloppes du moteur Max et peut demander un réglage de sensibilité.
+Installer puis Ctrl+F5, relancer Julia et exporter pour Max for Live.
+
+Validation sur le TXT fourni : AMXD, câblage et métadonnées ; compilation et liaison GLSL 1.20 et GLSL ES 1.00 ; tests de progression exponentielle du zoom, arrêt, accélération audio, arrêt indépendant des horloges, vitesse globale nulle et vitesses non exposées. Écriture supplémentaire sur les compteurs refusée. Vérification des onze autres chaînes de référence. Le test effectif du rendu dans Ableton reste à réaliser sur Windows.
+
+VERSION 0.39.91 — EXPORT MAX FOR LIVE DE PLIS LUMINEUX
+
+Le preset Plis-lumineux-audio-Pilami-v1 est désormais convertible sans modifier son TXT.
+Le convertisseur reconnaît sa variante d’horloge : dernier instant initialisé sur time, différence bornée à 0,1 s et cumul dt × Vitesse. Le script Max conserve la continuité de la phase lors d’un changement de vitesse, l’arrêt et la marche arrière.
+Les fonctions numériques auxiliaires avec paramètres sont converties par substitution de leurs arguments, sans exécuter leur JavaScript dans le moteur Max. Cela permet de conserver plisAudio(0), plisAudio(2) et plisAudio(4), le réglage Audio_Reactif et la sensibilité du preset. Une bande calculée à partir d’un contrôleur variable reste refusée : son indice doit être fixe à l’export.
+Les paramètres non sélectionnés conservent leur valeur de base actuelle et leur modulation audio compatible. Pour les piloter dans Live, sélectionner notamment Vitesse, Phase, Qualite et les contrôleurs audio souhaités parmi les 16 exposés.
+L’horloge redémarre au chargement du périphérique. L’analyse audio conserve l’adaptation native en trois bandes et peut demander un ajustement de sensibilité.
+Installer puis Ctrl+F5 ; relancer le preset et exporter à nouveau.
+
+Validation sur le fichier fourni : AMXD, liaisons et métadonnées ; compilation et liaison des shaders GLSL 1.20 et GLSL ES 1.00 ; tests du runtime de l’horloge avec arrêt, inversion et phase ; liaisons audio graves/médiums/aigus et refus d’une écriture supplémentaire non prévue sur l’horloge. Vérification des dix autres chaînes de référence, dont Feu et étincelles. Le fonctionnement effectif dans Ableton reste à tester sur Windows.
+
+VERSION 0.39.90 — HORLOGES INTÉGRÉES DE FEU ET ÉTINCELLES
+
+Le preset Feu-etincelles-audio-v1.hydra.txt est désormais convertible. Sa fonction feuAvancer utilise deux accumulateurs de temps. Le convertisseur reconnaît leur structure précise (horloge Hydra, pas positif borné à 0,1 s, cumul dt × contrôleur de vitesse, puis phase ajoutée au rendu) et les reproduit dans le script Max.
+Les vitesses du feu et des étincelles restent indépendantes. Les mettre à zéro fige leur animation ; une valeur négative inverse leur avancement. Changer la vitesse ne recalcule pas toute la phase écoulée. Les phases restent réglables séparément.
+Choisir Vitesse_Feu, Phase_Feu, Vitesse_Etincelles et Phase_Etincelles parmi les paramètres exposés pour accéder à ces réglages dans Live. Les réglages non exposés gardent leur valeur de base au moment de l’export et leur modulation audio compatible.
+Les horloges redémarrent à leur valeur initiale au chargement du périphérique. L’audio conserve l’adaptation native en trois bandes du moteur Max et sa calibration peut nécessiter un ajustement.
+Cette prise en charge est limitée au schéma reconnu ; elle n’exécute pas de callbacks JavaScript arbitraires dans Max. Les moteurs WebGL personnalisés à plusieurs passes, comme Blob translucide, restent non pris en charge.
+Installer, Ctrl+F5, relancer Feu et étincelles et exporter de nouveau.
+
+Validation sur le TXT fourni : génération AMXD et shaders, compilation/link GLSL 1.20 et GLSL ES 1.00. Tests du runtime Max en JavaScript : progression des deux compteurs, vitesse nulle, inversion, changement de phase sans réinitialisation, vitesses non exposées et vitesse audio-réactive. Une écriture supplémentaire sur les horloges hors du schéma reconnu est refusée. Vérification des neuf autres chaînes de référence. Le test effectif dans Ableton reste à réaliser sur Windows.
+
+VERSION 0.39.89 — DIAGNOSTIC DES MOTEURS WEBGL PERSONNALISÉS
+
+Le preset Blob translucide fourni utilise un canvas WebGL 2 indépendant, trois shaders et une boucle update dédiée. La chaîne Hydra src(s0) ne reçoit que l’image finale de ce moteur. Ce cas demande de reconstruire les passes, textures intermédiaires, uniformes et animation dans Jitter ; désactiver le contrôle des écritures de time/update ne permet pas de convertir ce rendu.
+L’export détecte maintenant cette architecture avant les vérifications secondaires et affiche sa limitation réelle. Blob translucide reste non exportable par la chaîne native actuelle : le moteur d’export de ces passes personnalisées n’est pas implémenté dans cette version.
+Les chaînes Hydra natives déjà compatibles ne changent pas, y compris Art déco et Hyper-Hydra. Le bouton d’export reste dans Preset sélectionné et la flèche fixe de retour en haut est conservée.
+Installer puis recharger avec Ctrl+F5 pour actualiser le diagnostic.
+
+VERSION 0.39.88 — ACCÈS À L’EXPORT ET RETOUR EN HAUT
+
+Le bouton Exporter pour Max for Live et son état de compatibilité sont regroupés dans Preset sélectionné, à côté des autres exports. Le bouton existant est déplacé : sa fenêtre de choix de contrôleurs et ses fonctions restent reliées aux mêmes événements.
+Une flèche fixe permet de revenir en haut de page, au-dessus des boutons fixes de thème. Elle est utilisable au clavier et respecte la préférence de réduction des animations. En plein écran, elle remonte aussi le conteneur défilant.
+Installer le ZIP puis recharger avec Ctrl+F5.
+
+VERSION 0.39.87 — RÉSOLUTION DU SHADER HYDRA
+
+Correction reproduite sur le fichier Art-deco-generatif-audio-Pilami-v1.hydra.txt : le shader utilisait resolution, mais cette variable native Hydra n’était pas déclarée par l’exporteur.
+Le shader Jitter reçoit désormais resolution (vec2) depuis l’état TEXDIM0. Le ratio du motif suit donc les dimensions du rendu effectif et les changements du menu Résolution, indépendamment de la taille de la fenêtre d’affichage.
+Les notices de copyright/licence présentes dans le code source du preset sont conservées dans NOTICE.txt.
+Après installation, Ctrl+F5 puis relancer le preset et exporter à nouveau. Aucun changement du TXT du preset n’est nécessaire.
+
+Validation : erreur reproduite avant correction ; compilation et liaison GLSL 1.20 puis GLSL ES 1.00 du shader Art déco corrigé ; structure AMXD et dimensions de rendu contrôlées en 640×360, 960×540 et 1920×1080, avec une sélection de contrôleurs comprenant les paramètres de fin de liste. Vérification des huit chaînes précédentes. Le fonctionnement effectif dans Ableton reste à tester sur Windows.
+
+VERSION 0.39.86 — FORMULES AUDIO ET DIAGNOSTIC DES TEXTURES
+
+Correction de refus trop stricts : les expressions numériques avec ||, &&, ??, ternaires, comparaisons, variables locales suivies d’un return et paramètres de temps déstructurés peuvent être converties. Number(...) et Number.isFinite(...) numériques sont pris en charge. Les constantes H et les contrôleurs du labo portent une identité explicite afin de ne pas analyser leurs fonctions internes.
+Le feedback est associé à sa cible d’écriture réelle. Une vue de la même texture est reconnue via ses framebuffers. Les autres buffers et sources externes restent refusés, avec le nom de la référence et de la transformation lorsque disponible.
+Les boucles, effets de bord, scripts arbitraires et simulations multi-buffers ne sont pas pris en charge. L’opérateur ?? s’applique ici aux sources numériques prises en charge ; il ne donne pas accès à des objets JavaScript absents du moteur Max.
+Recharger le labo avec Ctrl+F5, puis relancer le visuel pour renouveler la capture de la chaîne et l’identité des contrôleurs.
+
+Validation : huit chaînes, dont formules audio avec variables locales, || / ??, ternaires et H constant, choix de contrôleurs parmi 35 et Hyper-Hydra ; shaders compilés et liés en GLSL 1.20. Vérification du feedback vers la cible capturée et du refus d’un autre buffer. Sans le fichier du preset concerné, le diagnostic utilisateur de texture externe n’est pas reproduit de façon certaine. Test effectif dans Ableton à réaliser sur Windows.
+
+VERSION 0.39.85 — CHOIX DES CONTRÔLEURS POUR MAX FOR LIVE
+
+1. Installer cette mise à jour et recharger le labo avec Ctrl+F5.
+2. Lancer le preset, puis cliquer sur Exporter pour Max for Live.
+3. Une fenêtre affiche tous les contrôleurs : cocher jusqu’à 16 paramètres à exposer et automatiser dans Live. Les 16 premiers sont sélectionnés par défaut. Désélectionner un paramètre pour libérer une place.
+4. Cliquer sur Exporter, extraire tout le ZIP, puis glisser le .amxd dans Live.
+
+La limite porte désormais sur les contrôleurs exposés, pas sur le nombre total du preset. Les autres sont intégrés avec leur valeur de base actuelle ; leur modulation audio compatible est conservée dans le shader. Les valeurs sont capturées lors de la validation, et le preset dans le labo reste inchangé.
+Les réglages globaux Sensibilité audio, Vitesse et Résolution s’ajoutent séparément aux contrôleurs choisis.
+Les autres limites restent valables : une seule chaîne, pas de simulations multi-buffers, ni sources par notes, images/vidéos ou callbacks complexes.
+La sélection s’ouvre dans la fenêtre qui a lancé l’export, y compris en fenêtre détachée. Annuler ne télécharge aucun fichier.
+
+Validation : sélection de paramètres parmi 35, substitutions, 0/16/17 choix, conservation des modulations des paramètres non exposés, garde en cas de changement de preset, contrôle des AMXD et compilation/link GLSL 1.20 de cinq chaînes, dont Hyper-Hydra et une chaîne à 35 contrôleurs. Test effectif du périphérique dans Ableton à réaliser sur Windows.
+
+VERSION 0.39.84 — COMPATIBILITÉ MAX FOR LIVE VISIBLE
+
+Un indicateur à côté du bouton précise si le preset est exportable, non exportable (avec la raison), ou s’il faut lancer le visuel pour terminer la vérification. Les presets à plusieurs chaînes .out(), avec trop de contrôleurs ou des images/vidéos sont identifiés avant lecture. Après lancement, le convertisseur et le compilateur de shader vérifient la chaîne effective. Le bouton ne devient actif que lorsque ces vérifications réussissent.
+La progression et les éventuelles erreurs restent visibles au même endroit, dans la page principale et les fenêtres détachées. Aucun changement de preset n’est déclenché par la vérification.
+Recharger avec Ctrl+F5 après installation.
+
+VERSION 0.39.83 — PREMIER EXPORT MAX FOR LIVE
+
+1. Installer cette mise à jour du plugin WordPress, puis recharger le labo avec Ctrl+F5.
+2. Lancer un preset Hydra, choisir ses réglages et cliquer sur « Exporter pour Max for Live ».
+3. Extraire tout le ZIP obtenu dans un dossier permanent.
+4. Glisser le .amxd dans une piste audio, un groupe ou le Master de Live 11 Suite / Max 8.
+5. Activer « Visuel actif ». Conserver les fichiers JS et JXS à côté du périphérique.
+
+Prototype natif Jitter : une chaîne .out(), 16 contrôleurs maximum, feedback de la même sortie, fonctions GLSL et extensions déjà chargées. Paramètres automatisables, résolution et vitesse réglables.
+Audio adapté en trois enveloppes graves/médiums/aigus, avec Sensibilite audio ; la calibration diffère de l’analyse FFT du navigateur.
+Les constructions non prises en charge sont refusées avec un diagnostic, sans téléchargement de périphérique partiel. Images/caméras/vidéos, simulations multi-buffers, sources par notes, tableaux temporels et callbacks complexes : pas encore disponibles.
+Snapshots, séquenceur, MIDI et Link du labo non transférés : utiliser les automations et les affectations de Live.
+Export hors ligne depuis un Pack VJ non proposé dans cette première version.
+
+Validation : quatre chaînes compilées et liées en GLSL 1.20, dont le preset Hyper-Hydra inversion/miroir, contrôle de structure des AMXD, continuité audio et CRC des ZIP. Test effectif dans Ableton à réaliser sur Windows.
+
 VERSION 0.39.82 — COMMENTAIRES DES EXPORTS TXT
 - Les exports TXT standard et complet retirent les commentaires JavaScript ordinaires, notamment les conseils matériels personnels.
 - Le code de l’éditeur et les presets enregistrés ne sont pas modifiés par l’export.
@@ -481,7 +581,7 @@ Pilami Strudel Lab 0.39.39 — Créer des catégories dans l’application
 - Création et classement protégés par la session administrateur et le nonce REST WordPress ; indisponibles pour les visiteurs et dans le Pack VJ hors ligne.
 - Preset séparé Nuage-Particules-Pixi-Pilami-v5-trainees.hydra.txt : Longueur_Trainee (0–2 secondes), Intensite_Trainee (0–1), Detail_Trainee (0–12 segments par particule). Détail, intensité ou longueur à 0 désactivent les traces.
 - Profondeur de champ, résolution, opacités individuelles, audio, MIDI et snapshots conservés. Les traces suivent chaque particule, s’atténuent avec l’âge et s’arrêtent avec le visuel.
-- Pour commencer sur une carte graphique ancienne : 500–700 particules, détail 2–4, résolution 0.5–0.75. Le détail ajoute des segments à chaque particule ; mesurer le débit sur la machine cible.
+- Pour commencer sur GTX 770 : 500–700 particules, détail 2–4, résolution 0.5–0.75. Le détail ajoute des segments à chaque particule ; mesurer le débit sur la machine cible.
 - Installer le ZIP dans WordPress en remplaçant la version actuelle, recharger la page et rouvrir les fenêtres détachées. Importer ensuite le preset v5 avec Ctrl + I.
 
 Pilami Strudel Lab 0.39.38 — Nuage Pixi avec ParticleContainer

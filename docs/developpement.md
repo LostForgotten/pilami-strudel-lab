@@ -1,6 +1,6 @@
 # Organisation du code
 
-Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.58. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
+Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version actuelle est 0.39.92. Le premier import conserve les fichiers existants et leurs noms versionnés ; il ne reconstitue pas artificiellement des commits pour les versions antérieures.
 
 ## Repères
 
@@ -11,6 +11,7 @@ Ce dépôt a démarré avec les fichiers de l’extension 0.39.31 ; la version a
 | `assets/pilami-*.js` et `.css` | Modules de l’interface et styles, avec noms versionnés |
 | `assets/vendor/` | Moteurs et bibliothèques embarqués, avec licences |
 | `assets/offline/` | Modèle HTML et ressources du Pack VJ hors ligne |
+| `assets/max4live/` et `assets/pilami-max-export-*.js` | Modèle du périphérique et conversion des visuels compatibles vers Max for Live |
 | `sources/` | Sources et notices des moteurs adaptés et extensions Hydra |
 | `tools/ableton-link-bridge/` | Copie du bridge associée à cette version ; projet maintenu séparément |
 | `scripts/` | Vérification du paquet et fabrication du ZIP WordPress |

@@ -1,6 +1,6 @@
 # Documentation de Pilami Strudel Lab
 
-Ce guide correspond à la version **0.39.58**. Les fonctions proposées peuvent varier selon les droits WordPress, le navigateur et le preset chargé.
+Ce guide correspond à la version **0.39.92**. Les fonctions proposées peuvent varier selon les droits WordPress, le navigateur et le preset chargé.
 
 ## Pour commencer
 
@@ -18,6 +18,7 @@ Tu peux utiliser le [laboratoire public](https://pilami.fr/strudel/) sans instal
 | Interface, fenêtres séparées et raccourcis | [Premiers pas](premiers-pas.md) |
 | Réaction au son, MIDI Learn, notes MIDI sortantes | [Audio et MIDI](midi.md) |
 | Tempo partagé avec Ableton Live | [Ableton Link](ableton-link.md) |
+| Exporter un visuel compatible dans Live | [Max for Live](max-for-live.md) |
 | Un problème pendant le premier essai | [Dépannage](depannage.md) |
 | Exemple du bol, collisions et lueurs | [Bol de verre](bol-de-verre.md) |
 | Organisation du code et fabrication du plugin | [Développement](developpement.md) |

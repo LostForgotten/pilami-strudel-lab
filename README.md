@@ -4,7 +4,7 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.82 — projet en développement.**
+**Version actuelle : 0.39.92 — projet en développement.**
 
 **Tu découvres l’application ?** Commence par [ton premier visuel en dix minutes](docs/demarrer.md). Aucun code, appareil MIDI ni Ableton n’est nécessaire pour ce premier essai. Le [sommaire de la documentation](docs/README.md) propose ensuite un parcours pas à pas.
 
@@ -19,6 +19,7 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Associer un appareil MIDI aux paramètres, corriger les associations et lisser les mouvements.
 - Créer ses gammes et sources par note au diapason 440 ou 432 Hz.
 - Exporter un preset complet avec ses liaisons audio/MIDI et son séquenceur.
+- Préparer un périphérique Max for Live pour certains visuels Hydra compatibles, avec contrôleurs automatisables et réaction au son de la piste.
 - Capturer jusqu’à dix snapshots, rappeler une variation ou réaliser un morphing entre réglages.
 - Séquencer ces variations sur une grille de 16 ou 32 pas, avec remplissage aléatoire et synchronisation Ableton Link facultative.
 - Détacher le visuel, le code et les contrôleurs dans des fenêtres, et configurer des raccourcis pour plusieurs écrans.
@@ -28,15 +29,14 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés depuis la version GitHub 0.39.75
+## Nouveautés depuis la version GitHub 0.39.82
 
-- **Créer ses propres gammes** : notes libres, dièses et bémols, diapason 440 ou 432 Hz, fréquences calculées automatiquement et boutons par demi-ton.
-- **Changer de gamme sans accumuler les sources** : les notes communes gardent leurs réglages et liaisons ; les notes retirées sont nettoyées dans les contrôleurs et snapshots.
-- **Partager ses variations** : le TXT standard inclut désormais les snapshots et les réglages de morphing.
-- **Transférer un preset complet** : sources et liaisons audio, associations MIDI, snapshots et séquenceur réunis dans un TXT, avec restauration sélective.
-- **Nettoyer les commentaires des TXT** : les commentaires JavaScript ordinaires sont retirés à l’export ; mentions de licence et blocs de restauration conservés.
+- **Exporter pour Max for Live** : génération d’un pack AMXD, JavaScript et JXS pour une chaîne Hydra compatible, avec feedback, audio de la piste et jusqu’à 16 contrôleurs à exposer dans Live.
+- **Connaître la compatibilité avant le téléchargement** : indicateur et diagnostic à côté du bouton, choix des contrôleurs, progression et erreurs visibles aussi dans les fenêtres détachées.
+- **Convertir davantage de presets** : formules audio, variables de résolution et horloges reconnues pour Art déco, Feu et étincelles, Plis lumineux et Julia-curseurs. Les moteurs WebGL personnalisés à plusieurs passes restent signalés comme non compatibles.
+- **Naviguer dans une longue page** : bouton fixe de retour en haut, accessible au clavier.
 
-Voir le [journal des versions](CHANGELOG.md), le [guide des gammes personnalisées](docs/gammes.md) et les [exports de presets](docs/presets-et-snapshots.md#exporter-et-réimporter-un-preset).
+Voir le [journal des versions](CHANGELOG.md) et le [guide de l’export Max for Live](docs/max-for-live.md).
 
 ## Essayer
 
@@ -48,7 +48,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.82.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.92.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -82,6 +82,7 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 - [Premiers pas et raccourcis](docs/premiers-pas.md)
 - [Presets, sauvegardes, snapshots et morphing](docs/presets-et-snapshots.md)
 - [Gammes personnalisées et fréquences](docs/gammes.md)
+- [Exporter un visuel pour Max for Live](docs/max-for-live.md)
 - [Audio, MIDI Learn et notes envoyées à Ableton](docs/midi.md)
 - [Dépannage des premiers essais](docs/depannage.md)
 - [Connexion Ableton Link](docs/ableton-link.md)

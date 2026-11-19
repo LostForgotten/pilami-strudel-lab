@@ -1,5 +1,56 @@
 # Journal des versions
 
+## 0.39.92 — Julia et zoom exponentiel dans Max for Live
+
+- Conversion du preset Julia-curseurs : zoom exponentiel audio réactif et horloges indépendantes pour la forme et les couleurs.
+- Adaptation des qualificateurs WebGL au GLSL de bureau de Jitter ; conservation des variables de résolution.
+
+## 0.39.91 — Plis lumineux dans Max for Live
+
+- Conversion de son horloge intégrée et des fonctions numériques auxiliaires avec arguments, y compris les liaisons audio.
+- Conservation du gel, de l’inversion et de la phase ; les contrôleurs non exposés gardent leur valeur capturée.
+
+## 0.39.90 — Horloges du feu et des étincelles
+
+- Reproduction des deux compteurs bornés du preset Feu et étincelles dans le runtime Max, une fois par image.
+- Vitesses et phases indépendantes, avec arrêt et inversion de l’animation.
+
+## 0.39.89 — Diagnostic des moteurs WebGL personnalisés
+
+- Distinction entre chaîne Hydra native et moteur WebGL indépendant avant conversion.
+- Diagnostic explicite pour Blob translucide, dont les trois passes demandent une conversion Jitter dédiée.
+
+## 0.39.88 — Export plus accessible
+
+- Bouton et état de compatibilité Max for Live regroupés dans Preset sélectionné.
+- Flèche fixe de retour en haut avec prise en compte du clavier et des préférences d’animation.
+
+## 0.39.87 — Résolution transmise à Jitter
+
+- Variable GLSL `resolution` reliée aux dimensions du rendu, notamment pour Art déco génératif audio.
+- Notices de copyright du preset conservées dans le pack exporté.
+
+## 0.39.86 — Formules audio et feedback
+
+- Conversion de replis numériques, conditions et variables locales des callbacks compatibles ; constantes et contrôleurs identifiés explicitement.
+- Détection de la vraie cible du feedback et distinction des sources externes ou autres buffers non pris en charge.
+
+## 0.39.85 — Choix des contrôleurs Live
+
+- Choix de 0 à 16 contrôleurs à exposer et compteur de sélection ; les autres conservent leur valeur de base et leur modulation audio compatible.
+- Sélection disponible dans la fenêtre principale comme dans les fenêtres détachées.
+
+## 0.39.84 — Compatibilité visible avant l’export
+
+- Indicateur Exportable / Non exportable et raison, avec vérification complète après lancement du visuel.
+- Progression et erreurs visibles près du bouton ; téléchargement disponible uniquement après validation.
+
+## 0.39.83 — Premier export Max for Live
+
+- Pack comprenant un périphérique AMXD, son script JavaScript et son shader JXS pour une chaîne Hydra compatible.
+- Feedback de la même sortie, contrôleurs automatisables et trois enveloppes audio adaptées depuis la piste Live.
+- Refus des constructions non prises en charge avec un diagnostic ; snapshots, séquenceur, MIDI et Link restent à configurer dans Live.
+
 ## 0.39.82 — Commentaires des exports TXT
 
 - Retrait des commentaires JavaScript ordinaires des exports TXT standard et complet, sans modifier le code de l’éditeur.

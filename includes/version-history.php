@@ -4,33 +4,60 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
-        '0.39.82' => array('Commentaires des exports TXT', array(
-            'Retrait des commentaires JavaScript ordinaires des exports TXT standard et complet, sans modifier le code de l’éditeur.',
-            'Mentions de licence et données de restauration conservées ; chaînes, URL et textes GLSL intégrés inchangés.',
+        '0.39.92' => array('Julia et zoom exponentiel dans Max for Live', array(
+            'Conversion du preset Julia-curseurs : zoom exponentiel audio-réactif et horloges indépendantes de forme et de couleurs.',
+            'Reproduction du schéma basé sur performance.now dans le runtime Max ; vitesses et réglages du preset conservés.',
+            'Qualificateurs de précision WebGL adaptés au GLSL de bureau utilisé par Jitter, avec conservation des variables de résolution.',
         )),
-        '0.39.81' => array('Export complet et restauration sélective', array(
-            'Export complet du preset : code, gammes, sources et liaisons audio, snapshots, morphing, associations MIDI, lissage, réglages de sortie et séquenceur.',
-            'Choix des éléments à restaurer au lancement du fichier importé ; restauration locale sans démarrage du séquenceur ni activation de la sortie MIDI.',
+        '0.39.91' => array('Export Max for Live de Plis lumineux', array(
+            'Prise en charge de son horloge intégrée initialisée sur time, avec compteur borné, vitesse et phase indépendants.',
+            'Conversion des fonctions numériques auxiliaires avec arguments, dont plisAudio(band), pour conserver les liaisons audio du preset.',
+            'Contrôleurs, gel et inversion de l’animation conservés ; choix des paramètres exportés et résolution toujours disponibles.',
         )),
-        '0.39.80' => array('Snapshots dans les exports TXT', array(
-            'Le TXT emporte les dix emplacements de snapshots et les réglages de morphing.',
-            'Restauration proposée à Hydra / Update, avec conservation possible des captures locales ; anciens TXT compatibles.',
+        '0.39.90' => array('Horloges intégrées du feu et des étincelles', array(
+            'Reconnaissance du schéma d’horloges du preset Feu et étincelles : compteurs cumulés avec pas borné et vitesse pilotée par un contrôleur.',
+            'Avancement reproduit dans le script Max, une fois par image ; vitesses indépendantes, arrêt, inversion et phases conservés.',
+            'Le choix des 16 contrôleurs reste disponible ; les vitesses non exposées gardent leur valeur de base et leur modulation audio compatible.',
         )),
-        '0.39.79' => array('Menu synchronisé avec la gamme actuelle', array(
-            'Le menu retrouve la gamme et le diapason selon les fréquences des sources présentes.',
-            'Sources personnalisées si aucune gamme ne correspond ; distinction entre la gamme actuelle et le choix à appliquer.',
+        '0.39.89' => array('Identifier les moteurs WebGL personnalisés', array(
+            'Les presets qui rendent leur propre canvas WebGL sont distingués des chaînes Hydra natives avant analyse des formules.',
+            'Blob translucide est identifié comme moteur WebGL 2 personnalisé à trois passes : cette architecture nécessite une conversion Jitter dédiée, encore absente.',
+            'Le diagnostic ne confond plus cette architecture avec une simple modification de l’horloge ou d’un callback.',
         )),
-        '0.39.78' => array('Remplacer les sources par gamme', array(
-            'Appliquer la gamme remplace les anciennes sources au lieu de les accumuler.',
-            'Notes communes : réglages et liaisons conservés ; notes retirées : nettoyage des liaisons aux contrôleurs, déclenchements et snapshots.',
+        '0.39.88' => array('Export Max accessible et retour en haut', array(
+            'Bouton Exporter pour Max for Live placé dans le bloc Preset sélectionné, à côté des autres exports.',
+            'État de compatibilité rapproché du bouton ; même bouton déplacé pour conserver ses commandes et sa fenêtre de sélection.',
+            'Flèche fixe de retour en haut, au-dessus des boutons de thème ; navigation clavier et réduction des animations prises en compte.',
         )),
-        '0.39.77' => array('Séparateurs de notes', array(
-            'Tirets simples et typographiques acceptés entre les notes, avec ou sans espaces ; dièses et bémols conservés.',
+        '0.39.87' => array('Résolution Hydra transmise au shader Max for Live', array(
+            'La variable GLSL resolution est déclarée et liée aux dimensions de texture du rendu Jitter.',
+            'Correction vérifiée sur Art déco génératif audio : choix des contrôleurs et conservation des proportions aux différentes résolutions.',
+            'Notices de copyright du preset conservées dans le pack exporté.',
         )),
-        '0.39.76' => array('Gammes personnalisées et diapasons', array(
-            'Création, modification et suppression de gammes dans Mes gammes, sans compte administrateur pour l’usage local.',
-            'Calcul automatique des fréquences au diapason 440 ou 432 Hz ; affichage entier et précision complète pour la détection.',
-            'Choix de note dans Source personnalisée et boutons de transposition par demi-ton ; gammes incluses dans le code et mémorisées dans le navigateur.',
+        '0.39.86' => array('Formules audio compatibles avec l’export Max for Live', array(
+            'Conversion des replis numériques || et ??, des conditions ternaires, comparaisons et variables locales des callbacks.',
+            'Constantes H et contrôleurs identifiés explicitement au lieu de tenter de convertir leurs fonctions internes.',
+            'Identification de la cible réelle du feedback ; diagnostic distinguant une source externe et une référence à un autre buffer.',
+        )),
+        '0.39.85' => array('Choisir les contrôleurs du périphérique Max for Live', array(
+            'Fenêtre de sélection de 0 à 16 contrôleurs exposés dans Live, avec compteur et sélection des 16 premiers par défaut.',
+            'Les presets de plus de 16 contrôleurs ne sont plus refusés pour ce motif : les autres gardent leur valeur de base actuelle et leur modulation audio compatible.',
+            'Valeurs capturées à la validation ; sélection disponible dans la fenêtre principale et les fenêtres détachées.',
+        )),
+        '0.39.84' => array('Compatibilité Max for Live visible avant export', array(
+            'Indicateur Exportable / Non exportable avec la raison précise à côté du bouton, y compris en fenêtre détachée.',
+            'Détection des chaînes multiples, du nombre de contrôleurs et des sources externes avant lancement ; vérification complète du shader après lancement.',
+            'Bouton activé seulement après vérification ; progression et erreurs de téléchargement visibles au même endroit.',
+        )),
+        '0.39.83' => array('Premier export natif pour Max for Live', array(
+            'Bouton Exporter pour Max for Live : pack AMXD, JavaScript et JXS, sans copier-coller dans Max.',
+            'Une chaîne Hydra avec feedback, jusqu’à 16 contrôleurs automatisables et audio de la piste adapté en trois bandes.',
+            'Diagnostic des constructions non prises en charge ; snapshots, séquenceur et associations MIDI à recréer dans Live.',
+        )),
+        '0.39.79' => array('Gamme affichée synchronisée avec les sources', array(
+            'Le menu retrouve la gamme et le diapason à partir des fréquences actuelles, y compris après rechargement ou réouverture des contrôleurs.',
+            'Les notes sans gamme correspondante sont indiquées comme Sources personnalisées ; C Mixophonic ne s’affiche plus par défaut.',
+            'La gamme actuelle reste indiquée pendant le choix d’une autre gamme ; seul Appliquer la gamme remplace les sources.',
         )),
         '0.39.75' => array('Snapshots et rechargement sans quota localStorage', array(
             'Snapshots et associations MIDI déplacés vers IndexedDB ; migration automatique avec copie de récupération avant retrait de l’ancien stockage.',

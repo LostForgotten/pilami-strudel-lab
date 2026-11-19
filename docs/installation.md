@@ -18,7 +18,7 @@ Un paquet partiel intitulé « mise à jour GitHub » est destiné au dépôt de
 
 Si aucune archive installable n’est jointe à une version, ouvre l’onglet **Actions** du dépôt. Choisis une exécution verte de **Vérifier et fabriquer le ZIP WordPress**, puis télécharge son artefact **pilami-strudel-lab-wordpress**. GitHub peut demander une connexion pour ce téléchargement.
 
-Décompresse cette première archive : elle contient le vrai ZIP `pilami-strudel-lab-v0.39.75.zip` et son empreinte. C’est **le ZIP intérieur** qu’il faut téléverser dans WordPress. Un échec de fabrication doit être corrigé avant d’utiliser cette archive.
+Décompresse cette première archive : elle contient le vrai ZIP `pilami-strudel-lab-v0.39.92.zip` et son empreinte. C’est **le ZIP intérieur** qu’il faut téléverser dans WordPress. Un échec de fabrication doit être corrigé avant d’utiliser cette archive.
 
 ## Navigateur et autorisations
 

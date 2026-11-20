@@ -1,5 +1,16 @@
 # Journal des versions
 
+## 0.39.94 — Plein écran Max for Live dans Live 12
+
+- Contexte graphique Jitter implicite et fenêtre non flottante pour la cible WebGL embarquée, afin de stabiliser le plein écran dans Ableton.
+- Le preset Gyroïde tranchée exporté a été essayé dans Live 12 : contrôles et plein écran confirmés par l’utilisateur après redémarrage d’Ableton. Les autres presets et configurations restent à vérifier séparément.
+
+## 0.39.93 — Lecteur WebGL embarqué pour Live 12 / Max 9.2
+
+- Nouvelle cible d’export avec `jit.gl.web`, page et bibliothèques locales, moteurs WebGL / WebGL 2 personnalisés et buffers du preset.
+- Choix de la cible et des contrôleurs Live ; effet audio avec analyse de la piste ou effet MIDI avec notes natives. La cible Jitter native Live 11 / Max 8 reste disponible.
+- Diagnostic des ressources non prises en charge avant téléchargement, notamment caméra, vidéo, réseau et lecture directe d’échantillons WebAudio.
+
 ## 0.39.92 — Julia et zoom exponentiel dans Max for Live
 
 - Conversion du preset Julia-curseurs : zoom exponentiel audio réactif et horloges indépendantes pour la forme et les couleurs.

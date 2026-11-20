@@ -1,3 +1,24 @@
+VERSION 0.39.94 — STABILITÉ DU PLEIN ÉCRAN MAX FOR LIVE
+
+L’export Live 12 / Max 9.2 emploie désormais un contexte Jitter implicite et une fenêtre de rendu non flottante. Cela évite la combinaison de fenêtre flottante et de plein écran qui peut provoquer des bascules rapides entre Live et le visuel. Les exports déjà créés doivent être régénérés ; un ZIP corrigé du gyroid est aussi disponible séparément.
+Le preset Gyroïde tranchée exporté a été essayé dans Live 12 : après redémarrage d’Ableton, « Visuel actif » et le plein écran fonctionnent sans les glitches observés auparavant. Cette validation porte sur ce preset et cette configuration.
+
+VERSION 0.39.93 — EXPORT WEBGL / WEBGL 2 POUR LIVE 12 ET MAX 9.2
+
+La fenêtre « Exporter pour Max for Live » propose maintenant deux cibles :
+- Live 11 / Max 8 : conversion Jitter native existante, conservée.
+- Live 12 / Max 9.2 : lecteur web embarqué expérimental utilisant jit.gl.web.
+
+Cette nouvelle cible garde le moteur JavaScript et les shaders WebGL ou WebGL 2 du preset, ainsi que ses buffers, au lieu de tenter une conversion shader par shader. Elle accepte aussi plusieurs sorties Hydra. Les bibliothèques locales du lecteur et les images fixes déclarées sont intégrées au paquet, sans site distant nécessaire au jeu.
+Installer le plugin, Ctrl+F5, lancer le preset puis Exporter pour Max for Live. Choisir « Live 12 / Max 9.2 — WebGL / WebGL 2 embarqué » et jusqu'à 16 contrôleurs. Les autres conservent leur valeur de base exportée et leur modulation audio compatible. Les snapshots et métadonnées du labo ne sont pas inclus dans le code exporté ; les notices légales sont conservées.
+
+Live 12 doit effectivement utiliser Max 9.2 ou plus récent dans ses préférences : la présence de Live 12 seule ne garantit pas jit.gl.web.
+Extraire tout le ZIP et garder le .amxd, son HTML, player.js et le bridge JS ensemble. Le type Effet audio conserve le passage direct stéréo et adapte l'entrée en trois enveloppes MSP, sans reproduire exactement la FFT ou les réglages cutoff/scale du navigateur. Le type Effet MIDI transmet les impacts PilamiMidiOutput à une voix MIDI native, avec hauteur, durée, vélocité et dynamique réglables, mais ne reçoit pas d'audio (a.fft reste à zéro).
+
+Les sources audio par notes, caméras, captures/vidéos, demandes directes de périphériques, lecture WebAudio des échantillons bruts, imports/fetch distants et boucles requestAnimationFrame autonomes restent refusés avec une explication. Les sons synthétisés dans une page ne sont pas routés dans Live par cette cible. Les snapshots, le séquenceur, Link et les apprentissages MIDI du labo ne sont pas transférés. Le GPU et le Chromium embarqué déterminent les capacités réelles de WebGL 2 sur la machine cible.
+
+Validation initiale de la version 0.39.93 : génération de trois paquets (Blob translucide WebGL 2, Lucioles MIDI WebGL et chaîne Hydra à plusieurs buffers), structures AMXD audio/MIDI, liens et paramètres, présence des moteurs et licences locales, absence des métadonnées de snapshots et des scripts distants, échanges contrôleurs/audio, démarrage/arrêt, événements MIDI, note-offs et absence de double modulation audio testés en VM avec le moteur graphique/DOM substitués. Les chaînes natives et leurs horloges de référence sont également vérifiées. Le test réel ultérieur du preset Gyroïde tranchée dans Live 12 est consigné sous la version 0.39.94 ; il ne valide pas automatiquement les autres presets.
+
 VERSION 0.39.92 — JULIA DANS MAX FOR LIVE
 
 Le fichier Julia-curseurs.hydra.txt est désormais convertible sans modification. Ses 11 contrôleurs peuvent tous être exposés dans Live.

@@ -4,6 +4,18 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.94' => array('Plein écran Max for Live stabilisé', array(
+            'La cible Live 12 / Max 9.2 utilise le contexte graphique implicite recommandé pour jit.world dans Max for Live.',
+            'La fenêtre de sortie n’est plus forcée en mode flottant, pour éviter les bascules rapides d’avant-plan lors du plein écran.',
+            'Le rendu WebGL, les contrôleurs et la résolution choisie restent inchangés ; re-exporter le périphérique pour appliquer la correction.',
+        )),
+        '0.39.93' => array('Export WebGL pour Live 12 et Max 9.2', array(
+            'Nouvelle cible expérimentale : lecteur web local via jit.gl.web, pour conserver les moteurs WebGL et WebGL 2 et leurs buffers.',
+            'Choix de la cible dans la fenêtre Max for Live ; export Jitter natif Live 11 / Max 8 conservé.',
+            'Jusqu’à 16 contrôleurs Live, valeurs non exposées conservées, ressources locales intégrées et réglage de résolution.',
+            'Effet audio avec trois enveloppes MSP, ou effet MIDI avec notes natives ; capture caméra et échantillons WebAudio bruts refusés explicitement.',
+            'Live 12 doit utiliser Max 9.2 minimum ; la présence de Live 12 seule ne suffit pas. Le test du preset Gyroïde tranchée est documenté dans la version 0.39.94.',
+        )),
         '0.39.92' => array('Julia et zoom exponentiel dans Max for Live', array(
             'Conversion du preset Julia-curseurs : zoom exponentiel audio-réactif et horloges indépendantes de forme et de couleurs.',
             'Reproduction du schéma basé sur performance.now dans le runtime Max ; vitesses et réglages du preset conservés.',

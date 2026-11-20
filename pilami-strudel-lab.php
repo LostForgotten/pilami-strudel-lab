@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pilami Strudel Lab
  * Description: Laboratoire Strudel intégré à WordPress avec presets et commandes de lecture.
- * Version: 0.39.92
+ * Version: 0.39.94
  * Author: pilami.fr
  * License: AGPL-3.0-or-later
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PILAMI_STRUDEL_LAB_VERSION', '0.39.92');
+define('PILAMI_STRUDEL_LAB_VERSION', '0.39.94');
 require_once __DIR__ . '/includes/account.php';
 require_once __DIR__ . '/includes/version-history.php';
 require_once __DIR__ . '/includes/appearance.php';
@@ -45,7 +45,7 @@ function pilami_strudel_lab_enqueue_assets() {
     wp_enqueue_style('pilami-strudel-visuals', plugin_dir_url(__FILE__) . 'assets/pilami-visuals-0.39.25.css', array('pilami-strudel-lab'), '0.39.14');
     wp_enqueue_script('pilami-strudel-visuals', plugin_dir_url(__FILE__) . 'assets/pilami-visuals-0.39.48.js', array('strudel-web'), '0.39.49', true);
 
-    wp_enqueue_script('pilami-strudel-hydra', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-0.39.86.js', array('strudel-web', 'pilami-strudel-visuals'), '0.39.86', true);
+    wp_enqueue_script('pilami-strudel-hydra', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-0.39.86.js', array('strudel-web', 'pilami-strudel-visuals'), '0.39.94', true);
 
     wp_enqueue_script('pilami-strudel-inline', plugin_dir_url(__FILE__) . 'assets/pilami-inline-0.10.2.js', array('strudel-web'), '0.10.2', true);
 
@@ -76,8 +76,9 @@ function pilami_strudel_lab_enqueue_assets() {
     wp_enqueue_script('pilami-hydra-extensions', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-extensions-0.28.0.js', array(), '0.28.0', true);
     wp_enqueue_script('pilami-public-export', plugin_dir_url(__FILE__) . 'assets/pilami-public-export-0.39.65.js', array('pilami-acorn','pilami-hydra-extensions'), '0.39.65', true);
     wp_enqueue_script('pilami-hydra-transfer', plugin_dir_url(__FILE__) . 'assets/pilami-transfer-0.39.82.js', array('pilami-controllers','pilami-hydra-snapshots','pilami-hydra-sequencer'), '0.39.82', true);
-    wp_enqueue_script('pilami-max-export', plugin_dir_url(__FILE__) . 'assets/pilami-max-export-0.39.92.js', array('pilami-acorn','pilami-strudel-hydra'), '0.39.92', true);
-    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.86.js', array('pilami-max-export','pilami-hydra-transfer','pilami-public-export','pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.86', true);
+    wp_enqueue_script('pilami-max-export', plugin_dir_url(__FILE__) . 'assets/pilami-max-export-0.39.93.js', array('pilami-acorn','pilami-strudel-hydra'), '0.39.94', true);
+    wp_enqueue_script('pilami-max-web-export', plugin_dir_url(__FILE__) . 'assets/pilami-max-web-export-0.39.94.js', array('pilami-max-export','pilami-hydra-extensions','pilami-hydra-transfer'), '0.39.94', true);
+    wp_enqueue_script('pilami-hydra-workspace', plugin_dir_url(__FILE__) . 'assets/pilami-hydra-workspace-0.39.93.js', array('pilami-max-export','pilami-max-web-export','pilami-hydra-transfer','pilami-public-export','pilami-hydra-midi-library','pilami-hydra-extensions','pilami-controllers','pilami-acorn','pilami-strudel-hydra','pilami-strudel-visuals','pilami-hydra-images'), '0.39.94', true);
 
     wp_enqueue_script('pilami-strudel-share', plugin_dir_url(__FILE__) . 'assets/pilami-share-0.39.41.js', array(), '0.39.41', true);
 

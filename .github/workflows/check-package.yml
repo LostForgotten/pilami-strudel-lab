@@ -33,6 +33,10 @@ jobs:
           for path in sorted(p for p in paths if p.endswith('.js')):
               subprocess.run(['node', '--check', path], check=True)
           PY
+      - name: Vérifier les régressions Max for Live
+        run: |
+          node tests/max-web-player.cjs
+          node tests/max-web-export.cjs
       - name: Fabriquer le ZIP WordPress
         run: python3 scripts/build_plugin.py
       - uses: actions/upload-artifact@v4
@@ -40,3 +44,4 @@ jobs:
           name: pilami-strudel-lab-wordpress
           path: dist/*
           if-no-files-found: error
+

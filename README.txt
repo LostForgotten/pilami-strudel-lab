@@ -1,3 +1,15 @@
+VERSION 0.39.96 — LECTEUR MAX FOR LIVE VERSIONNE
+
+Les exports web utilisent un lecteur et un modèle portant un nom propre à cette version, avec vérification du lecteur avant création du ZIP. Cela évite de récupérer silencieusement un ancien player.js depuis un cache. Les ZIP utilisent player-0.39.96.js ; conserver tous les fichiers ensemble.
+
+VERSION 0.39.95 — POTARDS MAX FOR LIVE SANS ARRET DU VISUEL
+
+Le lecteur embarqué confondait un changement de valeur avec un remplacement du modèle de contrôleurs. Tourbillons fluides écoute l'événement pilami-hydra-controllers-change pour nettoyer ses ressources lors du remplacement d'un visuel : les changements des potards déclenchaient donc dispose(), puis WEBGL_lose_context. Hydra tentait ensuite de recopier le canvas perdu, d'où le journal texSubImage2D répété.
+Le lecteur annonce désormais une seule fois le modèle, après l'initialisation du preset. Les changements de paramètres utilisent l'événement distinct pilami-hydra-parameter-change ; le modèle reste identique et les getters conservent leurs références. Les procédures de destruction explicites lors du remplacement ou déchargement restent présentes.
+Pour les prochains exports : installer le plugin, Ctrl+F5, puis exporter de nouveau. Pour un export existant : fermer Live/Max, remplacer uniquement player.js dans son dossier par la copie corrigée, puis rouvrir le périphérique. Le .amxd, le HTML, le bridge, les contrôleurs sélectionnés et leurs valeurs n'ont pas besoin d'être recréés.
+Le modèle et le lecteur sont récupérés sans cache HTTP pour éviter un mélange de versions à l'export. Le correctif plein écran de la 0.39.94 est conservé.
+Validation : reproduction du problème avec les callbacks changed/dispose réels de Tourbillons et le lecteur 0.39.94 ; test du lecteur corrigé avec notification initiale, changements répétés de tous les paramètres, tick de rendu, modulation audio, MIDI et nettoyage explicite. Le test dans Max/Ableton sur la machine cible reste nécessaire.
+
 VERSION 0.39.94 — STABILITÉ DU PLEIN ÉCRAN MAX FOR LIVE
 
 L’export Live 12 / Max 9.2 emploie désormais un contexte Jitter implicite et une fenêtre de rendu non flottante. Cela évite la combinaison de fenêtre flottante et de plein écran qui peut provoquer des bascules rapides entre Live et le visuel. Les exports déjà créés doivent être régénérés ; un ZIP corrigé du gyroid est aussi disponible séparément.
@@ -2429,3 +2441,4 @@ Version 0.39.22 : Sequenceur visuel — Play avec Live, Stop avec Live,
 PNG stables au survol (calque independant), aucun halo autour des
 cases colorees, protection contre la touche Espace qui recliquait les cases apres selection ; bridge Link resilient
 aux erreurs du transport, avec diagnostics console.
+

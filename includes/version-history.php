@@ -4,6 +4,15 @@ if (!defined('ABSPATH')) { exit; }
 // User-facing release notes, newest first. Keep new releases in this one list.
 function pilami_strudel_lab_history() {
     return array(
+        '0.39.96' => array('Export Max for Live avec lecteur versionné', array(
+            'Le lecteur web et son modèle portent un nom de version distinct, afin d’éviter une ancienne copie conservée en cache.',
+            'La création du ZIP vérifie la version du lecteur et refuse une copie périmée.',
+            'Le nouvel export de Tourbillons fluides et ses potentiomètres ont été confirmés fonctionnels dans Live par l’utilisateur.',
+        )),
+        '0.39.95' => array('Potards Max for Live sans arrêt du visuel', array(
+            'Les changements de valeur utilisent une notification distincte du remplacement du modèle de contrôleurs.',
+            'Tourbillons fluides conserve son contexte WebGL pendant les mouvements des potentiomètres ; le modèle est annoncé une seule fois au chargement.',
+        )),
         '0.39.94' => array('Plein écran Max for Live stabilisé', array(
             'La cible Live 12 / Max 9.2 utilise le contexte graphique implicite recommandé pour jit.world dans Max for Live.',
             'La fenêtre de sortie n’est plus forcée en mode flottant, pour éviter les bascules rapides d’avant-plan lors du plein écran.',
@@ -787,3 +796,4 @@ function pilami_strudel_lab_render_history() {
     </section>
     <?php
 }
+

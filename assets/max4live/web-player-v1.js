@@ -1,3 +1,4 @@
+/* PILAMI_MAX_WEB_PLAYER_VERSION:0.39.96 */
 /* Pilami Max 9.2 embedded web player. AGPL-3.0-or-later. */
 (function(){
  'use strict';
@@ -41,12 +42,14 @@
   requested=Number(run)>0;gain=Math.max(0,Number(nextGain)||0);speed=Number(nextSpeed)||0;midiEnabled=pack.deviceType==='midi'&&Number(allowMidi)>0;
   levels=[low,mid,high].map(v=>Math.max(0,Number(v)||0));midiState.enabled=midiEnabled;midiState.running=requested&&ready;
   let changed=false;pack.selectedControls.forEach((index,slot)=>{const c=pack.controls[index],v=Number(values[slot]);if(Number.isFinite(v)&&c.value!==v){c.value=Math.max(c.min,Math.min(c.max,v));changed=true;}});
-  if(changed)root.dispatchEvent(new Event('pilami-hydra-controllers-change'));
+  // Values change within the same controller model. The controllers-change event
+  // denotes a model replacement and may dispose a preset's WebGL resources.
+  if(changed)root.dispatchEvent(new Event('pilami-hydra-parameter-change'));
   if(!requested)pause();else resume();
  }
  window.PilamiMaxWebPlayer={state,resolution,pause,controls:pack.controls,audio,get ready(){return ready;},get running(){return running;}};
  if(window.max){window.max.bindInlet('pilami_state',state);window.max.bindInlet('pilami_resolution',resolution);}
  window.addEventListener('error',e=>fail(e.error||e.message));window.addEventListener('unhandledrejection',e=>fail(e.reason));
  window.addEventListener('pagehide',()=>{pause();midiSource?.dispose?.();});
- (async()=>{try{if(!pack.hasInit)await initHydra();const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;await new AsyncFunction('__scope','with(__scope){\n'+pack.source+'\n}')(scope);resolution();ready=true;midiState.running=requested;status.hidden=true;send('ready');resume();}catch(error){fail(error);}})();
+ (async()=>{try{if(!pack.hasInit)await initHydra();const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;await new AsyncFunction('__scope','with(__scope){\n'+pack.source+'\n}')(scope);resolution();ready=true;midiState.running=requested;status.hidden=true;root.dispatchEvent(new Event('pilami-hydra-controllers-change'));send('ready');resume();}catch(error){fail(error);}})();
 })();

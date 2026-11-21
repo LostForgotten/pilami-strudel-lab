@@ -1,5 +1,17 @@
 # Journal des versions
 
+## 0.39.96 — Lecteur Max for Live versionné
+
+- Ressources et fichier du lecteur nommés par version ; vérification de version avant création du ZIP pour refuser une copie périmée.
+- Nouvel export de Tourbillons fluides testé dans Live : les mouvements des potentiomètres ne bloquent plus le visuel, confirmation de l’utilisateur.
+- Conservation du correctif du plein écran de la v0.39.94.
+
+## 0.39.95 — Potards Max for Live sans perte du contexte WebGL
+
+- Notification des changements de valeur distincte du remplacement du modèle de contrôleurs.
+- Annonce du modèle une seule fois après initialisation ; les getters et les ressources WebGL restent actifs lors des réglages.
+- Le correctif du ZIP existant fonctionne, mais la récupération d’un lecteur ancien lors d’un nouvel export nécessite la v0.39.96.
+
 ## 0.39.94 — Plein écran Max for Live dans Live 12
 
 - Contexte graphique Jitter implicite et fenêtre non flottante pour la cible WebGL embarquée, afin de stabiliser le plein écran dans Ableton.
@@ -395,3 +407,4 @@ La préparation du dépôt ajoute une présentation, des guides, les notices de 
 - Meilleure tolérance des reconnexions courtes.
 
 Les notes plus anciennes figurent dans [README.txt](README.txt) et l’historique intégré est défini dans `includes/version-history.php`. Ce dépôt commence par un import de la version actuelle : les anciennes versions ne possèdent pas encore chacune leur tag GitHub.
+

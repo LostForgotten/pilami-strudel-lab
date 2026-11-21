@@ -1,0 +1,46 @@
+const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..'),asset=root+'/assets/';
+const ctx={console,URL,TextEncoder,TextDecoder,Uint8Array,Uint32Array,DataView,Blob,AbortSignal,Map,Set,Date,Math,setTimeout,clearTimeout,document:{currentScript:{src:'https://example.test/assets/pilami-max-export.js'}},location:{href:'https://example.test/'}};ctx.window=ctx;
+ctx.fetch=async url=>{const p=path.join(root,new URL(url).pathname);const data=fs.readFileSync(p);return {ok:true,status:200,text:async()=>data.toString(),json:async()=>JSON.parse(data)};};vm.createContext(ctx);
+for(const name of ['vendor/acorn-8.15.0.js','pilami-hydra-extensions-0.28.0.js','pilami-transfer-0.39.82.js','pilami-max-export-0.39.93.js','pilami-max-web-export-0.39.96.js']){ctx.document.currentScript.src='https://example.test/assets/'+name;vm.runInContext(fs.readFileSync(asset+name,'utf8'),ctx);}
+function options(name,source){
+ const ast=ctx.acorn.parse(source,{ecmaVersion:'latest',allowAwaitOutsideFunction:true}),entries=[];
+ function walk(n,label=''){if(!n?.type)return;if(n.type==='VariableDeclarator')label=n.id.name;if(n.type==='CallExpression'&&['slider','knob','fader','toggle'].includes(n.callee.name)){const vals=n.arguments.map(a=>Number(source.slice(a.start,a.end))),i=entries.length;entries.push({id:'c'+i,label,kind:n.callee.name,value:vals[0],min:n.callee.name==='toggle'?0:vals[1],max:n.callee.name==='toggle'?1:vals[2],step:vals[3]||.01});}for(const v of Object.values(n)){if(Array.isArray(v))v.forEach(x=>walk(x,label));else if(v?.type)walk(v,label);}}walk(ast);
+ return {name,source,entries,descriptors:entries.map(e=>({id:e.id})),resolution:{width:960,height:540},selectedControls:entries.slice(0,16).map((_,i)=>i)};
+}
+(async()=>{
+ const scratch=fs.mkdtempSync(path.join(require('os').tmpdir(),'pilami-max-export-'));
+ const template=JSON.parse(fs.readFileSync(asset+'max4live/template-v1.json'));
+ const examples=[['Audio','solid().out(o0);src(o0).out(o1);render(o1);'],['Midi','var X=H(slider(.4,0,1,.01));window.PilamiMidiOutput.source({});solid(X,0,0).out(o0);src(o0).out(o1);render(o1);'],['Multi','var Gain=H(slider(.4,0,1,.01));solid(Gain,.2,.3).out(o0);src(o0).rotate(()=>time*.2).out(o1);render(o1);']];
+ for(const [name,source]of examples){
+  const opt=options(name,source),elig=ctx.PilamiMaxExport.eligibility(source);assert.equal(elig.status,'pending');assert.equal(elig.target,'web');const inspected=await ctx.PilamiMaxExport.inspect({...opt,ready:true});assert.equal(inspected.status,'ready',inspected.reason);assert.equal(inspected.target,'web');
+  const result=await ctx.PilamiMaxWebExport.build(opt,template),dir=path.join(scratch,name);fs.mkdirSync(dir,{recursive:true});for(const f of result.files)fs.writeFileSync(path.join(dir,f.name),f.data);fs.writeFileSync(path.join(dir,name+'.zip'),Buffer.from(await ctx.PilamiMaxExport.zip(result.files).arrayBuffer()));
+  const raw=Buffer.from(result.files[0].data),p=JSON.parse(raw.subarray(32,-1)).patcher,ids=new Set(p.boxes.map(x=>x.box.id));assert.equal(raw.readUInt32LE(28),raw.length-32);assert.equal(raw.toString('ascii',8,12),name==='Midi'?'mmmm':'aaaa');for(const l of p.lines){assert(ids.has(l.patchline.source[0]));assert(ids.has(l.patchline.destination[0]));}
+  assert.equal(p.minimum_max_version,'9.2.0');assert(!p.boxes.find(x=>x.box.id==='world').box.text.includes('@floating 1'));assert(!p.boxes.find(x=>x.box.id==='web').box.text.includes('#0-pilami-web'));assert.equal(Object.keys(p.parameters).length-2,result.pack.selectedControls.length+(name==='Midi'?9:5));
+  if(name!=='Midi'){assert(p.lines.some(x=>x.patchline.source[0]==='audioin'&&x.patchline.destination[0]==='audioout'));assert(!ids.has('midiout'));}else{assert(ids.has('midiout'));assert(!ids.has('audioin'));assert(p.boxes.find(x=>x.box.id==='notes').box.text.includes('repeatmode 1'));}
+  const messages=[],bridge={outlet:(i,...args)=>messages.push([i,...args]),arrayfromargs:x=>Array.from(x),patcher:{filepath:'C:/My Music/'+name+'.amxd'}};vm.createContext(bridge);vm.runInContext(result.files.find(f=>f.name.endsWith('-bridge.js')).data,bridge);bridge.init.call(bridge);assert(messages.some(m=>m[1][0]==='readfile'&&m[1][1]==='C:/My Music/'+name+'-web.html'));
+  bridge.run(1);bridge.low(.2);bridge.mid(.3);bridge.high(.4);bridge.tick();let state=messages.filter(m=>m[1]?.[0]==='pilami_state').at(-1)[1];assert.equal(state[1],1);assert.equal(state[5],.2);assert.equal(state.length,opt.selectedControls.length+8);
+  bridge.resolution(3);bridge.ready();assert(messages.some(m=>m[1]?.[0]==='pilami_resolution'&&m[1][1]===1920));
+  if(name==='Midi'){bridge.hit(.5);const note=messages.filter(m=>m[0]===2).at(-1)[1];assert.deepEqual(Array.from(note),[36,64,80]);bridge.run(0);const n=messages.filter(m=>m[0]===2).length;bridge.hit(1);assert.equal(messages.filter(m=>m[0]===2).length,n);assert(messages.some(m=>m[0]===3&&m[1]==='flush'));}
+  const html=result.files.find(f=>f.name.endsWith('.html')).data;assert(!html.includes('PILAMI_SNAPSHOTS_V1'));assert(html.includes('data-public-sources'));assert(!html.includes('__pilamiMaxWebPlaceholder'));assert(!/<script[^>]+src=["']https?:/.test(html));
+  const player=result.files.find(f=>f.name==='player-0.39.96.js');assert(player&&player.data.includes('PILAMI_MAX_WEB_PLAYER_VERSION:0.39.96'));assert(html.includes('src="player-0.39.96.js"'));assert(p.dependency_cache.some(d=>d.name==='player-0.39.96.js'));
+  console.log(name+': export ready, portable package, MIDI/audio type, controls, private context, bridge and AMXD checked.');
+ }
+ for(const bad of ['await navigator.mediaDevices.getUserMedia({audio:true});solid().out(o0)','a.createAnalyser();solid().out(o0)','await import("x");solid().out(o0)','fetch("x");solid().out(o0)','requestAnimationFrame(()=>{});solid().out(o0)'])assert.equal(ctx.PilamiMaxWebExport.eligibility(bad).status,'unsupported');
+ const invalid=options('bad','var X=H(slider(1,0,2,.1));solid(X).out(o0);');invalid.entries[0].audio={band:16,depth:2};assert.throws(()=>ctx.PilamiMaxWebExport.prepare(invalid),/Sources par notes/);invalid.entries[0].audio=null;invalid.descriptors=[];assert.throws(()=>ctx.PilamiMaxWebExport.prepare(invalid),/actualiser/);
+ const midiOpt=options('Midi',examples[1][1]);await assert.rejects(()=>ctx.PilamiMaxWebExport.build({...midiOpt,deviceType:'audio'},template),/choisis Effet MIDI/);
+ const goodFetch=ctx.fetch;ctx.fetch=async url=>String(url).includes('web-player-0.39.96.js')?{ok:true,text:async()=>'/* stale reader */'}:goodFetch(url);await assert.rejects(()=>ctx.PilamiMaxWebExport.build(options('Stale',examples[2][1]),template),/périmé/);ctx.fetch=goodFetch;console.log('Stale reader rejected before ZIP generation.');
+ // Exercise the actual page runtime, with only the rendering engine / DOM substituted.
+ const pack={source:'await initHydra();var X=H(__pilamiMaxControl(0,1));window.readX=audioMod(X,{band:0,depth:2});update=dt=>{window.simulated=(window.simulated||0)+dt*X();};window.m=window.PilamiMidiOutput.source({});',hasInit:true,selectedControls:[0],controls:[{id:'c0',label:'X',kind:'slider',value:1,min:0,max:10,audio:{band:0,depth:2}}],photos:[],resolution:{width:960,height:540},deviceType:'midi'};
+ const handlers={},bindings={},out=[],raf=new Map();let id=0;const parent={append(){},dispatchEvent(){}};const status={};
+ class FakeHydra{constructor(config){win.update=()=>{};this.synth={};this.s=[];this.canvas={width:config.width,height:config.height};this.ticks=0;}setResolution(w,h){this.canvas.width=w;this.canvas.height=h;}tick(dt){this.ticks++;this.synth.update?.(dt);}hush(){}}
+ const win={max:{outlet:(...a)=>out.push(a),bindInlet:(k,fn)=>bindings[k]=fn},addEventListener:(k,fn)=>handlers[k]=fn};const env={window:win,document:{querySelector:s=>s==='[data-max-pack]'?{textContent:JSON.stringify(pack)}:s==='#status'?status:parent,createElement:()=>({})},Hydra:FakeHydra,PilamiHydraExtensions:{identify(){},load(){}},requestAnimationFrame:fn=>{raf.set(++id,fn);return id;},cancelAnimationFrame:n=>raf.delete(n),Event:class{},console};
+ vm.createContext(env);vm.runInContext(fs.readFileSync(asset+'max4live/web-player-v1.js','utf8'),env);for(let i=0;i<20;i++)await Promise.resolve();
+ assert.equal(win.PilamiMaxWebPlayer.ready,true);assert.equal(win.PilamiMaxWebPlayer.running,false);assert(out.some(m=>m[0]==='ready'));
+ bindings.pilami_state(1,4,1,1,.2,.1,.05,3);assert.equal(win.PilamiMaxWebPlayer.running,true);for(const t of [0,33,66]){const [n,fn]=raf.entries().next().value;raf.delete(n);fn(t);}
+ assert(win.PilamiMaxWebPlayer.audio.fft[0]>0);assert(Math.abs(win.readX()-(3+Math.min(1,win.PilamiMaxWebPlayer.audio.fft[0])*2))<1e-6,'double audio modulation');assert(win.simulated>0);assert.equal(win.m.hit(.7),true);assert(out.some(m=>m[0]==='hit'&&m[1]===.7));
+ bindings.pilami_resolution(1920,1080);bindings.pilami_state(0,0,1,0,0,0,0,2);assert.equal(win.PilamiMaxWebPlayer.running,false);assert.equal(raf.size,0);assert.equal(win.m.hit(1),false);assert(out.some(m=>m[0]==='flush'));
+ assert.equal(win.PilamiMaxWebPlayer.controls[0].value,2);
+ fs.rmSync(scratch,{recursive:true,force:true});
+ console.log('Page runtime: parameter/audio bridge, no double modulation, clock start/stop, raw MIDI events and note flush passed.');
+})().catch(e=>{console.error(e);process.exit(1)});

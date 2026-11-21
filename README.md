@@ -4,7 +4,7 @@ Un laboratoire de création musicale et visuelle dans le navigateur, intégré �
 
 Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’essais musicaux et de sessions de VJing.
 
-**Version actuelle : 0.39.94 — projet en développement.**
+**Version actuelle : 0.39.96 — projet en développement.**
 
 **Tu découvres l’application ?** Commence par [ton premier visuel en dix minutes](docs/demarrer.md). Aucun code, appareil MIDI ni Ableton n’est nécessaire pour ce premier essai. Le [sommaire de la documentation](docs/README.md) propose ensuite un parcours pas à pas.
 
@@ -29,12 +29,11 @@ Développé pour [pilami.fr/strudel](https://pilami.fr/strudel/), au fil d’ess
 - Mettre à jour le code d’un preset en conservant les snapshots compatibles.
 - Gérer les presets Hydra, leur apparence et les banques de snapshots dans WordPress, selon les droits de l’utilisateur.
 
-## Nouveautés depuis la version GitHub 0.39.92
+## Nouveautés depuis la version GitHub 0.39.94
 
-- **Exporter pour Live 12 / Max 9.2** : nouvelle cible WebGL / WebGL 2 embarquée, avec lecteur local `jit.gl.web`. Elle garde les moteurs et buffers personnalisés du preset, avec les ressources nécessaires dans le ZIP.
-- **Choisir le périphérique** : effet audio avec analyse de la piste ou effet MIDI avec transmission native des notes, et jusqu’à seize contrôleurs Live.
-- **Afficher en plein écran** : la fenêtre de la cible Live 12 utilise désormais un contexte Jitter implicite et un mode non flottant. Le rendu du preset Gyroïde tranchée et le plein écran ont été confirmés par l’utilisateur dans Live 12 après redémarrage d’Ableton.
-- **Conserver la cible Live 11 / Max 8** : l’export Jitter natif reste disponible à côté de la nouvelle cible.
+- **Tourner les potards sans arrêter le visuel** : le lecteur distingue maintenant les changements de valeur et le remplacement du modèle de contrôleurs. Tourbillons fluides conserve ainsi son contexte WebGL.
+- **Exporter le bon lecteur** : fichiers du lecteur nommés par version, contrôle avant création du ZIP et refus d’une copie périmée. Les nouveaux exports contiennent `player-0.39.96.js`.
+- **Validation dans Live** : le ZIP corrigé, puis un nouvel export depuis la v0.39.96, ont été confirmés fonctionnels par l’utilisateur avec Tourbillons fluides. Le correctif de plein écran de la v0.39.94 reste conservé.
 
 Voir le [journal des versions](CHANGELOG.md) et le [guide de l’export Max for Live](docs/max-for-live.md).
 
@@ -48,7 +47,7 @@ Le site fonctionne sans passerelle Ableton. L’audio, le MIDI et certaines fonc
 
 ## Installer dans WordPress
 
-1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.94.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
+1. Récupère le ZIP installable `pilami-strudel-lab-v0.39.96.zip` lorsqu’il est fourni avec une version. Le ZIP des sources GitHub doit d’abord être transformé en ZIP WordPress ; voir le [guide d’installation](docs/installation.md).
 2. Dans WordPress : **Extensions → Ajouter une extension → Téléverser une extension**.
 3. Installe et active **Pilami Strudel Lab** ; pour une mise à jour, accepte le remplacement de l’extension existante.
 4. Ajoute un bloc **Code court** à une page avec `[pilami_strudel]`.
@@ -100,3 +99,4 @@ Voir [la connexion Ableton Link](docs/ableton-link.md). La copie présente dans 
 L’extension annonce la licence **AGPL-3.0-or-later**. Le texte figure dans [LICENSE](LICENSE). Elle s’appuie notamment sur Strudel, Hydra, PixiJS / PixiUI, Acorn, hydra-midi et des extensions Hydra ; leurs auteurs, sources et licences sont conservés dans le dépôt et récapitulés dans [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Le Designer Pilami a été développé au cours de l’exploration d’ONDA ; les fonctions de conversion de code ont leurs limites décrites dans l’historique. Les composants tiers et les exemples portant une notice particulière conservent leurs propres conditions.
+

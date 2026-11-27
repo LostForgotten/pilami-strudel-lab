@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.39.97 — Interface Tempera Feedback
+
+- Ajout d’une page dédiée `/tempera` avec matrice MIDI 8 × 8 et canvas particulaire sans quadrillage.
+- Réception MIDI Web depuis LoopMIDI ; cellules, quatre émetteurs et particules réagissent en direct.
+- La page est créée à la première visite de l’administration si le slug `/tempera` est libre.
+
+
 ## 0.39.96 — Lecteur Max for Live versionné
 
 - Ressources et fichier du lecteur nommés par version ; vérification de version avant création du ZIP pour refuser une copie périmée.

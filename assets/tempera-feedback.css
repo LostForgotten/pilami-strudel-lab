@@ -34,6 +34,11 @@ body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 5
 .pt-cell:hover { border-color:#526475; transform:scale(1.035); }
 .pt-cell.is-active { border-color:var(--cell-color,#42baff); background:color-mix(in srgb,var(--cell-color,#42baff) 15%,#111923); box-shadow:inset 0 0 18px color-mix(in srgb,var(--cell-color,#42baff) 30%,transparent),0 0 14px color-mix(in srgb,var(--cell-color,#42baff) 40%,transparent); }
 .pt-cell.is-active::after { background:var(--cell-color,#42baff); box-shadow:0 0 13px var(--cell-color,#42baff); }
+.pt-parameter-readout { padding-top:14px; }
+.pt-parameter-readout>.pt-label { display:block; }
+.pt-parameter-values { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px 10px; margin-top:9px; color:#82909e; font-size:10px; }
+.pt-parameter-values span { white-space:nowrap; }
+.pt-parameter-values b { color:#dce6ee; font-weight:600; margin-left:3px; }
 .pt-emitters { padding:17px 0; border-top:1px solid var(--pt-line); border-bottom:1px solid var(--pt-line); }
 .pt-emitter-buttons { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
 .pt-emitter-buttons button { display:flex; justify-content:center; align-items:center; gap:7px; padding:9px 5px; border:1px solid var(--pt-line); border-radius:9px; background:#0b1016; color:#9aa7b3; font-size:12px; cursor:pointer; }
@@ -60,4 +65,4 @@ body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 5
 .pt-canvas { display:block; width:100%; height:100%; min-height:500px; flex:1; }
 .pt-visual-hint { position:absolute; bottom:17px; right:20px; color:#667482; font-size:10px; pointer-events:none; }
 @media (max-width:850px) { .pt-stage { grid-template-columns:1fr; } .pt-panel { order:1; } .pt-visual-panel { order:2; min-height:55vh; } .pt-canvas { min-height:55vh; } }
-@media (max-width:520px) { .pilami-tempera { padding:14px; } .pt-header { align-items:flex-start; flex-direction:column; } .pt-panel { padding:16px; } .pt-grid { gap:4px; } .pt-cell { border-radius:6px; } .pt-visual-meta { top:14px; left:14px; right:14px; } }
+@media (max-width:520px) { .pt-parameter-values { grid-template-columns:repeat(2,minmax(0,1fr)); } .pilami-tempera { padding:14px; } .pt-header { align-items:flex-start; flex-direction:column; } .pt-panel { padding:16px; } .pt-grid { gap:4px; } .pt-cell { border-radius:6px; } .pt-visual-meta { top:14px; left:14px; right:14px; } }

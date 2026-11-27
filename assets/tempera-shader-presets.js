@@ -4,7 +4,10 @@
   const commonSource = "\r\nfloat gyroid (vec3 seed) { return dot(sin(seed),cos(seed.yzx)); }\r\nfloat fbm (vec3 seed)\r\n{\r\n    float result = 0., a = .5;\r\n    for (int i = 0; i < 3; ++i, a/=2.)\r\n    {\r\n        result += (gyroid(seed/a))*a;\r\n    }\r\n    return result;\r\n}\r\n\r\n// Dave Hoskins https://www.shadertoy.com/view/4djSRW\r\nfloat hash11(float p)\r\n{\r\n    p = fract(p * .1031);\r\n    p *= p + 33.33;\r\n    p *= p + p;\r\n    return fract(p);\r\n}\r\nvec2 hash21(float p)\r\n{\r\n\tvec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));\r\n\tp3 += dot(p3, p3.yzx + 33.33);\r\n    return fract((p3.xx+p3.yz)*p3.zy);\r\n\r\n}\r\nvec4 hash41(float p)\r\n{\r\n\tvec4 p4 = fract(vec4(p) * vec4(.1031, .1030, .0973, .1099));\r\n    p4 += dot(p4, p4.wzxy+33.33);\r\n    return fract((p4.xxyz+p4.yzzw)*p4.zywx);\r\n}";
   const imageSource = "\r\n// Particles Party\r\n\r\n// simple colorful particles system\r\n// will try voronoi tracking next time\r\n\r\nvoid mainImage( out vec4 fragColor, in vec2 fragCoord )\r\n{\r\n    vec3 color = vec3(0);\r\n    \r\n    // coordinates\r\n    vec2 uv = fragCoord/iResolution.xy;\r\n    float rng = texture(iChannel1, fragCoord/1024.).r;\r\n    vec2 aspect = vec2(iResolution.y/iResolution.x, 1.);\r\n    \r\n    // data\r\n    vec4 data = texture(iChannel0, uv);\r\n    float shade = data.r;\r\n    float mat = data.g;\r\n    \r\n    // rainbow\r\n    color = .5+.5*cos(vec3(1,2,3)*4.9 + mat);\r\n    \r\n    // light\r\n    vec3 un = vec3(0.005*aspect, 0);\r\n    #define T(un) texture(iChannel0, uv+un).r\r\n    vec3 normal = normalize(vec3(T(un.xz)-T(-un.xz),T(un.zy)-T(-un.zy), .5));\r\n    float d = dot(normal, normalize(vec3(0,-2,1)))*.5+.5;\r\n    color += pow(d, 10.);\r\n    \r\n    // shadow\r\n    color *= smoothstep(.0,.01,shade);\r\n\r\n    fragColor = vec4(color, 1);\r\n}";
   window.PilamiTemperaShaders = {
-    create(canvas, onError) {
+    create(canvas, onError, preset) {
+      const activeBufferSource = preset && preset.bufferSource ? preset.bufferSource : bufferSource;
+      const activeCommonSource = preset ? (preset.commonSource || '') : commonSource;
+      const activeImageSource = preset && preset.imageSource ? preset.imageSource : imageSource;
       const gl = canvas.getContext('webgl2', { alpha:false, antialias:false, depth:false, stencil:false, powerPreference:'high-performance' });
       if (!gl) { onError('WebGL 2 n’est pas disponible dans ce navigateur.'); return null; }
       let disposed = false, programBuffer, programImage, bufferTexture, framebuffer, noiseTexture, vao;
@@ -34,7 +37,7 @@
       }
       function wrap(source, channels) {
         const uniforms = '#version 300 es\nprecision highp float;\nuniform vec3 iResolution;\nuniform float iTime;\nuniform sampler2D iChannel0;\n' + (channels > 1 ? 'uniform sampler2D iChannel1;\n' : '');
-        return uniforms + commonSource + '\n' + source + '\nout vec4 fragColor;\nvoid main(){ mainImage(fragColor, gl_FragCoord.xy); }';
+        return uniforms + activeCommonSource + '\n' + source + '\nout vec4 fragColor;\nvoid main(){ mainImage(fragColor, gl_FragCoord.xy); }';
       }
       function texture(width,height,data=null) {
         const tex=gl.createTexture();
@@ -58,8 +61,8 @@
         if (vao) gl.deleteVertexArray(vao);
       }
       try {
-        programBuffer = program(wrap(bufferSource.replace('#define MAX_STEPS 220', '#define MAX_STEPS 96').replace('#define VOL_STEPS 200', '#define VOL_STEPS 96'), 1));
-        programImage = program(wrap(imageSource, 2));
+        programBuffer = program(wrap(activeBufferSource, 1));
+        programImage = program(wrap(activeImageSource, 2));
         vao=gl.createVertexArray();
         gl.bindVertexArray(vao);
         const noise=new Uint8Array(128*128*4);
@@ -76,7 +79,7 @@
       let width=0,height=0;
       function resize() {
         const rect=canvas.getBoundingClientRect();
-        const scale=Math.min(1,560/Math.max(1,rect.width),315/Math.max(1,rect.height));
+        const scale=Math.min(1,420/Math.max(1,rect.width),236/Math.max(1,rect.height));
         const w=Math.max(1,Math.round(rect.width*scale)), h=Math.max(1,Math.round(rect.height*scale));
         if(w===width&&h===height)return;
         width=w;height=h;canvas.width=w;canvas.height=h;

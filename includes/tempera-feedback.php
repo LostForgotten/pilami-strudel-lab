@@ -17,22 +17,22 @@ function pilami_tempera_feedback_enqueue_assets() {
     $plugin_url = plugin_dir_url($plugin_file);
     wp_enqueue_style(
         'pilami-tempera-feedback',
-        $plugin_url . 'assets/tempera-feedback.css',
+        $plugin_url . 'assets/tempera-feedback-0.39.106.css',
         array(),
-        '0.1.7'
+        '0.39.106'
     );
     wp_enqueue_script(
         'pilami-tempera-shader-presets',
-        $plugin_url . 'assets/tempera-shader-presets.js',
+        $plugin_url . 'assets/tempera-shader-presets-0.39.106.js',
         array(),
-        '0.1.3',
+        '0.39.106',
         true
     );
     wp_enqueue_script(
         'pilami-tempera-feedback',
-        $plugin_url . 'assets/tempera-feedback.js',
+        $plugin_url . 'assets/tempera-feedback-0.39.106.js',
         array('pilami-tempera-shader-presets'),
-        '0.1.4',
+        '0.39.106',
         true
     );
 }

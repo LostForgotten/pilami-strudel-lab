@@ -1,3 +1,10 @@
+## 0.39.106 — Forçage du renouvellement des scripts Tempera
+
+- Publication des fichiers CSS et JavaScript Tempera sous des noms versionnés uniques, car le cache supprimait le paramètre `ver` et continuait de servir l’ancien moteur.
+- Le preset et l’importateur .txt utilisent désormais ces nouveaux chemins d’actifs.
+
+
+
 ## 0.39.105 — Compatibilité WebGL 1 et page Tempera en cache
 
 - Ajout d’un moteur de secours WebGL 1 quand WebGL 2 n’est pas disponible ; les shaders Shadertoy sont adaptés au dialecte GLSL correspondant.

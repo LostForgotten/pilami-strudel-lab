@@ -6,13 +6,13 @@ if (!defined('ABSPATH')) {
 function pilami_tempera_feedback_shortcode() {
     wp_enqueue_style(
         'pilami-tempera-feedback',
-        plugins_url('../assets/tempera-feedback.css', __FILE__),
+        plugin_dir_url(dirname(__FILE__) . '/pilami-strudel-lab.php') . 'assets/tempera-feedback.css',
         array(),
         '0.1.0'
     );
     wp_enqueue_script(
         'pilami-tempera-feedback',
-        plugins_url('../assets/tempera-feedback.js', __FILE__),
+        plugin_dir_url(dirname(__FILE__) . '/pilami-strudel-lab.php') . 'assets/tempera-feedback.js',
         array(),
         '0.1.0',
         true
@@ -87,6 +87,21 @@ function pilami_tempera_feedback_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('pilami_tempera_feedback', 'pilami_tempera_feedback_shortcode');
+
+
+function pilami_tempera_feedback_create_page() {
+    if (!current_user_can('manage_options') || get_page_by_path('tempera', OBJECT, 'page')) {
+        return;
+    }
+    wp_insert_post(array(
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'post_title' => 'Tempera Feedback',
+        'post_name' => 'tempera',
+        'post_content' => '[pilami_tempera_feedback]',
+    ));
+}
+add_action('admin_init', 'pilami_tempera_feedback_create_page');
 
 add_filter('body_class', function ($classes) {
     if (is_singular()) {

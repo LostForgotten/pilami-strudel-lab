@@ -7,6 +7,10 @@
   const grid = root.querySelector('[data-tempera-grid]');
   const canvas = root.querySelector('[data-particle-canvas]');
   const ctx = canvas.getContext('2d');
+  const shaderCanvas = root.querySelector('[data-shader-canvas]');
+  const shaderError = root.querySelector('[data-shader-error]');
+  const presetSelect = root.querySelector('[data-visual-preset]');
+  let shaderRenderer = null, shaderElapsed = 0, lastShaderFrame = 0;
   const status = root.querySelector('[data-midi-status]');
   const statusWrap = root.querySelector('.pt-status-wrap');
   const statusDot = root.querySelector('[data-status-dot]');
@@ -330,8 +334,16 @@
     const dt = Math.min(0.05, Math.max(0, (now - (last || now)) / 1000));
     last = now;
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(0,0,0,0.16)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (shaderRenderer) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    else {
+      ctx.fillStyle = 'rgba(0,0,0,0.16)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    if (shaderRenderer && now - lastShaderFrame >= 40) {
+      shaderElapsed += lastShaderFrame ? Math.min(0.1, (now - lastShaderFrame) / 1000) : 0;
+      shaderRenderer.render(shaderElapsed);
+      lastShaderFrame = now;
+    }
     for (const item of held.values()) {
       const density = normalizedParameter(item.source.emitter, 'grainDensity');
       const interval = 115 - density * 90;
@@ -374,6 +386,32 @@
     countLabel.textContent = particles.length + (particles.length === 1 ? ' particule' : ' particules');
     raf = requestAnimationFrame(draw);
   }
+
+  function selectVisualPreset() {
+    if (shaderRenderer) { shaderRenderer.dispose(); shaderRenderer = null; }
+    shaderError.hidden = true;
+    shaderError.textContent = '';
+    root.classList.toggle('has-shader-preset', presetSelect.value === 'particles-party');
+    if (presetSelect.value !== 'particles-party') {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+    const factory = window.PilamiTemperaShaders;
+    if (!factory || !shaderCanvas) {
+      shaderError.textContent = 'Le moteur WebGL du preset ne s’est pas chargé.';
+      shaderError.hidden = false;
+      return;
+    }
+    shaderRenderer = factory.create(shaderCanvas, message => {
+      shaderError.textContent = 'Shader indisponible : ' + message;
+      shaderError.hidden = false;
+      root.classList.remove('has-shader-preset');
+    });
+    shaderElapsed = 0;
+    lastShaderFrame = 0;
+  }
+  presetSelect.addEventListener('change', selectVisualPreset);
+  selectVisualPreset();
 
   root.querySelectorAll('[data-emitter]').forEach(button => button.addEventListener('click', () => setEmitter(Number(button.dataset.emitter))));
   connect.addEventListener('click', connectMidi);

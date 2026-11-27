@@ -9,6 +9,14 @@ body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 5
 .pt-header h1 { margin:7px 0 4px; font-size:clamp(25px,3vw,39px); font-weight:570; letter-spacing:-.045em; }
 .pt-header h1 span { color:#8c9aaa; font-weight:350; }
 .pt-subtitle { margin:0; color:#8d9aa8; font-size:14px; }
+.pt-top-actions { display:flex; align-items:center; gap:10px; }
+.pt-account-indicator { display:grid; place-items:center; width:30px; height:30px; min-width:30px; min-height:30px; padding:0; border:1px solid var(--pt-line); border-radius:50%; background:#0b1016; cursor:pointer; }
+.pt-account-indicator[hidden] { display:none !important; }
+.pt-account-indicator:hover { border-color:#526475; }
+.pt-account-led { width:9px; height:9px; border-radius:50%; background:#89939f; box-shadow:0 0 0 3px #89939f24; }
+.pt-account-indicator[data-state="connected"] .pt-account-led { background:#39ad6b; box-shadow:0 0 0 3px #39ad6b24; }
+.pt-account-indicator:is([data-state="checking"],[data-state="unknown"]) .pt-account-led { background:#e39d38; box-shadow:0 0 0 3px #e39d3824; }
+.pt-account-label { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
 .pt-status-wrap { display:flex; align-items:center; gap:9px; padding:10px 14px; border:1px solid var(--pt-line); border-radius:99px; color:#9ba8b5; font-size:12px; background:#0b1016; }
 .pt-status-dot { width:8px; height:8px; border-radius:50%; background:#697581; box-shadow:0 0 0 4px #69758120; }
 .pt-status-wrap.is-connected .pt-status-dot { background:#4be2a0; box-shadow:0 0 12px #4be2a0; }

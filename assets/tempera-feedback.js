@@ -10,6 +10,10 @@
   const shaderCanvas = root.querySelector('[data-shader-canvas]');
   const shaderError = root.querySelector('[data-shader-error]');
   const presetSelect = root.querySelector('[data-visual-preset]');
+  const VISUAL_PRESETS_KEY = 'pilami-tempera-visual-presets-v1';
+  const importVisualButton = root.querySelector('[data-import-visual]');
+  const importVisualInput = root.querySelector('[data-visual-import-file]');
+  const customVisualPresets = loadCustomVisualPresets();
   let shaderRenderer = null, shaderElapsed = 0, lastShaderFrame = 0;
   const status = root.querySelector('[data-midi-status]');
   const statusWrap = root.querySelector('.pt-status-wrap');
@@ -339,7 +343,7 @@
       ctx.fillStyle = 'rgba(0,0,0,0.16)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
-    if (shaderRenderer && now - lastShaderFrame >= 40) {
+    if (shaderRenderer && now - lastShaderFrame >= 66) {
       shaderElapsed += lastShaderFrame ? Math.min(0.1, (now - lastShaderFrame) / 1000) : 0;
       shaderRenderer.render(shaderElapsed);
       lastShaderFrame = now;
@@ -387,12 +391,95 @@
     raf = requestAnimationFrame(draw);
   }
 
+  function loadCustomVisualPresets() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(VISUAL_PRESETS_KEY) || '[]');
+      return Array.isArray(saved) ? saved.filter(item => item && typeof item.id === 'string' &&
+        typeof item.name === 'string' &&
+        (typeof item.imageSource === 'string' || typeof item.bufferSource === 'string') &&
+        (item.bufferSource == null || typeof item.bufferSource === 'string') &&
+        (item.commonSource == null || typeof item.commonSource === 'string')) : [];
+    } catch (_) { return []; }
+  }
+  function refreshVisualPresetOptions() {
+    root.querySelectorAll('option[data-custom-visual]').forEach(option => option.remove());
+    customVisualPresets.forEach(item => {
+      const option = document.createElement('option');
+      option.value = 'custom:' + item.id;
+      option.textContent = item.name;
+      option.dataset.customVisual = '1';
+      presetSelect.appendChild(option);
+    });
+  }
+  function fileRole(file) {
+    const name = file.name.replace(/\(\d+\)(?=\.[^.]+$)/, '').replace(/\.txt$/i, '').toLowerCase();
+    if (/buffer[\s_-]*a|buffera|buffer\s*0/.test(name)) return 'buffer';
+    if (/^common$|common[\s_-]*functions/.test(name)) return 'common';
+    if (/^image$|^fragment$|^shader$/.test(name)) return 'image';
+    return null;
+  }
+  async function importVisualPreset() {
+    const files = Array.from(importVisualInput.files || []);
+    if (!files.length) return;
+    try {
+      if (files.length > 3) throw new Error('Sélectionne au maximum Buffer A, Common et Image.');
+      if (files.some(file => !/\.txt$/i.test(file.name))) throw new Error('Choisis des fichiers .txt.');
+      if (files.some(file => file.size > 1024 * 1024) ||
+          files.reduce((sum, file) => sum + file.size, 0) > 2 * 1024 * 1024) {
+        throw new Error('Le preset dépasse la limite de 2 Mo.');
+      }
+      const sources = await Promise.all(files.map(file => file.text()));
+      if (sources.some(source => !source.trim())) throw new Error('Un des fichiers ne contient pas de code shader.');
+      const preset = { bufferSource: null, commonSource: null, imageSource: null };
+      if (files.length === 1) {
+        const role = fileRole(files[0]);
+        if (role === 'buffer') preset.bufferSource = sources[0];
+        else if (role === 'common') preset.commonSource = sources[0];
+        else preset.imageSource = sources[0];
+      } else {
+        files.forEach((file, index) => {
+          const role = fileRole(file);
+          if (!role) throw new Error('Pour un import multipasse, nomme les fichiers Buffer A.txt, Common.txt et Image.txt.');
+          if (preset[role === 'buffer' ? 'bufferSource' : role === 'common' ? 'commonSource' : 'imageSource']) {
+            throw new Error('Deux fichiers correspondent au même passe : ' + role + '.');
+          }
+          preset[role === 'buffer' ? 'bufferSource' : role === 'common' ? 'commonSource' : 'imageSource'] = sources[index];
+        });
+        if (!preset.imageSource && !preset.bufferSource) throw new Error('Aucun code Image ou Buffer A détecté.');
+      }
+      if (!preset.imageSource && !preset.bufferSource) throw new Error('Le fichier Common doit accompagner un passe Image ou Buffer A.');
+      const stem = files[0].name.replace(/\.txt$/i, '').replace(/\(\d+\)/g, '').trim();
+      const label = files.length > 1 ? stem.replace(/\s*(Buffer A|Common|Image)\s*/i, '').trim() || 'Preset Shadertoy importé' : stem || 'Preset importé';
+      const item = { id: 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+        name: label.slice(0, 48), ...preset };
+      const updated = [...customVisualPresets.filter(existing => existing.name.toLocaleLowerCase() !== item.name.toLocaleLowerCase()), item];
+      const encoded = JSON.stringify(updated);
+      if (encoded.length > 3 * 1024 * 1024) throw new Error('Le stockage local est plein. Réduis la taille des fichiers importés.');
+      localStorage.setItem(VISUAL_PRESETS_KEY, encoded);
+      customVisualPresets.splice(0, customVisualPresets.length, ...updated);
+      refreshVisualPresetOptions();
+      presetSelect.value = 'custom:' + item.id;
+      selectVisualPreset();
+      shaderError.textContent = 'Preset importé et conservé dans ce navigateur.';
+      shaderError.hidden = false;
+      window.setTimeout(() => { if (shaderError.textContent.startsWith('Preset importé')) shaderError.hidden = true; }, 3500);
+    } catch (error) {
+      shaderError.textContent = error && error.message ? error.message : 'Import du preset impossible.';
+      shaderError.hidden = false;
+    } finally {
+      importVisualInput.value = '';
+    }
+  }
+
   function selectVisualPreset() {
     if (shaderRenderer) { shaderRenderer.dispose(); shaderRenderer = null; }
     shaderError.hidden = true;
     shaderError.textContent = '';
-    root.classList.toggle('has-shader-preset', presetSelect.value === 'particles-party');
-    if (presetSelect.value !== 'particles-party') {
+    const custom = presetSelect.value.startsWith('custom:') ?
+      customVisualPresets.find(item => 'custom:' + item.id === presetSelect.value) : null;
+    const useShader = presetSelect.value === 'particles-party' || Boolean(custom);
+    root.classList.toggle('has-shader-preset', useShader);
+    if (!useShader) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
@@ -406,10 +493,13 @@
       shaderError.textContent = 'Shader indisponible : ' + message;
       shaderError.hidden = false;
       root.classList.remove('has-shader-preset');
-    });
+    }, custom || null);
     shaderElapsed = 0;
     lastShaderFrame = 0;
   }
+  refreshVisualPresetOptions();
+  importVisualButton.addEventListener('click', () => importVisualInput.click());
+  importVisualInput.addEventListener('change', importVisualPreset);
   presetSelect.addEventListener('change', selectVisualPreset);
   selectVisualPreset();
 

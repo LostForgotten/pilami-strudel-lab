@@ -1,3 +1,11 @@
+## 0.39.105 — Compatibilité WebGL 1 et page Tempera en cache
+
+- Ajout d’un moteur de secours WebGL 1 quand WebGL 2 n’est pas disponible ; les shaders Shadertoy sont adaptés au dialecte GLSL correspondant.
+- Tolérance à une ancienne page HTML encore en cache : l’absence du bouton d’import ne bloque plus le chargement du preset visuel.
+- Le preset importé en .txt reste sélectionnable et persistant dans le navigateur.
+
+
+
 ## 0.39.104 — Import local de presets shader `.txt`
 
 - Ajout d’un bouton d’import de fichiers `.txt` dans le panneau visuel Tempera.

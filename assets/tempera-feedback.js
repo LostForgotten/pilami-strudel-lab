@@ -15,6 +15,16 @@
   const help = root.querySelector('[data-midi-help]');
   const countLabel = root.querySelector('[data-particle-count]');
   const colors = ['#42baff', '#ff5478', '#55e1a3', '#ffc74c'];
+  const emitterParameters = Array.from({ length: 4 }, () => ({}));
+  const ccParameterMap = new Map();
+  [
+    [0, { volume:40, grainLengthCell:41, grainLengthNote:42, grainDensity:43, grainShape:44, grainAttack:45, grainPan:46, tuneSpread:47, octave:48, relativeX:49, relativeY:50, sprayX:51, sprayY:52, toneWidth:53, toneCenter:54, effectsSend:55 }],
+    [1, { volume:56, grainLengthCell:57, grainLengthNote:58, grainDensity:59, grainShape:60, grainAttack:61, grainPan:62, tuneSpread:63, octave:65, relativeX:67, relativeY:68, sprayX:69, sprayY:70, toneWidth:72, toneCenter:73, effectsSend:75 }],
+    [2, { volume:76, grainLengthCell:77, grainLengthNote:78, grainDensity:79, grainShape:80, grainAttack:81, grainPan:82, tuneSpread:83, octave:84, relativeX:85, relativeY:86, sprayX:87, sprayY:88, toneWidth:89, toneCenter:90, effectsSend:91 }],
+    [3, { volume:92, grainLengthCell:93, grainLengthNote:94, grainDensity:95, grainShape:96, grainAttack:97, grainPan:98, tuneSpread:99, octave:102, relativeX:103, relativeY:104, sprayX:105, sprayY:106, toneWidth:107, toneCenter:108, effectsSend:109 }]
+  ].forEach(([index, parameters]) => {
+    Object.entries(parameters).forEach(([name, cc]) => ccParameterMap.set(cc, { emitter: index, name }));
+  });
   const cells = [];
   const held = new Map();
   const particles = [];
@@ -125,6 +135,38 @@
     root.querySelectorAll('[data-emitter]').forEach(button => {
       button.setAttribute('aria-pressed', Number(button.dataset.emitter) === emitter ? 'true' : 'false');
     });
+    refreshParameterReadout();
+  }
+  function rawParameter(index, name, fallback = 64) {
+    const value = emitterParameters[index][name];
+    return Number.isFinite(value) ? value : fallback;
+  }
+  function normalizedParameter(index, name, fallback = 64) {
+    return Math.max(0, Math.min(127, rawParameter(index, name, fallback))) / 127;
+  }
+  function refreshParameterReadout() {
+    const values = root.querySelector('.pt-parameter-values');
+    if (!values) return;
+    const state = emitterParameters[emitter];
+    const length = state.grainLengthMode === 'cell'
+      ? (state.grainLengthCell / 127 * 8).toFixed(1) + ' cell'
+      : state.grainLengthMode === 'note'
+        ? Math.round(state.grainLengthNote / 127 * 100) + '%'
+        : '—';
+    const display = {
+      grainLength: length,
+      grainDensity: state.grainDensity == null ? '—' : Math.round(state.grainDensity / 127 * 100) + '%',
+      sprayX: state.sprayX == null ? '—' : Math.round(state.sprayX / 127 * 100) + '%',
+      sprayY: state.sprayY == null ? '—' : Math.round(state.sprayY / 127 * 100) + '%',
+      relativeX: state.relativeX == null ? '—' : Math.round((state.relativeX - 64) / 63 * 100) + '%',
+      relativeY: state.relativeY == null ? '—' : Math.round((state.relativeY - 64) / 63 * 100) + '%'
+    };
+    Object.entries(display).forEach(([name, text]) => {
+      const output = values.querySelector('[data-parameter="' + name + '"]');
+      if (output) output.textContent = text;
+    });
+    const label = root.querySelector('[data-parameter-emitter]');
+    if (label) label.textContent = 'PARAMÈTRES · E' + (emitter + 1);
   }
   function pulseCell(index, velocity) {
     const cell = cells[index];
@@ -135,28 +177,46 @@
     cell._pulseTimer = window.setTimeout(() => cell.classList.remove('is-active'), 180);
     const box = canvas.getBoundingClientRect();
     const col = Math.floor(index / 8), row = index % 8;
+    const relX = (normalizedParameter(emitter, 'relativeX') - 0.5) * 0.16;
+    const relY = (normalizedParameter(emitter, 'relativeY') - 0.5) * 0.16;
+    const params = { ...emitterParameters[emitter] };
+    const lengthRaw = params.grainLengthMode === 'note' ? params.grainLengthNote : params.grainLengthCell;
     return {
-      x: ((col + 0.5) / 8) * canvas.width,
-      y: ((row + 0.5) / 8) * canvas.height,
-      emitter, velocity: Math.max(1, velocity), col, row,
+      x: (((col + 0.5) / 8) + relX) * canvas.width,
+      y: (((row + 0.5) / 8) + relY) * canvas.height,
+      emitter, velocity: Math.max(1, velocity), col, row, params,
+      grainLength: Number.isFinite(lengthRaw) ? lengthRaw / 127 : 0.5,
       boxWidth: box.width, boxHeight: box.height
     };
   }
   function spawn(source, amount) {
     if (!source) return;
+    const params = source.params || {};
+    const density = rawParameter(source.emitter, 'grainDensity') / 127;
+    const sprayX = Number.isFinite(params.sprayX) ? params.sprayX / 127 : 0.4;
+    const sprayY = Number.isFinite(params.sprayY) ? params.sprayY / 127 : 0.4;
+    const pan = Number.isFinite(params.grainPan) ? params.grainPan / 127 : 0.5;
+    const volume = Number.isFinite(params.volume) ? params.volume / 127 : 0.8;
+    const shape = Number.isFinite(params.grainShape) ? params.grainShape / 127 : 0.5;
+    const send = Number.isFinite(params.effectsSend) ? params.effectsSend / 127 : 0.5;
+    const tuneSpread = Number.isFinite(params.tuneSpread) ? params.tuneSpread / 127 : 0.25;
+    const size = Number.isFinite(params.octave) ? 0.75 + (params.octave / 127) * 0.5 : 1;
     const n = amount || 16;
     for (let i = 0; i < n; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = (0.25 + Math.random() * 1.5) * (0.5 + source.velocity / 127);
+      const speed = (0.25 + Math.random() * (1.5 + tuneSpread)) * (0.5 + source.velocity / 127);
+      const vx = Math.cos(angle) * speed * (0.12 + sprayX * 2.1) + (pan - 0.5) * speed * 0.45;
+      const vy = Math.sin(angle) * speed * (0.12 + sprayY * 2.1);
+      const grainLength = Number.isFinite(source.grainLength) ? source.grainLength : 0.5;
       particles.push({
-        x: source.x, y: source.y,
-        vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-        life: 0, max: 0.5 + Math.random() * 1.5,
-        radius: (1 + Math.random() * 2.4) * (0.65 + source.velocity / 127),
-        color: colors[source.emitter]
+        x: source.x, y: source.y, vx, vy,
+        life: 0, max: 0.25 + Math.random() * (0.35 + grainLength * 2.1) + send * 0.45,
+        radius: (1 + Math.random() * (1.4 + shape * 2.2)) * (0.65 + source.velocity / 127) * size,
+        color: colors[source.emitter], alpha: (0.22 + volume * 0.78),
+        softness: shape, trail: 0.25 + grainLength * 1.3
       });
     }
-    if (particles.length > 1500) particles.splice(0, particles.length - 1500);
+    if (particles.length > 1800) particles.splice(0, particles.length - 1800);
   }
   function buildGrid() {
     for (let col = 0; col < 8; col++) {
@@ -182,7 +242,18 @@
     const type = statusByte & 0xf0;
     const channel = statusByte & 0x0f;
     if (type === 0xb0) {
-      if (number === 10) setEmitter(Math.floor(value / 32));
+      if (number === 10) {
+        setEmitter(Math.floor(value / 32));
+      } else {
+        const mapped = ccParameterMap.get(number);
+        if (mapped) {
+          const state = emitterParameters[mapped.emitter];
+          state[mapped.name] = value;
+          if (mapped.name === 'grainLengthCell') state.grainLengthMode = 'cell';
+          if (mapped.name === 'grainLengthNote') state.grainLengthMode = 'note';
+          if (mapped.emitter === emitter) refreshParameterReadout();
+        }
+      }
       return;
     }
     if (type === 0x90 && value > 0) {
@@ -192,7 +263,8 @@
       const key = channel + ':' + number;
       const source = pulseCell(index, value);
       held.set(key, { source, lastSpawn: performance.now() });
-      spawn(source, 18 + Math.round(value / 12));
+      const density = normalizedParameter(emitter, 'grainDensity');
+      spawn(source, Math.round((8 + value / 6) * (0.25 + density * 1.75)));
       return;
     }
     if (type === 0x80 || (type === 0x90 && value === 0)) {
@@ -261,8 +333,10 @@
     ctx.fillStyle = 'rgba(0,0,0,0.16)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     for (const item of held.values()) {
-      if (now - item.lastSpawn > 42) {
-        spawn(item.source, 1);
+      const density = normalizedParameter(item.source.emitter, 'grainDensity');
+      const interval = 115 - density * 90;
+      if (now - item.lastSpawn > interval) {
+        spawn(item.source, 1 + Math.round(density * 2));
         item.lastSpawn = now;
       }
     }
@@ -271,15 +345,25 @@
       const p = particles[i];
       p.life += dt;
       if (p.life >= p.max) { particles.splice(i, 1); continue; }
+      const oldX = p.x, oldY = p.y;
       p.x += p.vx * canvas.width * dt * 0.25;
       p.y += p.vy * canvas.height * dt * 0.25;
       p.vx *= 0.996; p.vy *= 0.996;
-      const alpha = Math.sin(Math.PI * p.life / p.max) * 0.8;
+      const fade = Math.sin(Math.PI * p.life / p.max);
+      const alpha = fade * 0.8 * (p.alpha || 1);
       const radius = p.radius * (0.7 + p.life / p.max);
+      ctx.globalAlpha = alpha * Math.min(1, p.trail || 0.5);
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = Math.max(0.7, radius * (0.18 + (p.trail || 0.5) * 0.35));
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(oldX, oldY);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
       ctx.globalAlpha = alpha;
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = radius * 5;
+      ctx.shadowBlur = radius * (2 + (p.softness || 0.5) * 5);
       ctx.beginPath();
       ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
       ctx.fill();
@@ -310,6 +394,7 @@
     if (access) access.onstatechange = null;
   }, { once: true });
   setupAccountIndicator();
+  refreshParameterReadout();
   buildGrid();
   resize();
   raf = requestAnimationFrame(draw);

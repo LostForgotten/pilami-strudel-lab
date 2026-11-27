@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 0.39.102 — Paramètres Tempera dans le feedback visuel
+
+- Lecture des CC Tempera de grain, densité, Spray X/Y, Relative X/Y et des autres paramètres propres aux quatre émetteurs.
+- La longueur pilote durée et traînée ; densité cadence et nombre de particules ; Spray X/Y règlent la dispersion et Relative X/Y déplace leur origine.
+- Volume, forme, pan, pitch spread, octave et effets influencent l’intensité, la douceur, la direction et la persistance des particules.
+- Affichage des principaux paramètres MIDI reçus pour l’émetteur actif.
+
+
 ## 0.39.100 — Voyant de connexion à l’administration
 
 - Voyant WordPress sur Tempera : vert quand une session est active, gris après déconnexion, avec vérification périodique de la session.

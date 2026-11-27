@@ -19,7 +19,7 @@ function pilami_tempera_feedback_enqueue_assets() {
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.css',
         array(),
-        '0.1.2'
+        '0.1.3'
     );
     wp_enqueue_script(
         'pilami-tempera-feedback',
@@ -72,6 +72,17 @@ function pilami_tempera_feedback_shortcode() {
                         <button type="button" data-emitter="1" aria-pressed="false"><i></i>E2</button>
                         <button type="button" data-emitter="2" aria-pressed="false"><i></i>E3</button>
                         <button type="button" data-emitter="3" aria-pressed="false"><i></i>E4</button>
+                    </div>
+                    <div class="pt-parameter-readout" aria-live="polite">
+                        <span class="pt-label" data-parameter-emitter>PARAMÈTRES · E1</span>
+                        <div class="pt-parameter-values">
+                            <span>Grain <b data-parameter="grainLength">—</b></span>
+                            <span>Densité <b data-parameter="grainDensity">—</b></span>
+                            <span>Spray X <b data-parameter="sprayX">—</b></span>
+                            <span>Spray Y <b data-parameter="sprayY">—</b></span>
+                            <span>Rel. X <b data-parameter="relativeX">—</b></span>
+                            <span>Rel. Y <b data-parameter="relativeY">—</b></span>
+                        </div>
                     </div>
                 </div>
 

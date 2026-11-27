@@ -1,5 +1,5 @@
 body.pilami-tempera-page { background:#05070a; }
-body.pilami-tempera-page #header, body.pilami-tempera-page #footer, body.pilami-tempera-page .ct-header, body.pilami-tempera-page .ct-footer, body.pilami-tempera-page .site-header, body.pilami-tempera-page .site-footer { display:none !important; }
+body.pilami-tempera-page #header, body.pilami-tempera-page #footer, body.pilami-tempera-page .ct-header, body.pilami-tempera-page .ct-footer, body.pilami-tempera-page .site-header, body.pilami-tempera-page .site-footer { display:none !important; }\nbody.pilami-tempera-page .entry-header, body.pilami-tempera-page .page-title, body.pilami-tempera-page .ct-page-title { display:none !important; }
 body.pilami-tempera-page .site-main, body.pilami-tempera-page #main-container, body.pilami-tempera-page .ct-container-full { max-width:none !important; width:100% !important; margin:0 !important; padding:0 !important; }
 body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 50vw); }
 .pilami-tempera { --pt-bg:#070a0e; --pt-panel:#0c1118; --pt-line:#202b37; --pt-text:#edf4f8; --pt-muted:#8594a3; --pt-blue:#42baff; color:var(--pt-text); background:var(--pt-bg); min-height:100vh; padding:clamp(18px,3vw,42px); font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; box-sizing:border-box; }

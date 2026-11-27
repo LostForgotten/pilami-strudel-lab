@@ -8,9 +8,12 @@
       const activeBufferSource = preset && preset.bufferSource ? preset.bufferSource : bufferSource;
       const activeCommonSource = preset ? (preset.commonSource || '') : commonSource;
       const activeImageSource = preset && preset.imageSource ? preset.imageSource : imageSource;
-      const gl = canvas.getContext('webgl2', { alpha:false, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:true, powerPreference:'high-performance' });
-      if (!gl) { onError('WebGL 2 n’est pas disponible dans ce navigateur.'); return null; }
-      let disposed = false, programBuffer, programImage, bufferTexture, framebuffer, noiseTexture, vao;
+      const contextOptions = { alpha:false, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:true, powerPreference:'high-performance' };
+      const gl2 = canvas.getContext('webgl2', contextOptions);
+      const webgl2 = Boolean(gl2);
+      const gl = gl2 || canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
+      if (!gl) { onError('WebGL 2 et WebGL 1 sont indisponibles dans ce navigateur.'); return null; }
+      let disposed = false, programBuffer, programImage, bufferTexture, framebuffer, noiseTexture, vao, vertexBuffer;
       function fail(message) { onError(message); dispose(); return null; }
       function shader(type, source) {
         const item = gl.createShader(type);
@@ -24,7 +27,10 @@
         return item;
       }
       function program(fragment) {
-        const vertex = shader(gl.VERTEX_SHADER, '#version 300 es\nvoid main(){ vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2); gl_Position=vec4(p*2.0-1.0,0.0,1.0); }');
+        const vertexSource = webgl2
+          ? '#version 300 es\nvoid main(){ vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2); gl_Position=vec4(p*2.0-1.0,0.0,1.0); }'
+          : 'attribute vec2 a_position; void main(){ gl_Position=vec4(a_position,0.0,1.0); }';
+        const vertex = shader(gl.VERTEX_SHADER, vertexSource);
         const pixel = shader(gl.FRAGMENT_SHADER, fragment);
         const result = gl.createProgram();
         gl.attachShader(result, vertex);
@@ -36,8 +42,10 @@
         return result;
       }
       function wrap(source, channels) {
-        const uniforms = '#version 300 es\nprecision highp float;\nuniform vec3 iResolution;\nuniform float iTime;\nuniform sampler2D iChannel0;\n' + (channels > 1 ? 'uniform sampler2D iChannel1;\n' : '');
-        return uniforms + activeCommonSource + '\n' + source + '\nout vec4 fragColor;\nvoid main(){ mainImage(fragColor, gl_FragCoord.xy); }';
+        const uniforms = (webgl2 ? '#version 300 es\n' : '') + 'precision highp float;\nuniform vec3 iResolution;\nuniform float iTime;\nuniform sampler2D iChannel0;\n' + (channels > 1 ? 'uniform sampler2D iChannel1;\n' : '');
+        const code = activeCommonSource + '\n' + source;
+        if (!webgl2) return uniforms + code.replace(/\btexture\s*\(/g, 'texture2D(') + '\nvoid main(){ vec4 pilamiColor; mainImage(pilamiColor, gl_FragCoord.xy); gl_FragColor=pilamiColor; }';
+        return uniforms + code + '\nout vec4 fragColor;\nvoid main(){ mainImage(fragColor, gl_FragCoord.xy); }';
       }
       function texture(width,height,data=null) {
         const tex=gl.createTexture();
@@ -46,7 +54,7 @@
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
         gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
-        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,width,height,0,gl.RGBA,gl.UNSIGNED_BYTE,data);
+        gl.texImage2D(gl.TEXTURE_2D,0,webgl2 ? gl.RGBA8 : gl.RGBA,width,height,0,gl.RGBA,gl.UNSIGNED_BYTE,data);
         return tex;
       }
       function dispose() {
@@ -58,13 +66,20 @@
         if (bufferTexture) gl.deleteTexture(bufferTexture);
         if (noiseTexture) gl.deleteTexture(noiseTexture);
         if (framebuffer) gl.deleteFramebuffer(framebuffer);
-        if (vao) gl.deleteVertexArray(vao);
+        if (vao && webgl2) gl.deleteVertexArray(vao);
+        if (vertexBuffer) gl.deleteBuffer(vertexBuffer);
       }
       try {
         programBuffer = program(wrap(activeBufferSource, 1));
         programImage = program(wrap(activeImageSource, 2));
-        vao=gl.createVertexArray();
-        gl.bindVertexArray(vao);
+        if (webgl2) {
+          vao=gl.createVertexArray();
+          gl.bindVertexArray(vao);
+        } else {
+          vertexBuffer=gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer);
+          gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+        }
         const noise=new Uint8Array(128*128*4);
         let seed=918273;
         for(let n=0;n<noise.length;n+=4){ seed=(seed*1664525+1013904223)>>>0; const v=seed>>>24; noise[n]=v; noise[n+1]=v; noise[n+2]=v; noise[n+3]=255; }
@@ -84,7 +99,7 @@
         if(w===width&&h===height)return;
         width=w;height=h;canvas.width=w;canvas.height=h;
         gl.bindTexture(gl.TEXTURE_2D,bufferTexture);
-        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+        gl.texImage2D(gl.TEXTURE_2D,0,webgl2 ? gl.RGBA8 : gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
         gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
         gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,bufferTexture,0);
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);
@@ -101,7 +116,7 @@
         if(disposed)return;
         resize();
         gl.viewport(0,0,width,height);
-        gl.bindVertexArray(vao);
+        if (webgl2) gl.bindVertexArray(vao);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D,noiseTexture);
         gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
@@ -109,7 +124,7 @@
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(programBuffer);
         uniforms(programBuffer,t,width,height);
-        gl.drawArrays(gl.TRIANGLES,0,3);
+        draw(programBuffer);
         gl.bindFramebuffer(gl.FRAMEBUFFER,null);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D,bufferTexture);
@@ -122,7 +137,16 @@
         if(time)gl.uniform1f(time,t);
         gl.uniform1i(gl.getUniformLocation(programImage,'iChannel0'),0);
         gl.uniform1i(gl.getUniformLocation(programImage,'iChannel1'),1);
-        gl.drawArrays(gl.TRIANGLES,0,3);
+        draw(programImage);
+      }
+      function draw(prog) {
+        if (webgl2) gl.drawArrays(gl.TRIANGLES,0,3);
+        else {
+          gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer);
+          const location=gl.getAttribLocation(prog,'a_position');
+          if(location>=0){ gl.enableVertexAttribArray(location); gl.vertexAttribPointer(location,2,gl.FLOAT,false,0,0); }
+          gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+        }
       }
       return { render, dispose, commonSource };
     }

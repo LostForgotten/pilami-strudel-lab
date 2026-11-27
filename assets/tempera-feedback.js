@@ -498,8 +498,10 @@
     lastShaderFrame = 0;
   }
   refreshVisualPresetOptions();
-  importVisualButton.addEventListener('click', () => importVisualInput.click());
-  importVisualInput.addEventListener('change', importVisualPreset);
+  if (importVisualButton && importVisualInput) {
+    importVisualButton.addEventListener('click', () => importVisualInput.click());
+    importVisualInput.addEventListener('change', importVisualPreset);
+  }
   presetSelect.addEventListener('change', selectVisualPreset);
   selectVisualPreset();
 

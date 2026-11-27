@@ -102,6 +102,8 @@
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D,noiseTexture);
         gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);
+        gl.clearColor(0,0,0,1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(programBuffer);
         uniforms(programBuffer,t,width,height);
         gl.drawArrays(gl.TRIANGLES,0,3);

@@ -117,6 +117,19 @@ function pilami_tempera_feedback_create_page() {
 }
 add_action('admin_init', 'pilami_tempera_feedback_create_page');
 
+
+function pilami_tempera_feedback_hide_admin_bar() {
+    if (is_admin() || !is_singular()) {
+        return;
+    }
+
+    $page = get_queried_object();
+    if ($page instanceof WP_Post && has_shortcode($page->post_content, 'pilami_tempera_feedback')) {
+        show_admin_bar(false);
+    }
+}
+add_action('wp', 'pilami_tempera_feedback_hide_admin_bar');
+
 add_filter('body_class', function ($classes) {
     if (is_singular()) {
         $page = get_post();

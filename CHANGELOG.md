@@ -1,3 +1,10 @@
+## 0.39.103 — Preset Shadertoy multipasse pour Tempera
+
+- Ajout de « Particles Party » comme preset visuel sélectionnable, à côté du feedback particulaire Tempera.
+- Exécution WebGL 2 des passes fournies Buffer A puis Image, avec texture de bruit d’entrée et rendu plafonné pour limiter la charge GPU.
+- Les particules et cellules MIDI restent visibles au-dessus du shader ; le preset original reste disponible dans le menu.
+
+
 # Journal des versions
 
 ## 0.39.102 — Paramètres Tempera dans le feedback visuel

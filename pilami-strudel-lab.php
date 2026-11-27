@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pilami Strudel Lab
  * Description: Laboratoire Strudel intégré à WordPress avec presets et commandes de lecture.
- * Version: 0.39.103
+ * Version: 0.39.104
  * Author: pilami.fr
  * License: AGPL-3.0-or-later
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PILAMI_STRUDEL_LAB_VERSION', '0.39.103');
+define('PILAMI_STRUDEL_LAB_VERSION', '0.39.104');
 require_once __DIR__ . '/includes/account.php';
 require_once __DIR__ . '/includes/version-history.php';
 require_once __DIR__ . '/includes/appearance.php';

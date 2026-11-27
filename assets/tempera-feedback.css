@@ -66,3 +66,20 @@ body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 5
 .pt-visual-hint { position:absolute; bottom:17px; right:20px; color:#667482; font-size:10px; pointer-events:none; }
 @media (max-width:850px) { .pt-stage { grid-template-columns:1fr; } .pt-panel { order:1; } .pt-visual-panel { order:2; min-height:55vh; } .pt-canvas { min-height:55vh; } }
 @media (max-width:520px) { .pt-parameter-values { grid-template-columns:repeat(2,minmax(0,1fr)); } .pilami-tempera { padding:14px; } .pt-header { align-items:flex-start; flex-direction:column; } .pt-panel { padding:16px; } .pt-grid { gap:4px; } .pt-cell { border-radius:6px; } .pt-visual-meta { top:14px; left:14px; right:14px; } }
+
+/* WebGL shader preset: the MIDI particle layer remains transparent above the render. */
+.pt-visual-panel { isolation:isolate; }
+.pt-visual-meta { z-index:4; }
+.pt-visual-tools { display:flex; align-items:center; gap:9px; pointer-events:auto; }
+.pt-preset-label { color:#718293; font-size:9px; letter-spacing:.12em; }
+.pt-visual-tools select { max-width:210px; padding:7px 25px 7px 10px; border:1px solid #263544; border-radius:7px; color:#dce8ef; background:#101720; font:inherit; font-size:11px; }
+.pt-visual-tools [data-particle-count] { white-space:nowrap; }
+.pt-shader-canvas,.pt-canvas { position:absolute; inset:0; width:100%; height:100%; min-height:0; flex:none; }
+.pt-shader-canvas { z-index:0; display:none; }
+.pt-canvas { z-index:1; }
+.pt-visual-hint { z-index:3; }
+.pilami-tempera.has-shader-preset .pt-shader-canvas { display:block; }
+.pilami-tempera.has-shader-preset .pt-canvas { background:transparent; }
+.pt-shader-error { position:absolute; z-index:5; left:18px; right:18px; bottom:46px; padding:10px 12px; border:1px solid #713f40; border-radius:8px; color:#ffd3d3; background:#241517eF; font-size:12px; }
+.pt-shader-error[hidden] { display:none !important; }
+@media (max-width:520px) { .pt-visual-tools { gap:6px; } .pt-preset-label { display:none; } .pt-visual-tools select { max-width:155px; font-size:10px; } }

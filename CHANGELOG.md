@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.39.98 — Correctif de chargement Tempera Feedback
+
+- Chargement conditionnel des ressources CSS et JavaScript avant l’affichage de la page Tempera.
+- Correction du chemin des ressources et masquage du titre de page ajouté par le thème.
+
+
 ## 0.39.97 — Interface Tempera Feedback
 
 - Ajout d’une page dédiée `/tempera` avec matrice MIDI 8 × 8 et canvas particulaire sans quadrillage.

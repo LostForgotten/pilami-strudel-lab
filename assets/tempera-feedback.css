@@ -83,3 +83,8 @@ body.pilami-tempera-page .pilami-tempera { width:100vw; margin-left:calc(50% - 5
 .pt-shader-error { position:absolute; z-index:5; left:18px; right:18px; bottom:46px; padding:10px 12px; border:1px solid #713f40; border-radius:8px; color:#ffd3d3; background:#241517eF; font-size:12px; }
 .pt-shader-error[hidden] { display:none !important; }
 @media (max-width:520px) { .pt-visual-tools { gap:6px; } .pt-preset-label { display:none; } .pt-visual-tools select { max-width:155px; font-size:10px; } }
+
+.pt-import-preset { padding:7px 9px; border:1px solid #263544; border-radius:7px; color:#dce8ef; background:#101720; font:inherit; font-size:11px; cursor:pointer; white-space:nowrap; }
+.pt-import-preset:hover { border-color:#42baff; color:#fff; }
+.pt-import-preset:focus-visible,.pt-visual-tools select:focus-visible { outline:2px solid #42baff; outline-offset:2px; }
+@media (max-width:520px) { .pt-visual-meta { align-items:flex-start; flex-direction:column; } .pt-import-preset { padding:6px 7px; font-size:10px; } }

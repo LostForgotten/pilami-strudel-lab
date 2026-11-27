@@ -19,13 +19,20 @@ function pilami_tempera_feedback_enqueue_assets() {
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.css',
         array(),
-        '0.1.3'
+        '0.1.4'
+    );
+    wp_enqueue_script(
+        'pilami-tempera-shader-presets',
+        $plugin_url . 'assets/tempera-shader-presets.js',
+        array(),
+        '0.1.0',
+        true
     );
     wp_enqueue_script(
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.js',
-        array(),
-        '0.1.1',
+        array('pilami-tempera-shader-presets'),
+        '0.1.4',
         true
     );
 }
@@ -107,9 +114,18 @@ function pilami_tempera_feedback_shortcode() {
                         <span class="pt-label">FEEDBACK VISUEL</span>
                         <span class="pt-visual-caption">les notes deviennent matière</span>
                     </div>
-                    <span data-particle-count>0 particule</span>
+                    <div class="pt-visual-tools">
+                        <label class="pt-preset-label" for="pt-visual-preset">PRESET</label>
+                        <select id="pt-visual-preset" data-visual-preset aria-label="Preset visuel">
+                            <option value="particles-party" selected>Particles Party · Shadertoy</option>
+                            <option value="tempera-particles">Particules Tempera</option>
+                        </select>
+                        <span data-particle-count>0 particule</span>
+                    </div>
                 </div>
+                <canvas class="pt-shader-canvas" data-shader-canvas aria-hidden="true"></canvas>
                 <canvas class="pt-canvas" data-particle-canvas></canvas>
+                <div class="pt-shader-error" data-shader-error role="status" hidden></div>
                 <div class="pt-visual-hint">Note ON → émission · Note OFF → dispersion des particules</div>
             </section>
         </section>

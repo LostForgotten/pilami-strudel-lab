@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.39.99 — Barre d’administration masquée sur Tempera
+
+- Même comportement que `/strudel` : la barre WordPress est masquée sur la page Tempera, sans affecter les autres pages ni ses commandes MIDI.
+
+
 ## 0.39.98 — Correctif de chargement Tempera Feedback
 
 - Chargement conditionnel des ressources CSS et JavaScript avant l’affichage de la page Tempera.

@@ -19,13 +19,13 @@ function pilami_tempera_feedback_enqueue_assets() {
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.css',
         array(),
-        '0.1.6'
+        '0.1.7'
     );
     wp_enqueue_script(
         'pilami-tempera-shader-presets',
         $plugin_url . 'assets/tempera-shader-presets.js',
         array(),
-        '0.1.2',
+        '0.1.3',
         true
     );
     wp_enqueue_script(

@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.39.100 — Voyant de connexion à l’administration
+
+- Voyant WordPress sur Tempera : vert quand une session est active, gris après déconnexion, avec vérification périodique de la session.
+- Cliquer sur le voyant gris ouvre la page de connexion WordPress et revient sur `/tempera` après connexion.
+
+
 ## 0.39.99 — Barre d’administration masquée sur Tempera
 
 - Même comportement que `/strudel` : la barre WordPress est masquée sur la page Tempera, sans affecter les autres pages ni ses commandes MIDI.

@@ -19,7 +19,7 @@ function pilami_tempera_feedback_enqueue_assets() {
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.css',
         array(),
-        '0.1.1'
+        '0.1.2'
     );
     wp_enqueue_script(
         'pilami-tempera-feedback',
@@ -41,9 +41,15 @@ function pilami_tempera_feedback_shortcode() {
                 <h1>Tempera <span>Feedback</span></h1>
                 <p class="pt-subtitle">Matrice MIDI et propagation particulaire en direct</p>
             </div>
-            <div class="pt-status-wrap">
-                <span class="pt-status-dot" data-status-dot></span>
-                <span data-midi-status>En attente du MIDI</span>
+            <div class="pt-top-actions">
+                <div class="pt-status-wrap">
+                    <span class="pt-status-dot" data-status-dot></span>
+                    <span data-midi-status>En attente du MIDI</span>
+                </div>
+                <button type="button" class="pt-account-indicator" data-tempera-account data-account-api="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" data-account-login="<?php echo esc_url(wp_login_url(get_permalink())); ?>" data-state="unknown" title="Connexion WordPress à vérifier" aria-label="Connexion WordPress à vérifier" hidden>
+                    <span class="pt-account-led" aria-hidden="true"></span>
+                    <span class="pt-account-label" data-account-label role="status" aria-live="polite">Connexion WordPress à vérifier</span>
+                </button>
             </div>
         </header>
 

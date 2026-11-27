@@ -8,7 +8,7 @@
       const activeBufferSource = preset && preset.bufferSource ? preset.bufferSource : bufferSource;
       const activeCommonSource = preset ? (preset.commonSource || '') : commonSource;
       const activeImageSource = preset && preset.imageSource ? preset.imageSource : imageSource;
-      const gl = canvas.getContext('webgl2', { alpha:false, antialias:false, depth:false, stencil:false, powerPreference:'high-performance' });
+      const gl = canvas.getContext('webgl2', { alpha:false, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:true, powerPreference:'high-performance' });
       if (!gl) { onError('WebGL 2 n’est pas disponible dans ce navigateur.'); return null; }
       let disposed = false, programBuffer, programImage, bufferTexture, framebuffer, noiseTexture, vao;
       function fail(message) { onError(message); dispose(); return null; }

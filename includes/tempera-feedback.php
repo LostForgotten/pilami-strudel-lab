@@ -19,13 +19,13 @@ function pilami_tempera_feedback_enqueue_assets() {
         'pilami-tempera-feedback',
         $plugin_url . 'assets/tempera-feedback.css',
         array(),
-        '0.1.4'
+        '0.1.6'
     );
     wp_enqueue_script(
         'pilami-tempera-shader-presets',
         $plugin_url . 'assets/tempera-shader-presets.js',
         array(),
-        '0.1.0',
+        '0.1.2',
         true
     );
     wp_enqueue_script(
@@ -120,6 +120,8 @@ function pilami_tempera_feedback_shortcode() {
                             <option value="particles-party" selected>Particles Party · Shadertoy</option>
                             <option value="tempera-particles">Particules Tempera</option>
                         </select>
+                        <button type="button" class="pt-import-preset" data-import-visual title="Importer un fichier Image.txt, ou sélectionner ensemble Buffer A.txt, Common.txt et Image.txt">Importer .txt</button>
+                        <input type="file" accept=".txt,text/plain" data-visual-import-file multiple hidden>
                         <span data-particle-count>0 particule</span>
                     </div>
                 </div>

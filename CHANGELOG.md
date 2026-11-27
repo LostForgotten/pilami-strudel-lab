@@ -1,3 +1,12 @@
+## 0.39.104 — Import local de presets shader `.txt`
+
+- Ajout d’un bouton d’import de fichiers `.txt` dans le panneau visuel Tempera.
+- Import d’un passe Image seul, d’un passe Buffer A seul, ou d’un ensemble Buffer A / Common / Image sélectionné ensemble.
+- Les presets importés apparaissent dans le sélecteur et sont conservés dans ce navigateur ; un nouvel import du même nom les remplace.
+- Les passes GLSL sont compilés par WebGL 2 et les erreurs de compilation sont affichées dans le panneau.
+- Rétablissement de la densité d’échantillonnage originale du preset Particles Party, avec résolution et cadence plafonnées pour préserver les détails du volume tout en limitant la charge GPU.
+
+
 ## 0.39.103 — Preset Shadertoy multipasse pour Tempera
 
 - Ajout de « Particles Party » comme preset visuel sélectionnable, à côté du feedback particulaire Tempera.
